@@ -1,1 +1,4 @@
 # FaceRecognitionAttendance(FRA)
+
+###File Structure
+
