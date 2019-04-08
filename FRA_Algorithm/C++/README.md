@@ -6,7 +6,7 @@
 
 ## histogram.cpp
 
-​    Calculating a one-dimensional histogram of a feature image.
+>Calculating a one-dimensional histogram of a feature image.
 
 ## traintest.cpp
 
