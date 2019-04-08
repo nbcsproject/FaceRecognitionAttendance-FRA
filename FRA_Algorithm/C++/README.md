@@ -16,7 +16,7 @@
 
 >Program entry **(Note: When using the DCP algorithm, it is recommended to set Rin to 1 and Rex to 4)**.
 
->**(Note: The default grid_x and grid_y are taken as 1. If you want better recognition accurcy, set the value of grid_x and grid_y to 8. But note that this will bring more calculation work and program running time.)**
+**(Note: The default grid_x and grid_y are taken as 1. If you want better recognition accurcy, set the value of grid_x and grid_y to 8. But note that this will bring more calculation work and program running time.)**
 
 ## Reference
 
