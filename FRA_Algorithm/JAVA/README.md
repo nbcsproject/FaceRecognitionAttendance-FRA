@@ -2,21 +2,21 @@
 
 ## algorithm.java
 
-​    Encapsulating the LBP algorithm and the DCP algorithm, the texture features of the specified image can be obtained by calling any one of  `public Mat LBP(Mat src)`, `public Mat DCP1(Mat src, int Rin, int Rex)` or `public Mat DCP2(Mat src, int Rin, int Rex)`.
+>Encapsulating the LBP algorithm and the DCP algorithm, the texture features of the specified image can be obtained by calling any one of  `public Mat LBP(Mat src)`, `public Mat DCP1(Mat src, int Rin, int Rex)` or `public Mat DCP2(Mat src, int Rin, int Rex)`.
 
 ## histogram.java
 
-​    Calculating a one-dimensional histogram of a feature image.
+>Calculating a one-dimensional histogram of a feature image.
 
 ## traintest.java
 
-​    Train the training set according to the specified CSV file and test its recognition rate **(Note: When using the DCP algorithm, you need to modify the program to concatenate the histogram)**.
+>Train the training set according to the specified CSV file and test its recognition rate **(Note: When using the DCP algorithm, you need to modify the program to concatenate the histogram)**.
 
 ## entrance.java
 
-​    Program entry **(Note: When using the DCP algorithm, it is recommended to set Rin to 1 and Rex to 4)**.
+>Program entry **(Note: When using the DCP algorithm, it is recommended to set Rin to 1 and Rex to 4)**.
 
-​    **(Note: The default grid_x and grid_y are taken as 1. If you want better recognition accurcy, set the value of grid_x and grid_y to 8. But note that this will bring more calculation work and program running time.)**
+>**(Note: The default grid_x and grid_y are taken as 1. If you want better recognition accurcy, set the value of grid_x and grid_y to 8. But note that this will bring more calculation work and program running time.)**
 
 ## Reference
 
