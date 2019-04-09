@@ -14,11 +14,4 @@ FRA/
     ├── /
 	
 ```
-software test （Based on V Model）
-  ├──unit testing
-    ├── 
-    ├── 
-  ├──integration testing
-  ├──System testing
-  ├──Acceptance test
- ```
+
