@@ -27,7 +27,7 @@ void read_csv_image(string fileName, char separator, int lines, int _grid_x, int
 			cvtColor(src, src, CV_BGR2GRAY);
 			equalizeHist(src, src);
 
-			/* If you use LBP algorithm, caculate the characteristic histogram using below method:*/
+                        /* If you use LBP algorithm, calculate the characteristic histogram using below method:*/
 
 			Mat lbp_image = lbp(src);
 			Mat p1 = spatial_histogram(lbp_image, 0, (int)pow(2, 8), _grid_x, _grid_y);
@@ -36,7 +36,7 @@ void read_csv_image(string fileName, char separator, int lines, int _grid_x, int
 				p.at<float>(i) = p1.at<float>(i);
 			}
 
-			/* If you use DCP algorithm, caculate the characteristic histogram using below method
+                        /* If you use DCP algorithm, calculate the characteristic histogram using below method
 			(You need to define Rin and Rex in functions first):*/
 
 			//Mat dcp_image1 = DCP1(src, Rin, Rex);
@@ -94,7 +94,7 @@ void predict(string fileName, char separator, int lines, int _grid_x, int _grid_
 			cvtColor(src, src, CV_BGR2GRAY);
 			equalizeHist(src, src);
 
-			/* If you use LBP algorithm, caculate the characteristic histogram using below method:*/
+                        /* If you use LBP algorithm, calculate the characteristic histogram using below method:*/
 
 			Mat lbp_image = lbp(src);
 			Mat q1 = spatial_histogram(lbp_image, 0, (int)pow(2, 8), _grid_x, _grid_y);
@@ -103,7 +103,7 @@ void predict(string fileName, char separator, int lines, int _grid_x, int _grid_
 				query.at<float>(i) = q1.at<float>(i);
 			}
 
-			/* If you use DCP algorithm, caculate the characteristic histogram using below method
+                        /* If you use DCP algorithm, calculate the characteristic histogram using below method
 			(You need to define Rin and Rex in functions first):*/
 
 			//Mat dcp_image1 = DCP1(src, Rin, Rex);

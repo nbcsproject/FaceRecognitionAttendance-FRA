@@ -33,12 +33,31 @@ public class traintest {
 					Imgproc.resize(src, src, new Size(128, 128));
 					Imgproc.cvtColor(src, src, Imgproc.COLOR_RGB2GRAY);
 					Imgproc.equalizeHist(src, src);
+					
+					/* If you use LBP algorithm, calculate the characteristic histogram using below method:*/
+					
 					Mat lbp_image = algorithm.lbp(src);
 					Mat p1 = histogram.spatial_histogram(lbp_image, 0, (int) Math.pow(2, 8), _grid_x, _grid_y);
 					Mat p = Mat.zeros(1, p1.cols(), CvType.CV_32FC1);
 					for (int i = 0; i < p1.cols(); i++) {
 						p.put(0, i, p1.get(0, i)[0]);
 					}
+					
+					/* If you use DCP algorithm, calculate the characteristic histogram using below method
+					(You need to define Rin and Rex in functions first):*/
+
+					//Mat dcp_image1 = algorithm.DCP1(src, 1, 4);
+					//Mat dcp_image2 = algorithm.DCP2(src, 1, 4);
+					//Mat p1 = histogram.spatial_histogram(dcp_image1, 0, (int)Math.pow(2, 8), _grid_x, _grid_y);
+					//Mat p2 = histogram.spatial_histogram(dcp_image2, 0, (int)Math.pow(2, 8), _grid_x, _grid_y);
+					//Mat p = Mat.zeros(1, p1.cols() + p2.cols(), CvType.CV_32FC1);
+					//for (int index1 = 0; index1 < p1.cols(); index1++){
+					//	p.put(0, index1, p1.get(0, index1)[0]);
+					//}
+					//for (int index2 = p1.cols(); index2 < p1.cols() + p2.cols(); index2++){
+					//	p.put(0, index2, p1.get(0, index2 - p1.cols())[0]);
+					//}
+					
 					_histograms.addElement(p);
 				}
 				j++;
@@ -87,12 +106,31 @@ public class traintest {
 					Imgproc.resize(src, src, new Size(128, 128));
 					Imgproc.cvtColor(src, src, Imgproc.COLOR_RGB2GRAY);
 					Imgproc.equalizeHist(src, src);
+					
+					/* If you use LBP algorithm, calculate the characteristic histogram using below method:*/
+					
 					Mat lbp_image = algorithm.lbp(src);
 					Mat q1 = histogram.spatial_histogram(lbp_image, 0, (int) Math.pow(2, 8), _grid_x, _grid_y);
 					Mat query = Mat.zeros(1, q1.cols(), CvType.CV_32FC1);
 					for (int i = 0; i < q1.cols(); i++) {
 						query.put(0, i, q1.get(0, i)[0]);
 					}
+					
+					/* If you use DCP algorithm, calculate the characteristic histogram using below method
+					(You need to define Rin and Rex in functions first):*/
+
+					//Mat dcp_image1 = algorithm.DCP1(src, 1, 4);
+					//Mat dcp_image2 = algorithm.DCP2(src, 1, 4);
+					//Mat q1 = histogram.spatial_histogram(dcp_image1, 0, (int)Math.pow(2, 8), _grid_x, _grid_y);
+					//Mat q2 = histogram.spatial_histogram(dcp_image2, 0, (int)Math.pow(2, 8), _grid_x, _grid_y);
+					//Mat query = Mat.zeros(1, q1.cols() + q2.cols(), CvType.CV_32FC1);
+					//for (int index1 = 0; index1 < q1.cols(); index1++){
+					//	query.put(0, index1, q1.get(0, index1)[0]);
+					//}
+					//for (int index2 = q1.cols(); index2 < q1.cols() + q2.cols(); index2++){
+					//	query.put(0, index2, q1.get(0, index2 - q1.cols())[0]);
+					//}
+					
 					double minDist = java.lang.Double.MAX_VALUE;
 					int minClass = -1;
 					for (int sampleIdx = 0; sampleIdx < _histograms.size(); sampleIdx++) {
