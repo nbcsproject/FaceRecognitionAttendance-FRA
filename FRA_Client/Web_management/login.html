@@ -1,50 +1,74 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang = "en" class = "no-js">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>FRA-后台系统</title>
-<link href="style/authority/login_css.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="scripts/jquery/jquery-1.7.1.js"></script>
-<script type="text/javascript">
-	$(document).ready(function(){
-		$("#login_sub").click(function(){
-			$("#submitForm").attr("action", "index.html").submit();
-		});
-	});
-	
-	/*回车事件*/
-	function EnterPress(e){ //传入 event 
-		var e = e || window.event; 
-		if(e.keyCode == 13){ 
-			$("#submitForm").attr("action", "index.html").submit();
-		} 
-	} 
-</script>
+	<meta http-equiv = "Content-Type" content = "text/html; charset=UTF-8">
+
+	<meta http-equiv = "X-UA-Compatible" content = "IE=edge">
+	<meta name = "viewport" content = "width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>FRA-Login</title>
+	<link rel = "stylesheet" type = "text/css" href = "./css/normalize.css">
+	<link rel = "stylesheet" type = "text/css" href = "./css/demo.css">
+
+
+	<!--必要样式-->
+	<link rel = "stylesheet" type = "text/css" href = "css/login_css.css">
 </head>
 <body>
-	<div id="login_center">
-		<div id="login_area">
-			<div id="login_box">
-				<div id="login_form">
-					<form id="submitForm" action="" method="post">
-						<div id="login_tip">
-							<span id="login_err" class="sty_txt2"></span>
+	<div class = "demo-1">
+		<div class = "content">
+			<div id = "large-header" class = "large-header" style = "height: 869px;">
+				<canvas id = "demo-canvas" width = "1280" height = "869"></canvas>
+				<div class = " logo_box">
+					<h2>FRA 管理系统</h2>
+					<form id = "submitForm" action = "#" name = "f" method = "post">
+						<div class = "form-group input_outer">
+							<span class = "u_user"></span>
+							<input name = "logname"
+							       class = "text"
+							       style = "color: #FFFFFF !important"
+							       type = "text"
+							       placeholder = "请输入账户">
 						</div>
-						<div>
-							 用户名：<input type="text" name="userEntity.userCode" class="username" id="name">
+						<div class = "form-group input_outer">
+							<span class = "us_uer"></span>
+							<input name = "logpass"
+							       class = "text"
+							       style = "color: #FFFFFF !important; position:absolute; z-index:100;"
+							       value = ""
+							       type = "password"
+							       placeholder = "请输入密码">
 						</div>
-						<div>
-							密&nbsp;&nbsp;&nbsp;&nbsp;码：<input type="password" name="userEntity.password" class="pwd" id="pwd" onkeypress="EnterPress(event)" onkeydown="EnterPress()">
-						</div>
-						<div id="btn_area">
-							<input type="button" class="login_btn" id="login_sub"  value="登  录">
-							<input type="reset" class="login_btn" id="login_ret" value="重 置">
+						<div class = " mb2">
+							<a class = "act-but submit" href = "javascript:;">
+								登录
+							</a>
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
-	</div>
+	</div><!-- /container -->
 
+	<script type = "text/javascript" src = "scripts/jquery/jquery-1.7.1.js"></script>
+	<script type = "text/javascript">
+		$(document).ready(function () {
+			$("#login_sub").click(function () {
+				$("#submitForm").attr("action", "index.html").submit();
+			});
+		});
+
+		/*回车事件*/
+		function EnterPress(e) { //传入 event
+			var e = e || window.event;
+			if (e.keyCode == 13) {
+				$("#submitForm").attr("action", "index.html").submit();
+			}
+		}
+	</script>
+	<script src = "./js/TweenLite.min.js"></script>
+	<script src = "./js/EasePack.min.js"></script>
+	<script src = "./js/rAF.js"></script>
+	<script src = "./js/demo-1.js"></script>
 </body>
+<style type = "text/css" id = "23985827477"></style>
 </html>
