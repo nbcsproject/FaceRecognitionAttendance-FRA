@@ -28,7 +28,7 @@
 	
 	$.alerts = {
 		
-		// These properties can be read/written by accessing $.alerts.propertyName from your scripts at any time
+		// These properties can be read/written by accessing $.alerts.propertyName from your js at any time
 		
 		verticalOffset: -75,                // vertical offset of the dialog from center screen, in pixels
 		horizontalOffset: 0,                // horizontal offset of the dialog from center screen, in pixels/

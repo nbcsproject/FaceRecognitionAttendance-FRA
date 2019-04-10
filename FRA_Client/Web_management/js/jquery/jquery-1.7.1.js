@@ -451,7 +451,7 @@ jQuery.extend({
 		// Catch cases where $(document).ready() is called after the
 		// browser event has already occurred.
 		if ( document.readyState === "complete" ) {
-			// Handle it asynchronously to allow scripts the opportunity to delay ready
+			// Handle it asynchronously to allow js the opportunity to delay ready
 			return setTimeout( jQuery.ready, 1 );
 		}
 
@@ -1653,15 +1653,15 @@ jQuery.extend({
 			internalKey = jQuery.expando,
 			getByName = typeof name === "string",
 
-			// We have to handle DOM nodes and JS objects differently because IE6-7
-			// can't GC object references properly across the DOM-JS boundary
+			// We have to handle DOM nodes and js objects differently because IE6-7
+			// can't GC object references properly across the DOM-js boundary
 			isNode = elem.nodeType,
 
-			// Only DOM nodes need the global jQuery cache; JS object data is
+			// Only DOM nodes need the global jQuery cache; js object data is
 			// attached directly to the object so GC can occur automatically
 			cache = isNode ? jQuery.cache : elem,
 
-			// Only defining an ID for JS objects if its cache already exists allows
+			// Only defining an ID for js objects if its cache already exists allows
 			// the code to shortcut on the same path as a DOM node with no cache
 			id = isNode ? elem[ internalKey ] : elem[ internalKey ] && internalKey,
 			isEvents = name === "events";
@@ -1685,7 +1685,7 @@ jQuery.extend({
 		if ( !cache[ id ] ) {
 			cache[ id ] = {};
 
-			// Avoids exposing jQuery metadata on plain JS objects when the object
+			// Avoids exposing jQuery metadata on plain js objects when the object
 			// is serialized using JSON.stringify
 			if ( !isNode ) {
 				cache[ id ].toJSON = jQuery.noop;
@@ -1817,7 +1817,7 @@ jQuery.extend({
 		}
 
 		// Browsers that fail expando deletion also refuse to delete expandos on
-		// the window, but it will allow it on all other JS objects; other browsers
+		// the window, but it will allow it on all other js objects; other browsers
 		// don't care
 		// Ensure that `cache` is not a window object #10080
 		if ( jQuery.support.deleteExpando || !cache.setInterval ) {
@@ -3143,7 +3143,7 @@ jQuery.event = {
 			if ( handle ) {
 				handle.apply( cur, data );
 			}
-			// Note that this is a bare JS function and not a jQuery handler
+			// Note that this is a bare js function and not a jQuery handler
 			handle = ontype && cur[ ontype ];
 			if ( handle && jQuery.acceptData( cur ) && handle.apply( cur, data ) === false ) {
 				event.preventDefault();
@@ -6183,7 +6183,7 @@ function findInputs( elem ) {
 	var nodeName = ( elem.nodeName || "" ).toLowerCase();
 	if ( nodeName === "input" ) {
 		fixDefaultChecked( elem );
-	// Skip scripts, get other children
+	// Skip js, get other children
 	} else if ( nodeName !== "script" && typeof elem.getElementsByTagName !== "undefined" ) {
 		jQuery.grep( elem.getElementsByTagName("input"), fixDefaultChecked );
 	}
@@ -7040,7 +7040,7 @@ jQuery.fn.extend({
 					self.html( selector ?
 						// Create a dummy div to hold the results
 						jQuery("<div>")
-							// inject the contents of the document in, removing the scripts
+							// inject the contents of the document in, removing the js
 							// to avoid any 'Permission Denied' errors in IE
 							.append(responseText.replace(rscript, ""))
 
@@ -8459,7 +8459,7 @@ jQuery.fn.extend({
 				}
 			}
 
-			// For JS strict compliance
+			// For js strict compliance
 			return true;
 		}
 

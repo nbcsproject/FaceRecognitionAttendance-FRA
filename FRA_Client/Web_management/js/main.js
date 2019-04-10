@@ -22,6 +22,7 @@ function getDate01() {
 
 	if (myMonth < 10) {
 		myMonth = "0" + myMonth;
+		s
 	}
 	document.getElementById("day_day").innerHTML = myYear + " . " + myMonth + " . " + myDay + "&nbsp;&nbsp;&nbsp;" + weekDay[time.getDay()];
 }
@@ -39,9 +40,9 @@ function addfavorite() {
 			ok: true,
 		});
 	} else if (ua.indexOf("msie 8") > -1) {
-		window.external.AddToFavoritesBar('${dynamicURL}/authority/loginInit.action', '西宁市公共租赁住房信息管理系统管理');//IE8
+		window.external.AddToFavoritesBar('${dynamicURL}/authority/loginInit.action', 'FRA管理系统');//IE8
 	} else if (document.all) {
-		window.external.addFavorite('${dynamicURL}/authority/loginInit.action', '西宁市公共租赁住房信息管理系统管理');
+		window.external.addFavorite('${dynamicURL}/authority/loginInit.action', 'FRA管理系统');
 	} else {
 		art.dialog({
 			icon: 'error',
@@ -75,8 +76,8 @@ var setting = {
 		}
 	},
 	callback: {
-		// 				beforeExpand: beforeExpand,
-		// 				onExpand: onExpand,
+		beforeExpand: beforeExpand,
+		onExpand: onExpand,
 		onClick: zTreeOnClick
 	}
 };
@@ -205,25 +206,29 @@ $(document).ready(function () {
 	}
 });
 
+
+/********************************
+下面是要异步加载模块树的内容。url是定义的服务器请求。data是服务器需要响应的一个json格式的数据。
+ ************************/
 function loadMenu(resourceType, treeObj) {
-	/*$.ajax({
-	 type:"POST",
-	 url:"${dynamicURL}/authority/modelPart.action?resourceType=" + resourceType,
-	 dataType : "json",
-	 success:function(data){
-	 // 如果返回数据不为空，加载"业务模块"目录
-	 if(data != null){
-	 // 将返回的数据赋给zTree
-	 $.fn.zTree.init($("#"+treeObj), setting, data);
-	 alert(treeObj);
-	 zTree = $.fn.zTree.getZTreeObj(treeObj);
-	 if( zTree ){
-	 // 默认展开所有节点
-	 zTree.expandAll(true);
-	 }
-	 }
-	 }
-	 });*/
+	$.ajax({
+		type: "POST",
+		url: "${dynamicURL}/authority/modelPart.action?resourceType=" + resourceType,
+		dataType: "json",
+		success: function (data) {
+			// 如果返回数据不为空，加载"业务模块"目录
+			if (data != null) {
+				// 将返回的数据赋给zTree
+				$.fn.zTree.init($("#" + treeObj), setting, data);
+				alert(treeObj);
+				zTree = $.fn.zTree.getZTreeObj(treeObj);
+				if (zTree) {
+					// 默认展开所有节点
+					zTree.expandAll(true);
+				}
+			}
+		}
+	});
 	data = [{
 		"accessPath": "",
 		"checked": false,

@@ -2,23 +2,20 @@
 <html lang = "zh-CN">
 <head>
 	<meta http-equiv = "Content-Type" content = "text/html; charset=utf-8">
-	<title>FRA-后台系统</title>
-	<link href = "css/authority/main_css.css" rel = "stylesheet" type = "text/css"/>
-	<link href = "css/authority/zTreeStyle.css" rel = "stylesheet" type = "text/css">
-	<script type = "text/javascript" src = "scripts/jquery/jquery-1.7.1.js"></script>
-	<script type = "text/javascript" src = "scripts/zTree/jquery.ztree.core-3.2.js"></script>
-	<script type = "text/javascript" src = "scripts/authority/commonAll.js"></script>
-	<script type = "text/javascript" src = "scripts/main.js"></script>
+	<title>FRA-管理系统</title>
+	<link rel = "stylesheet" href = "css/authority/main_css.css">
+	<link rel = "stylesheet" href = "css/authority/zTreeStyle.css">
+
+	<script type = "text/javascript" src = "js/jquery/jquery-1.7.1.js"></script>
+	<script type = "text/javascript" src = "js/zTree/jquery.ztree.core-3.2.js"></script>
+	<script type = "text/javascript" src = "js/authority/commonAll.js"></script>
+	<script type = "text/javascript" src = "js/main.js"></script>
 </head>
 <body onload = "getDate01()">
 	<div id = "top">
 		<div id = "top_logo">
-			<span style = "color: white;font-weight: 500;line-height:70px;font-family: 'songti' ;font-size: 30px">FRA 管理系统</span>
-			<!--<img alt = "logo"-->
-			<!--src = "images/common/logo.png"-->
-			<!--width = "274"-->
-			<!--height = "49"-->
-			<!--style = "vertical-align:middle;">-->
+			<span>FRA 管理系统</span>
+			<!--<img alt = "logo" src = "images/common/logo.png">-->
 		</div>
 		<div id = "top_links">
 			<div id = "top_op">
@@ -35,73 +32,65 @@
 			</div>
 			<div id = "top_close">
 				<a href = "javascript:void(0);" onclick = "logout();" target = "_parent">
-					<img alt = "退出系统"
-					     title = "退出系统"
-					     src = "images/common/close.jpg"
-					     style = "position: relative; top: 10px; left: 25px;">
+					<img alt = "退出系统" title = "退出系统" src = "images/common/close.jpg">
 				</a>
 			</div>
 		</div>
 	</div>
-	<div>    <!-- side menu start -->
-		<div id = "side">
-			<!--左边的tab栏-->
-			<div id = "left_menu">
-				<ul id = "TabPage2" style = "height:200px; margin-top:50px;">
-					<li id = "left_tab1"
-					    class = "selected"
-					    onClick = "javascript:switchTab('TabPage2','left_tab1');"
-					    title = "业务模块">
-						<img alt = "业务模块" title = "业务模块" src = "images/common/1_hover.png" width = "33" height = "31">
-					</li>
-					<li id = "left_tab2" onClick = "javascript:switchTab('TabPage2','left_tab2');" title = "系统管理">
-						<img alt = "系统管理" title = "系统管理" src = "images/common/2.png" width = "33" height = "31">
-					</li>
-					<li id = "left_tab3" onClick = "javascript:switchTab('TabPage2','left_tab3');" title = "其他">
-						<img alt = "其他" title = "其他" src = "images/common/3.png" width = "33" height = "31">
-					</li>
-				</ul>
-
-				<div id = "nav_show" style = "position:absolute; bottom:0px; padding:10px;">
-					<a href = "javascript:;" id = "show_hide_btn">
-						<img alt = "显示/隐藏"
-						     title = "显示/隐藏"
-						     src = "images/common/nav_hide.png"
-						     width = "35"
-						     height = "35">
-					</a>
-				</div>
-			</div>
-
-			<!--左边的树状结构-->
-			<div id = "left_menu_cnt">
-				<div id = "nav_module">
-					业务模块
-					<!--<img src = "images/common/module_1.png" width = "210" height = "58"/>-->
-				</div>
-				<div id = "nav_resource">
-					<ul id = "dleft_tab1" class = "ztree"></ul>
-				</div>
+	<!-- side menu start -->
+	<div id = "side">
+		<!--左边的tab栏-->
+		<div id = "left_menu">
+			<!--功能按钮-->
+			<ul id = "TabPage2">
+				<li id = "left_tab1"
+				    class = "selected"
+				    onClick = "javascript:switchTab('TabPage2','left_tab1');"
+				    title = "业务模块">
+					<img alt = "业务模块" title = "业务模块" src = "images/common/1_hover.png">
+				</li>
+				<li id = "left_tab2" onClick = "javascript:switchTab('TabPage2','left_tab2');" title = "系统管理">
+					<img alt = "系统管理" title = "系统管理" src = "images/common/2.png">
+				</li>
+				<li id = "left_tab3" onClick = "javascript:switchTab('TabPage2','left_tab3');" title = "其他">
+					<img alt = "其他" title = "其他" src = "images/common/3.png">
+				</li>
+			</ul>
+			<!--隐藏按钮-->
+			<div id = "nav_show">
+				<a href = "javascript:;" id = "show_hide_btn">
+					<img alt = "显示/隐藏"
+					     title = "显示/隐藏"
+					     src = "images/common/nav_hide.png">
+				</a>
 			</div>
 		</div>
-		<div>
-			<div id = "top_nav">
-				当前位置：系统&nbsp;>&nbsp;<span id = "here_area">系统介绍</span>
+		<!--左边的树状结构-->
+		<div id = "left_menu_cnt">
+			<div id = "nav_module">
+				业务模块
+				<!--<img src = "images/common/module_1.png" width = "210" height = "58"/>-->
 			</div>
-			<div id = "main">
-				<iframe name = "right"
-				        id = "rightMain"
-				        src = "introduce.html"
-				        frameborder = "no"
-				        scrolling = "auto"
-				        width = "100%"
-				        height = "100%"
-				        allowtransparency = "true"/>
+			<div id = "nav_resource">
+				<ul id = "dleft_tab1" class = "ztree"></ul>
 			</div>
 		</div>
-
 	</div>
-
+	<div class = "content">
+		<div id = "top_nav">
+			<span id = "here_area">当前位置：系统&nbsp;>&nbsp;系统介绍</span>
+		</div>
+		<div id = "main">
+			<iframe name = "right"
+			        id = "rightMain"
+			        src = "introduce.html"
+			        frameborder = "no"
+			        scrolling = "auto"
+			        width = "100%"
+			        height = "100%"
+			        allowtransparency = "true"/>
+		</div>
+	</div>
 </body>
 </html>
    

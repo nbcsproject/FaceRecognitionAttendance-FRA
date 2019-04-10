@@ -21,12 +21,23 @@ html, body {
 }
 
 #top_logo {
-    width: 300px;
+    width: 240px;
     float: left;
     vertical-align: middle;
-    height: 65px;
-    line-height: 65px;
+    height: 68px;
+    color: white;
+    font-weight: 500;
+    line-height: 70px;
+    font-family: '华文细黑';
+    font-size: 30px;
     padding: 1px 1px 1px 25px;
+    cursor: pointer;
+}
+
+#top_logo img {
+    width: 274px;
+    height: 49px;
+    style: "vertical-align:middle;
 }
 
 #top_links {
@@ -79,6 +90,12 @@ html, body {
     vertical-align: text-top;
 }
 
+#top_close img {
+    position: relative;
+    top: 10px;
+    left: 25px;
+}
+
 #side {
     position: absolute;
     left: 0;
@@ -121,6 +138,21 @@ html, body {
     overflow: hidden;
 }
 
+#TabPage2 {
+    height: 200px;
+    margin-top: 50px;
+}
+
+#TabPage2 img {
+    width: 34px;
+}
+
+#nav_show {
+    position: absolute;
+    bottom: 0px;
+    padding: 10px;
+}
+
 #left_menu_cnt {
     width: 220px;
     position: absolute;
@@ -133,7 +165,6 @@ html, body {
 
 #left_menu_cnt #nav_module {
     position: fixed;
-    padding-left: 10px;
     background: #F1F1F1;
 }
 
@@ -141,7 +172,7 @@ html, body {
     padding-top: 20px;
     line-height: 40px;
     font-size: 24px;
-    width: 210px;
+    width: 220px;
     border-bottom: 2px solid #adadad;
     display: block;
     text-align: center;
@@ -153,7 +184,7 @@ html, body {
 }
 
 #TabPage2 li {
-    padding: 19px 9px 19px 15px;
+    padding: 20px 13px;
     cursor: pointer;
 }
 
