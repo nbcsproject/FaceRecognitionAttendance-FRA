@@ -41,7 +41,7 @@ html, body {
 }
 
 #top_links {
-    width: 480px;
+    width: 540px;
     height: 65px;
     float: right;
     line-height: 65px;
@@ -51,7 +51,7 @@ html, body {
 }
 
 #top_op {
-    width: 400px;
+    width: 459px;
 }
 
 #top_op ul {

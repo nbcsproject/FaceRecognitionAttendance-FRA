@@ -22,7 +22,6 @@ function getDate01() {
 
 	if (myMonth < 10) {
 		myMonth = "0" + myMonth;
-		s
 	}
 	document.getElementById("day_day").innerHTML = myYear + " . " + myMonth + " . " + myDay + "&nbsp;&nbsp;&nbsp;" + weekDay[time.getDay()];
 }
@@ -206,9 +205,8 @@ $(document).ready(function () {
 	}
 });
 
-
 /********************************
-下面是要异步加载模块树的内容。url是定义的服务器请求。data是服务器需要响应的一个json格式的数据。
+ 下面是要异步加载模块树的内容。url是定义的服务器请求。data是服务器需要响应的一个json格式的数据。
  ************************/
 function loadMenu(resourceType, treeObj) {
 	$.ajax({
