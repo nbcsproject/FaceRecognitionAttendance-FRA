@@ -3,4 +3,9 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="viewfinder_mask">#B2000000</color>
+    <color name="faceDetector">#FFBC00</color>
+    <color name="faceSelector">#DA4400</color>
+    <color name="grayPrimary">#FAFAFA</color>
+    <color name="colorTransparent">#00FFFFFF</color>
 </resources>

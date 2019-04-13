@@ -125,27 +125,8 @@ public class MainActivity extends AppCompatActivity {
         cameracapture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                File outputImage=new File(getExternalCacheDir(),"out_image.jpg");
-                try{
-                    if(outputImage.exists()){
-                        outputImage.delete();
-                    }
-                    outputImage.createNewFile();
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
-                if(Build.VERSION.SDK_INT>=24){
-                    imageUri= FileProvider.getUriForFile(MainActivity.this,"com.android.fra.fileprovider",outputImage);
-                }else{
-                    imageUri= Uri.fromFile(outputImage);
-                }
-                Intent intent=new Intent("android.media.action.IMAGE_CAPTURE");
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
-                intent.putExtra("android.intent.extras.CAMERA_FACING", 1);  // 调用前置摄像头
-                //  intent.putExtra("autofocus", true); // 自动对焦
-                // intent.putExtra("fullScreen", true); // 全屏
-                //intent.putExtra("showActionIcons", true);
-                startActivityForResult(intent,TAKE_PHOTO);
+                Intent intent = new Intent(MainActivity.this, CameraActivity.class);
+                startActivity(intent);
             }
         });
     }

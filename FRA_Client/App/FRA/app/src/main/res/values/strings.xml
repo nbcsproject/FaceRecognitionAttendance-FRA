@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">FRA</string>
+    <string name="request_permission">检测面部需要相机权限</string>
+    <string name="denied_permission">应用被禁止访问您的相机，将不能正常使用相机相关功能，如检测面部。\n\n如果需要使用，
+        请在“系统设置”或授权对话框中允许“相机”权限。</string>
+    <string name="camera_error">该设备不支持Camera2 API</string>
 </resources>
