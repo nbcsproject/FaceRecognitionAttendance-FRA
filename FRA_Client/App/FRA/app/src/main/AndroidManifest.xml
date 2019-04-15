@@ -38,6 +38,10 @@
             android:name=".CameraActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
+
+        <activity
+            android:name=".RegisterActivity">
+        </activity>
     </application>
 
 </manifest>

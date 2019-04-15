@@ -22,10 +22,10 @@
         android:layout_height="wrap_content"
         android:text="拍照" />
 
-    <ImageView
-        android:id="@+id/picture"
+    <Button
+        android:id="@+id/register_test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal" />
+        android:text="注册测试" />
 
 </LinearLayout>

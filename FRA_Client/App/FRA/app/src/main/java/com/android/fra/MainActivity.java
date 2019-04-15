@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        picture=(ImageView)findViewById(R.id.picture);
         Button recognize=(Button)findViewById(R.id.recognition_button);
         recognize.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                     if(index==minClass) {
                         final OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(MainActivity.this);
                         mMaterialDialog.setTitle("签到成功").setMessage("工号: "+face.getUid()+"\n"+"姓名: "+face.getName()+"\n"
-                                +"性别: "+face.getGender()+"\n"+"工资: "+face.getPages()).setMessageTextSize((float) 16.5)
+                                +"性别: "+face.getGender()+"\n"+"部门: "+face.getDepartment()).setMessageTextSize((float) 16.5)
                                 .setPositiveButton("确定", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -111,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                                         })
                                 .show();
                         Log.d("MainActivity", "Id is: " + face.getUid());
-                        Log.d("MainActivity", "Pages is: " + face.getPages());
+                        Log.d("MainActivity", "Department is: " + face.getDepartment());
                         Log.d("MainActivity", "Name is: " + face.getName());
                         Log.d("MainActivity", "Gender is: " + face.getGender());
                         break;
@@ -126,6 +125,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, CameraActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button register_test = (Button)findViewById(R.id.register_test);
+        register_test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
         });
@@ -178,15 +186,14 @@ public class MainActivity extends AppCompatActivity {
         Face face1=new Face();
         face1.setName("Alex");
         face1.setGender("Male");
-        face1.setUid(101);
-        face1.setPages(666);
+        face1.setUid("101");
+        face1.setDepartment("技术");
         face1.setFeature(feature1);
         face1.save();
         Face face2=new Face();
         face2.setName("Ariana");
         face2.setGender("Female");
-        face2.setUid(102);
-        face2.setPages(888);
+        face2.setUid("102");
         face2.setFeature(feature2);
         face2.save();
     }
