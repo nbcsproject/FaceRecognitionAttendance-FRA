@@ -16,4 +16,12 @@
     <string name="error_invalid_email">邮箱地址格式错误</string>
     <string name="error_invalid_phone">手机号码格式错误</string>
     <string name="error_field_required">该项为必填项目</string>
+
+    !-- Strings related to face record info -->
+    <string name="record_info_name">添加面孔</string>
+    <string name="record_info_title">为了达到最佳效果，请注意以下事项:</string>
+    <string name="record_info_content_0">找一个光线亮度适中的室内场所</string>
+    <string name="record_info_content_1">将设备放在与视线平齐的高度</string>
+    <string name="record_info_content_label">·</string>
+
 </resources>

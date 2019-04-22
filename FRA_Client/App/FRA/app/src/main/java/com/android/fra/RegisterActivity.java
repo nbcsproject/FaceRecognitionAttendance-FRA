@@ -2,6 +2,7 @@ package com.android.fra;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +24,10 @@ import com.android.fra.db.Face;
 import com.bumptech.glide.Glide;
 import com.longsh.optionframelibrary.OptionMaterialDialog;
 
+import org.litepal.LitePal;
+
+import java.util.List;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private RegisterActivity.UserRegisterTask mAuthTask = null;
@@ -35,7 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
     private AutoCompleteTextView mPostView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
@@ -45,12 +50,12 @@ public class RegisterActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_register);
         String RegisterName = "注册";
-        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
-        CollapsingToolbarLayout collapsingToolbar=(CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
-        ImageView imageView=(ImageView)findViewById(R.id.image_view);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        ImageView imageView = (ImageView) findViewById(R.id.image_view);
         setSupportActionBar(toolbar);
-        ActionBar actionBar=getSupportActionBar();
-        if(actionBar!=null){
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         collapsingToolbar.setTitle(RegisterName);
@@ -61,14 +66,14 @@ public class RegisterActivity extends AppCompatActivity {
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                if(checkedId==R.id.male){
+                if (checkedId == R.id.male) {
                     mGenderChoose = "male";
-                }else {
+                } else {
                     mGenderChoose = "female";
                 }
             }
         });
-        FloatingActionButton commitButton = (FloatingActionButton)findViewById(R.id.button_commit);
+        FloatingActionButton commitButton = (FloatingActionButton) findViewById(R.id.button_commit);
         commitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,8 +89,8 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;
@@ -132,7 +137,7 @@ public class RegisterActivity extends AppCompatActivity {
             mPhoneView.setError(getString(R.string.error_field_required));
             focusView = mPhoneView;
             cancel = true;
-        }else if(!isPhoneValid(phone)){
+        } else if (!isPhoneValid(phone)) {
             mPhoneView.setError(getString(R.string.error_invalid_phone));
             focusView = mPhoneView;
             cancel = true;
@@ -188,14 +193,15 @@ public class RegisterActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
 
             try {
-                Face face=new Face();
+                Face face = new Face();
                 face.setName(mAuthTask.mName);
                 face.setGender(mGenderChoose);
                 face.setPhone(mAuthTask.mPhone);
                 face.setEmail(mAuthTask.mEmail);
                 face.setDepartment(mAuthTask.mDepartment);
                 face.setPost(mAuthTask.mPost);
-                face.setUid("10001");
+                face.setUid(CalculateUid());
+                face.setValid(true);
                 face.save();
                 // Simulate network access.
                 Thread.sleep(2000);
@@ -213,10 +219,11 @@ public class RegisterActivity extends AppCompatActivity {
             if (success) {
                 OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(RegisterActivity.this);
                 mMaterialDialog.setTitle("上传成功").setMessage("信息已上传")
-                        .setPositiveButton("确定", new View.OnClickListener() {
+                        .setPositiveButton("下一步", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                finish();
+                                Intent intent = new Intent(RegisterActivity.this, FaceRecordInfo.class);
+                                startActivity(intent);
                             }
                         })
                         .setPositiveButtonTextColor(R.color.colorAccent)
@@ -237,6 +244,19 @@ public class RegisterActivity extends AppCompatActivity {
         protected void onCancelled() {
             mAuthTask = null;
         }
+
+        private String CalculateUid() {
+            List<Face> uidList = LitePal.select("uid").find(Face.class);
+            int uidTemp = 100000;
+            for (Face uid : uidList) {
+                int uidInteger = Integer.parseInt(uid.getUid());
+                if (uidInteger > uidTemp) {
+                    uidTemp = uidInteger;
+                }
+            }
+            return Integer.toString(++uidTemp);
+        }
+
     }
 
 }

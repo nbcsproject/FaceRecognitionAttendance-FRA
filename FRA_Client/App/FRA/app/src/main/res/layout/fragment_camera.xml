@@ -29,15 +29,15 @@
         android:text="请确保您的头顶和下巴底部均位于圆圈范围内"
         android:textScaleX="0.96"
         android:textSize="14.7sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/cancel_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/colorTransparent"
         android:text="取消"
-        android:textSize="14.7sp"
         android:textColor="@color/colorPrimary"
-        android:background="@color/colorTransparent"/>
+        android:textSize="14.7sp" />
 
 </RelativeLayout>

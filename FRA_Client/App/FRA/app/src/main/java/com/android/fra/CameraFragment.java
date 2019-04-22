@@ -186,14 +186,13 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                     FrameCount++;
                     Face face[] = result.get(result.STATISTICS_FACES);
                     FrameCount++;
-                    if (face.length > 0){
+                    if (face.length > 0) {
                         int[] face_rec = drawRectangle(face[0]);
                         if (FrameCount % FrameInterval == 0) {
                             Bitmap bitmap_get = mTextureView.getBitmap();
                             bitmap_get = Bitmap.createBitmap(bitmap_get, face_rec[0], face_rec[1], face_rec[2] - face_rec[0], face_rec[3] - face_rec[1]);
                         }
-                    }
-                    else {
+                    } else {
                         clearRectangle();
                     }
                     break;
@@ -250,7 +249,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
 
     };
 
-    public int[] drawRectangle(Face face){
+    public int[] drawRectangle(Face face) {
 
         Rect bounds = face.getBounds();
         DisplayMetrics dm = getResources().getDisplayMetrics();
@@ -266,10 +265,10 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
         float scaleWidth = canvas.getHeight() * 1.0f / cPixelSize.getWidth();
         float scaleHeight = canvas.getWidth() * 1.0f / cPixelSize.getHeight();
 
-        int l = (int) (bounds.left*scaleWidth);
-        int t = (int) (bounds.top*scaleHeight);
-        int r = (int) (bounds.right*scaleWidth);
-        int b = (int) (bounds.bottom*scaleHeight);
+        int l = (int) (bounds.left * scaleWidth);
+        int t = (int) (bounds.top * scaleHeight);
+        int r = (int) (bounds.right * scaleWidth);
+        int b = (int) (bounds.bottom * scaleHeight);
 
         int left = canvas.getWidth() - b - 90;
         int top = mTextureView.getHeight() - r - 90;
@@ -277,41 +276,41 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
         int bottom = mTextureView.getHeight() - l - 50;
 
         double[] Location = getLocation();
-        if(left > Location[0] && top > Location[1] && right < Location[2] && bottom < Location[3]) {
-            canvas.drawLine(left, top, left + (int)((right - left) * 0.1), top, mpaint);
-            canvas.drawLine(left + 2, top, left + 2, top + (int)((bottom - top) * 0.1), mpaint);
-            canvas.drawLine(right, top, right - (int)((right - left) * 0.1), top, mpaint);
-            canvas.drawLine(right - 3, top, right - 3, top + (int)((bottom - top) * 0.1), mpaint);
-            canvas.drawLine(left + 2, bottom, left + 2, bottom - (int)((bottom - top) * 0.1), mpaint);
-            canvas.drawLine(left, bottom, left + (int)((right - left) * 0.1), bottom, mpaint);
-            canvas.drawLine(right, bottom, right - (int)((right - left) * 0.1), bottom, mpaint);
-            canvas.drawLine(right - 3, bottom, right - 3, bottom - (int)((bottom - top) * 0.1), mpaint);
+        if (left > Location[0] && top > Location[1] && right < Location[2] && bottom < Location[3]) {
+            canvas.drawLine(left, top, left + (int) ((right - left) * 0.1), top, mpaint);
+            canvas.drawLine(left + 2, top, left + 2, top + (int) ((bottom - top) * 0.1), mpaint);
+            canvas.drawLine(right, top, right - (int) ((right - left) * 0.1), top, mpaint);
+            canvas.drawLine(right - 3, top, right - 3, top + (int) ((bottom - top) * 0.1), mpaint);
+            canvas.drawLine(left + 2, bottom, left + 2, bottom - (int) ((bottom - top) * 0.1), mpaint);
+            canvas.drawLine(left, bottom, left + (int) ((right - left) * 0.1), bottom, mpaint);
+            canvas.drawLine(right, bottom, right - (int) ((right - left) * 0.1), bottom, mpaint);
+            canvas.drawLine(right - 3, bottom, right - 3, bottom - (int) ((bottom - top) * 0.1), mpaint);
         }
         surfaceHolder.unlockCanvasAndPost(canvas);
         int[] rec_coordinate = {left, top, right, bottom};
         return rec_coordinate;
     }
 
-    public void clearRectangle(){
+    public void clearRectangle() {
         Canvas canvas = new Canvas();
         canvas = surfaceHolder.lockCanvas();
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         surfaceHolder.unlockCanvasAndPost(canvas);
     }
 
-    private double[] getLocation(){
+    private double[] getLocation() {
         DisplayMetrics dm = getResources().getDisplayMetrics();
         int ScreenHeight = dm.heightPixels;
         int ScreenWidth = dm.widthPixels;
         double diameter = ScreenHeight * 0.5;
         int Diameter;
-        if((int)diameter / 2 != 0){
-            Diameter = (int)diameter - 1;
-        }else{
-            Diameter = (int)diameter;
+        if ((int) diameter / 2 != 0) {
+            Diameter = (int) diameter - 1;
+        } else {
+            Diameter = (int) diameter;
         }
-        double px =  ScreenWidth / 2;
-        double py =  ScreenHeight * 0.12 + Diameter / 2;
+        double px = ScreenWidth / 2;
+        double py = ScreenHeight * 0.12 + Diameter / 2;
         double location[] = new double[4];
         location[0] = px - Diameter * 0.5 * 0.7;
         location[1] = ScreenHeight * 0.12 + Diameter * 0.5 * 0.3;
@@ -372,27 +371,27 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             requestCameraPermission();
         }
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.texture);
         view.findViewById(R.id.surfaceview_show_rectangle).setOnClickListener(this);
-        surfaceview = (SurfaceView)view.findViewById(R.id.surfaceview_show_rectangle);
+        surfaceview = (SurfaceView) view.findViewById(R.id.surfaceview_show_rectangle);
         surfaceview.setZOrderOnTop(true);
         surfaceview.getHolder().setFormat(PixelFormat.TRANSPARENT);
         surfaceHolder = surfaceview.getHolder();
 
-        TextView textView = (TextView)view.findViewById(R.id.hint);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)textView.getLayoutParams();
+        TextView textView = (TextView) view.findViewById(R.id.hint);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) textView.getLayoutParams();
         DisplayMetrics dm = getResources().getDisplayMetrics();
         final int ScreenHeight = dm.heightPixels;
         final int ScreenWidth = dm.widthPixels;
-        params.setMargins((int)(ScreenWidth * 0.1),(int)(ScreenHeight * 0.77),(int)(ScreenWidth * 0.1), (int)(ScreenHeight * 0.18));
+        params.setMargins((int) (ScreenWidth * 0.1), (int) (ScreenHeight * 0.77), (int) (ScreenWidth * 0.1), (int) (ScreenHeight * 0.18));
         textView.setLayoutParams(params);
 
-        Button button = (Button)view.findViewById(R.id.cancel_button);
-        RelativeLayout.LayoutParams button_params = (RelativeLayout.LayoutParams)button.getLayoutParams();
-        button_params.setMargins((int)(ScreenWidth * 0.75),(int)(ScreenHeight * 0.90),(int)(ScreenWidth * 0.06), (int)(ScreenHeight * 0.02));
+        Button button = (Button) view.findViewById(R.id.cancel_button);
+        RelativeLayout.LayoutParams button_params = (RelativeLayout.LayoutParams) button.getLayoutParams();
+        button_params.setMargins((int) (ScreenWidth * 0.75), (int) (ScreenHeight * 0.90), (int) (ScreenWidth * 0.06), (int) (ScreenHeight * 0.02));
         button.setLayoutParams(button_params);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -401,7 +400,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                 if (activity != null) {
                     activity.finish();
                 }
-                Toast.makeText(getActivity(), "You clicked Cancel",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "You clicked Cancel", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -446,7 +445,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                 new PermissionDeniedDialog().show(getChildFragmentManager(), FRAGMENT_DIALOG);
                 return;
             }
-        }else {
+        } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
@@ -539,10 +538,10 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                 cRect = characteristics.get(CameraCharacteristics.SENSOR_INFO_ACTIVE_ARRAY_SIZE);
                 cPixelSize = characteristics.get(CameraCharacteristics.SENSOR_INFO_PIXEL_ARRAY_SIZE);
 
-                int[] FD =characteristics.get(CameraCharacteristics.STATISTICS_INFO_AVAILABLE_FACE_DETECT_MODES);
-                int maxFD=characteristics.get(CameraCharacteristics.STATISTICS_INFO_MAX_FACE_COUNT);
+                int[] FD = characteristics.get(CameraCharacteristics.STATISTICS_INFO_AVAILABLE_FACE_DETECT_MODES);
+                int maxFD = characteristics.get(CameraCharacteristics.STATISTICS_INFO_MAX_FACE_COUNT);
 
-                if (FD.length>0) {
+                if (FD.length > 0) {
                     List<Integer> fdList = new ArrayList<>();
                     for (int FaceD : FD) {
                         fdList.add(FaceD);

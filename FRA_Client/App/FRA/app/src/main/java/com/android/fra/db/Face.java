@@ -1,8 +1,6 @@
 package com.android.fra.db;
 
 import org.litepal.crud.LitePalSupport;
-import org.opencv.calib3d.StereoBM;
-import org.opencv.core.Mat;
 
 public class Face extends LitePalSupport {
     private String name;
@@ -13,68 +11,77 @@ public class Face extends LitePalSupport {
     private String department;
     private String post;
     private String feature;
+    private Boolean valid;
 
-    public String  getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(String  uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getGender(){
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(String gender){
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
-    public String getPhone(){
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone){
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email){
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getDepartment(){
+    public String getDepartment() {
         return department;
     }
 
-    public void setDepartment(String department){
+    public void setDepartment(String department) {
         this.department = department;
     }
 
-    public String getPost(){
+    public String getPost() {
         return post;
     }
 
-    public void setPost(String post){
+    public void setPost(String post) {
         this.post = post;
     }
 
-    public String getFeature(){
+    public String getFeature() {
         return feature;
     }
 
-    public void setFeature(String feature){
+    public void setFeature(String feature) {
         this.feature = feature;
+    }
+
+    public Boolean getValid() {
+        return valid;
+    }
+
+    public void setValid(Boolean valid) {
+        this.valid = valid;
     }
 }

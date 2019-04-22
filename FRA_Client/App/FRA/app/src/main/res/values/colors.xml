@@ -8,6 +8,9 @@
     <color name="faceDetector">#FFBC00</color>
     <color name="faceSelector">#DA4400</color>
     <color name="grayPrimary">#FAFAFA</color>
+    <color name="grayText">#868686</color>
+    <color name="blackText">#000000</color>
+    <color name="whiteText">#FFFFFF</color>
     <color name="colorTransparent">#00FFFFFF</color>
 
 </resources>

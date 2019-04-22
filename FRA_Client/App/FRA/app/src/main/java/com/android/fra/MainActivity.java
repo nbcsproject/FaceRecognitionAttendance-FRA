@@ -137,6 +137,24 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button face_record_info_test = (Button)findViewById(R.id.face_record_info_test);
+        face_record_info_test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, FaceRecordInfo.class);
+                startActivity(intent);
+            }
+        });
+
+        Button management_test = (Button)findViewById(R.id.management_test);
+        management_test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ManagementActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -185,14 +203,14 @@ public class MainActivity extends AppCompatActivity {
         LitePal.getDatabase();
         Face face1=new Face();
         face1.setName("Alex");
-        face1.setGender("Male");
+        face1.setGender("male");
         face1.setUid("101");
         face1.setDepartment("技术");
         face1.setFeature(feature1);
         face1.save();
         Face face2=new Face();
         face2.setName("Ariana");
-        face2.setGender("Female");
+        face2.setGender("female");
         face2.setUid("102");
         face2.setFeature(feature2);
         face2.save();

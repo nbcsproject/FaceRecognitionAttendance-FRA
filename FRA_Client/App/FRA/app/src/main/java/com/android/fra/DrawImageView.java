@@ -24,12 +24,15 @@ public class DrawImageView extends android.support.v7.widget.AppCompatImageView 
     }
 
     Paint paint = new Paint();
+
     {
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.FILL_AND_STROKE);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         setLayerType(LAYER_TYPE_HARDWARE, null);
-    };
+    }
+
+    ;
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -45,24 +48,24 @@ public class DrawImageView extends android.support.v7.widget.AppCompatImageView 
         paintLine.setAntiAlias(true);
 
         canvas.drawARGB(110, 255, 255, 255);
-        canvas.drawCircle(this.ScreenWidth / 2, (int)(this.ScreenHeight * 0.12 + this.diameter / 2), this.diameter / 2, paint);
-        canvas.drawCircle(this.ScreenWidth / 2, (int)(this.ScreenHeight * 0.12 + this.diameter / 2), this.diameter / 2, paintLine);
-        canvas.drawRect(0, (int)(this.ScreenHeight * 0.75), this.ScreenWidth, this.ScreenHeight, p);
+        canvas.drawCircle(this.ScreenWidth / 2, (int) (this.ScreenHeight * 0.12 + this.diameter / 2), this.diameter / 2, paint);
+        canvas.drawCircle(this.ScreenWidth / 2, (int) (this.ScreenHeight * 0.12 + this.diameter / 2), this.diameter / 2, paintLine);
+        canvas.drawRect(0, (int) (this.ScreenHeight * 0.75), this.ScreenWidth, this.ScreenHeight, p);
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.DST_OVER);
     }
 
-    private int getDiameter(){
+    private int getDiameter() {
         double diameter = this.ScreenHeight * 0.5;
         int Diameter;
-        if((int)diameter / 2 != 0){
-            Diameter = (int)diameter - 1;
-        }else{
-            Diameter = (int)diameter;
+        if ((int) diameter / 2 != 0) {
+            Diameter = (int) diameter - 1;
+        } else {
+            Diameter = (int) diameter;
         }
         return Diameter;
     }
 
-    private double[] getLocation(){
+    private double[] getLocation() {
         this.diameter = getDiameter();
         double px = this.ScreenWidth / 2;
         double py = this.ScreenHeight * 0.10 + this.diameter / 2;
