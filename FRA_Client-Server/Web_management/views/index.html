@@ -9,7 +9,9 @@
     <script type="text/javascript" src="../public/js/jquery/jquery-1.7.1.js"></script>
     <script type="text/javascript" src="../public/js/zTree/jquery.ztree.core-3.2.js"></script>
     <script type="text/javascript" src="../public/js/authority/commonAll.js"></script>
+    <script type="text/javascript" src="../public/js/dialog.js"></script>
     <script type="text/javascript" src="../public/js/main.js"></script>
+
 </head>
 <body onload="getDate01()">
 <div id="top">
@@ -31,7 +33,7 @@
             </ul>
         </div>
         <div id="top_close">
-            <a href='/logout' onclick="logout();" target="_parent">
+            <a href="javascript:" onclick="return logout()">
                 <img alt="退出系统" title="退出系统" src="../public/img/common/close.jpg">
             </a>
         </div>
@@ -58,7 +60,7 @@
         </ul>
         <!--隐藏按钮-->
         <div id="nav_show">
-            <a href="javascript:;" id="show_hide_btn">
+            <a href="javascript:" id="show_hide_btn">
                 <img alt="显示/隐藏"
                      title="显示/隐藏"
                      src="../public/img/common/nav_hide.png">

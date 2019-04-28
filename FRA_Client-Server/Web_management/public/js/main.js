@@ -1,8 +1,17 @@
 /**退出系统**/
 function logout() {
-    if (confirm("您确定要退出本系统吗？")) {
-        window.location.href = "../../views/login.html";
-    }
+    var d = dialog({
+        title: '提示',
+        content: '退出当前系统？？',
+        okValue: '确定',
+        ok: function () {
+            window.location.href = '/logout';
+        },
+        cancelValue: '取消',
+        cancel: function () {
+        }
+    });
+    d.showModal()
 }
 
 /**获得当前日期**/
@@ -867,12 +876,12 @@ function onStop() {
 $(function () {
     $('#TabPage2 li').click(function () {
         var index = $(this).index();
-        $(this).find('img').attr('src', 'img/common/' + (index + 1) + '_hover.png');
+        $(this).find('img').attr('src', './public/img/common/' + (index + 1) + '_hover.png');
         $(this).css({background: '#fff'});
-        $('#nav_module').find('img').attr('src', 'img/common/module_' + (index + 1) + '.png');
+        $('#nav_module').find('img').attr('src', './publicimg/common/module_' + (index + 1) + '.png');
         $('#TabPage2 li').each(function (i, ele) {
             if (i != index) {
-                $(ele).find('img').attr('src', 'img/common/' + (i + 1) + '.png');
+                $(ele).find('img').attr('src', './public/img/common/' + (i + 1) + '.png');
                 $(ele).css({background: '#044599'});
             }
         });
@@ -901,13 +910,13 @@ function switchSysBar(flag) {
             side.css({width: '60px'});
             $('#top_nav').css({width: '100%', left: '60px', 'padding-left': '28px'});
             $('#main').css({left: '60px'});
-            $("#show_hide_btn").find('img').attr('src', 'img/common/nav_show.png');
+            $("#show_hide_btn").find('img').attr('src', './public/img/common/nav_show.png');
         } else {
             left_menu_cnt.show(500, 'linear');
             side.css({width: '280px'});
             $('#top_nav').css({width: '77%', left: '304px', 'padding-left': '0px'});
             $('#main').css({left: '280px'});
-            $("#show_hide_btn").find('img').attr('src', 'img/common/nav_hide.png');
+            $("#show_hide_btn").find('img').attr('src', './public/img/common/nav_hide.png');
         }
     }
 }

@@ -49,7 +49,7 @@
                                placeholder="请输入密码">
                     </div>
                     <div class=" mb2">
-                        <button type="submit" class="act-but submit">注册</button>
+                        <div type="submit" class="act-but submit">注册</div>
                         <!--<a class = "act-but submit" href = "javascript:;">-->
                         <!--注册-->
                         <!--</a>-->
@@ -73,7 +73,6 @@
                 //	console.log(data)
                 var err_code = data.err_code
                 if (err_code === 0) {
-                    // window.alert('注册成功！')
                     // 服务端重定向针对异步请求无效
                     var d = dialog({
                         title: '提示',
@@ -81,32 +80,32 @@
                         width: 150,
                         cancel: false,
                         ok: function () {
+                            window.location.href = '/login'
                         }
                     });
-                    d.show();
-                    console.log('1')
-                    window.location.href = '/login'
+                    // window.alert('注册成功！')
+                    d.showModal();
                 } else if (err_code === 1) {
                     var d = dialog({
-                        title: '温馨提示',
+                        title: '提示',
                         content: '邮箱或者昵称已存在！',
                         width: 150,
                         cancel: false,
                         ok: function () {
                         }
                     });
-                    d.show();
-                    // window.alert(')
+                    d.showModal();
+                    // window.alert('邮箱或者昵称已存在！')
                 } else if (err_code === 500) {
                     var d = dialog({
-                        title: '温馨提示',
+                        title: '提示',
                         content: '服务器忙，请稍后重试！',
                         width: 150,
                         cancel: false,
                         ok: function () {
                         }
                     });
-                    d.show();
+                    d.showModal();
                     // window.alert('服务器忙，请稍后重试！')
                 }
             }
