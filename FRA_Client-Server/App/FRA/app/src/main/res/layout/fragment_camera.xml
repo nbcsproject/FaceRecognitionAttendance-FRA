@@ -4,37 +4,49 @@
     android:layout_height="match_parent">
 
     <SurfaceView
-        android:id="@+id/surfaceview_show_rectangle"
+        android:id="@+id/surfaceView_show_rectangle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/texture" />
+        android:layout_marginTop="80dp" />
 
     <com.android.fra.AutoFitTextureView
         android:id="@+id/texture"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp" />
 
     <com.android.fra.DrawImageView
         android:id="@+id/drawIV"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="80dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/grayPrimary" />
 
     <TextView
         android:id="@+id/hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/drawIV"
-
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="90dp"
         android:gravity="center"
         android:text="请确保您的头顶和下巴底部均位于圆圈范围内"
+        android:textColor="#202020"
         android:textScaleX="0.96"
-        android:textSize="14.7sp"
-        android:textStyle="bold" />
+        android:textSize="14.7sp" />/>
 
     <Button
         android:id="@+id/cancel_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@color/colorTransparent"
         android:text="取消"
         android:textColor="@color/colorPrimary"

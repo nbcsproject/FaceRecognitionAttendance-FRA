@@ -3,7 +3,6 @@ package com.android.fra;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -25,7 +24,7 @@ import java.util.List;
 
 import static org.litepal.LitePalApplication.getContext;
 
-public class EditActivity extends AppCompatActivity {
+public class EditActivity extends BaseActivity {
 
     private Spinner spinner;
     private ArrayAdapter<String> adapter;
@@ -102,8 +101,8 @@ public class EditActivity extends AppCompatActivity {
             email_edit.setHint("邮箱");
         }
 
-        ImageButton editDone = (ImageButton) findViewById(R.id.ic_edit_done);
-        editDone.setOnClickListener(new View.OnClickListener() {
+        ImageButton saveEdit = (ImageButton) findViewById(R.id.save_edit);
+        saveEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveEdit();

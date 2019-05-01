@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@mipmap/ic_settings_shortcut"
+        android:shortcutDisabledMessage="@string/shortcut_disabled"
+        android:shortcutId="shortcut1"
+        android:shortcutLongLabel="@string/settings_shortcut_long_name"
+        android:shortcutShortLabel="@string/settings_shortcut_short_name">
+
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetClass="com.android.fra.SettingsActivity"
+            android:targetPackage="com.android.fra" />
+
+    </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@mipmap/ic_register_shortcut"
+        android:shortcutDisabledMessage="@string/shortcut_disabled"
+        android:shortcutId="shortcut0"
+        android:shortcutLongLabel="@string/register_shortcut_short_name"
+        android:shortcutShortLabel="@string/register_shortcut_long_name">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.android.fra.RegisterActivity"
+            android:targetPackage="com.android.fra" />
+
+    </shortcut>
+
+</shortcuts>

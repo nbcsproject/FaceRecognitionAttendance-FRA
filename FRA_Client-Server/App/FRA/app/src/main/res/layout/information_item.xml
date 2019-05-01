@@ -23,6 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_margin="5dp"
+                android:theme="@style/CheckBoxTheme"
                 android:visibility="visible" />
 
             <LinearLayout

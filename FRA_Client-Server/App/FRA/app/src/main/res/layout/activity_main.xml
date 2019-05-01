@@ -1,43 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/recognition_button"
-        android:layout_width="match_parent"
+    <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="识别" />
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_launch" />
 
-    <Button
-        android:id="@+id/register_button"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="注册" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true">
 
-    <Button
-        android:id="@+id/camera_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="拍照" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:text="人脸签到"
+            android:textColor="@color/launchText"
+            android:textSize="36dp"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/register_test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="注册测试" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/face_record_info_test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="采集说明测试" />
+</RelativeLayout>
 
-    <Button
-        android:id="@+id/management_test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="管理测试" />
 
-</LinearLayout>

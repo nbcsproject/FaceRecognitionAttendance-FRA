@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimary">#009B59</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="viewfinder_mask">#B2000000</color>
+    <color name="colorAccent">#D2473A</color>
+    <color name="viewFinderMask">#B2000000</color>
     <color name="faceDetector">#FFBC00</color>
-    <color name="faceSelector">#DA4400</color>
+    <color name="noFaceOwner">#DA4400</color>
     <color name="grayPrimary">#FAFAFA</color>
     <color name="grayText">#868686</color>
+    <color name="launchText">#CCCCCC</color>
     <color name="blackText">#000000</color>
     <color name="whiteText">#FFFFFF</color>
     <color name="colorTransparent">#00FFFFFF</color>

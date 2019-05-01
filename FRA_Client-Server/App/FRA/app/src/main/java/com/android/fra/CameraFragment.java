@@ -6,6 +6,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -20,7 +22,6 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
-import android.graphics.drawable.Drawable;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
@@ -37,6 +38,7 @@ import android.media.ImageReader;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
@@ -53,9 +55,10 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import com.longsh.optionframelibrary.OptionMaterialDialog;
+
+import org.litepal.LitePal;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -63,6 +66,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -74,6 +78,11 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     private static final int REQUEST_CAMERA_PERMISSION = 1;
     private static final String FRAGMENT_DIALOG = "dialog";
+    private String currentUid;
+    private boolean hasCaptured = false;
+    private int captureMode;
+    private int ScreenHeight;
+    private int ScreenWidth;
 
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -107,12 +116,18 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
     private int mSensorOrientation;
     private SurfaceView surfaceview;
     private SurfaceHolder surfaceHolder;
+    private SharedPreferences pref;
 
     private static Integer mFaceDetectMode;
     private static Rect cRect;
     private static Size cPixelSize;
     private int FrameCount = 0;
     private int FrameInterval = 50;
+    private boolean isSetTime;
+    private int startHour;
+    private int startMinute;
+    private int endHour;
+    private int endMinute;
 
     private final TextureView.SurfaceTextureListener mSurfaceTextureListener
             = new TextureView.SurfaceTextureListener() {
@@ -185,12 +200,105 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                 case STATE_PREVIEW: {
                     FrameCount++;
                     Face face[] = result.get(result.STATISTICS_FACES);
-                    FrameCount++;
-                    if (face.length > 0) {
+                    if (face.length > 0 && hasCaptured == false && !((CameraActivity) getActivity()).getOpenDrawerLayout()) {
                         int[] face_rec = drawRectangle(face[0]);
-                        if (FrameCount % FrameInterval == 0) {
+                        if (FrameCount % FrameInterval == 0 && face_rec[0] != face_rec[2]) {
                             Bitmap bitmap_get = mTextureView.getBitmap();
                             bitmap_get = Bitmap.createBitmap(bitmap_get, face_rec[0], face_rec[1], face_rec[2] - face_rec[0], face_rec[3] - face_rec[1]);
+                            String feature = new LBP().getFeature(bitmap_get, 8, 8);
+                            if (captureMode == 0) {
+                                Calendar calendar = Calendar.getInstance();
+                                String captureUid = new LBP().getFaceOwner(feature, 120);
+                                hasCaptured = true;
+                                int year = calendar.get(Calendar.YEAR);
+                                int month = calendar.get(Calendar.MONTH);
+                                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                                int minute = calendar.get(Calendar.MINUTE);
+                                final OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(getActivity());
+                                if (isSetTime && (hour < startHour || hour > endHour || (hour == startHour && minute < startMinute) || (hour == endHour && minute > endMinute))) {
+                                    mMaterialDialog.setTitle("签到失败").setTitleTextColor(R.color.noFaceOwner).setTitleTextSize((float) 22.5)
+                                            .setMessage("当前时间不在签到时间区间内").setMessageTextSize((float) 16.5)
+                                            .setPositiveButton("确定", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    mMaterialDialog.dismiss();
+                                                    hasCaptured = false;
+
+                                                }
+                                            })
+                                            .setPositiveButtonTextColor(R.color.noFaceOwner)
+                                            .show();
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mMaterialDialog.dismiss();
+                                            hasCaptured = false;
+                                        }
+                                    }, 3000);
+                                } else {
+                                    if (!captureUid.equals("NoFaceOwner")) {
+                                        List<com.android.fra.db.Face> faces = LitePal.where("uid = ?", captureUid).find(com.android.fra.db.Face.class);
+                                        mMaterialDialog.setTitle("签到成功").setTitleTextColor(R.color.colorPrimary).setTitleTextSize((float) 22.5)
+                                                .setMessage("工号: " + captureUid + "\n" + "姓名: " + faces.get(0).getName() + "\n" + "所属部门: " + faces.get(0).getDepartment()
+                                                        + "\n" + "签到时间: " + year + "-" + month + "-" + day + " " + hour + ":" + minute).setMessageTextSize((float) 16.5)
+                                                .setPositiveButton("确定", new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        mMaterialDialog.dismiss();
+                                                        hasCaptured = false;
+
+                                                    }
+                                                })
+                                                .setPositiveButtonTextColor(R.color.colorPrimary)
+                                                .show();
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                mMaterialDialog.dismiss();
+                                                hasCaptured = false;
+                                            }
+                                        }, 3000);
+                                    } else {
+                                        mMaterialDialog.setTitle("签到失败").setTitleTextColor(R.color.noFaceOwner).setTitleTextSize((float) 22.5)
+                                                .setMessage("您尚未注册").setMessageTextSize((float) 16.5)
+                                                .setPositiveButton("确定", new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        mMaterialDialog.dismiss();
+                                                        hasCaptured = false;
+                                                    }
+                                                })
+                                                .setPositiveButtonTextColor(R.color.noFaceOwner)
+                                                .show();
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                mMaterialDialog.dismiss();
+                                                hasCaptured = false;
+                                            }
+                                        }, 3000);
+                                    }
+                                }
+                            } else if (captureMode == 1) {
+                                com.android.fra.db.Face updateFace = new com.android.fra.db.Face();
+                                updateFace.setFeature(feature);
+                                updateFace.updateAll("uid = ?", currentUid);
+                                hasCaptured = true;
+                                final OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(getActivity());
+                                mMaterialDialog.setTitle("操作成功").setMessage("已成功添加面孔").setMessageTextSize((float) 16.5)
+                                        .setPositiveButton("确定", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                mMaterialDialog.dismiss();
+                                                Intent intent = new Intent(getActivity(), RegisterActivity.class);
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                startActivity(intent);
+                                            }
+                                        })
+                                        .setPositiveButtonTextColor(R.color.colorPrimary)
+                                        .show();
+                            }
                         }
                     } else {
                         clearRectangle();
@@ -251,13 +359,14 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
 
     public int[] drawRectangle(Face face) {
 
+        boolean catchFlag = false;
         Rect bounds = face.getBounds();
         DisplayMetrics dm = getResources().getDisplayMetrics();
-        Paint mpaint = new Paint();
-        mpaint.setColor(getResources().getColor(R.color.faceDetector));
-        mpaint.setStrokeWidth(6f);
-        mpaint.setStyle(Paint.Style.STROKE);
-        mpaint.setStrokeWidth(5f);
+        Paint mPaint = new Paint();
+        mPaint.setColor(getResources().getColor(R.color.faceDetector));
+        mPaint.setStrokeWidth(6f);
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setStrokeWidth(5f);
         Canvas canvas = new Canvas();
         canvas = surfaceHolder.lockCanvas();
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
@@ -277,17 +386,23 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
 
         double[] Location = getLocation();
         if (left > Location[0] && top > Location[1] && right < Location[2] && bottom < Location[3]) {
-            canvas.drawLine(left, top, left + (int) ((right - left) * 0.1), top, mpaint);
-            canvas.drawLine(left + 2, top, left + 2, top + (int) ((bottom - top) * 0.1), mpaint);
-            canvas.drawLine(right, top, right - (int) ((right - left) * 0.1), top, mpaint);
-            canvas.drawLine(right - 3, top, right - 3, top + (int) ((bottom - top) * 0.1), mpaint);
-            canvas.drawLine(left + 2, bottom, left + 2, bottom - (int) ((bottom - top) * 0.1), mpaint);
-            canvas.drawLine(left, bottom, left + (int) ((right - left) * 0.1), bottom, mpaint);
-            canvas.drawLine(right, bottom, right - (int) ((right - left) * 0.1), bottom, mpaint);
-            canvas.drawLine(right - 3, bottom, right - 3, bottom - (int) ((bottom - top) * 0.1), mpaint);
+            canvas.drawLine(left, top, left + (int) ((right - left) * 0.1), top, mPaint);
+            canvas.drawLine(left + 2, top, left + 2, top + (int) ((bottom - top) * 0.1), mPaint);
+            canvas.drawLine(right, top, right - (int) ((right - left) * 0.1), top, mPaint);
+            canvas.drawLine(right - 3, top, right - 3, top + (int) ((bottom - top) * 0.1), mPaint);
+            canvas.drawLine(left + 2, bottom, left + 2, bottom - (int) ((bottom - top) * 0.1), mPaint);
+            canvas.drawLine(left, bottom, left + (int) ((right - left) * 0.1), bottom, mPaint);
+            canvas.drawLine(right, bottom, right - (int) ((right - left) * 0.1), bottom, mPaint);
+            canvas.drawLine(right - 3, bottom, right - 3, bottom - (int) ((bottom - top) * 0.1), mPaint);
+            catchFlag = true;
         }
         surfaceHolder.unlockCanvasAndPost(canvas);
-        int[] rec_coordinate = {left, top, right, bottom};
+        int[] rec_coordinate;
+        if (catchFlag == true) {
+            rec_coordinate = new int[]{left, top, right, bottom};
+        } else {
+            rec_coordinate = new int[]{0, 0, 0, 0};
+        }
         return rec_coordinate;
     }
 
@@ -299,9 +414,6 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
     }
 
     private double[] getLocation() {
-        DisplayMetrics dm = getResources().getDisplayMetrics();
-        int ScreenHeight = dm.heightPixels;
-        int ScreenWidth = dm.widthPixels;
         double diameter = ScreenHeight * 0.5;
         int Diameter;
         if ((int) diameter / 2 != 0) {
@@ -310,25 +422,13 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
             Diameter = (int) diameter;
         }
         double px = ScreenWidth / 2;
-        double py = ScreenHeight * 0.12 + Diameter / 2;
+        double py = ScreenHeight * 0.06 + Diameter / 2;
         double location[] = new double[4];
         location[0] = px - Diameter * 0.5 * 0.7;
-        location[1] = ScreenHeight * 0.12 + Diameter * 0.5 * 0.3;
+        location[1] = ScreenHeight * 0.06 + Diameter * 0.5 * 0.3;
         location[2] = px + Diameter * 0.5 * 0.7;
         location[3] = py + Diameter * 0.5 * 0.7;
         return location;
-    }
-
-    private void showToast(final String text) {
-        final Activity activity = getActivity();
-        if (activity != null) {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
     }
 
     private static Size chooseOptimalSize(Size[] choices, int textureViewWidth,
@@ -375,32 +475,38 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
             requestCameraPermission();
         }
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.texture);
-        view.findViewById(R.id.surfaceview_show_rectangle).setOnClickListener(this);
-        surfaceview = (SurfaceView) view.findViewById(R.id.surfaceview_show_rectangle);
+        view.findViewById(R.id.surfaceView_show_rectangle).setOnClickListener(this);
+        surfaceview = (SurfaceView) view.findViewById(R.id.surfaceView_show_rectangle);
         surfaceview.setZOrderOnTop(true);
         surfaceview.getHolder().setFormat(PixelFormat.TRANSPARENT);
         surfaceHolder = surfaceview.getHolder();
 
-        TextView textView = (TextView) view.findViewById(R.id.hint);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) textView.getLayoutParams();
+        CameraActivity cameraActivity = (CameraActivity) getActivity();
+        currentUid = cameraActivity.getCurrentUid();
+        captureMode = cameraActivity.getCaptureMode();
+
         DisplayMetrics dm = getResources().getDisplayMetrics();
-        final int ScreenHeight = dm.heightPixels;
-        final int ScreenWidth = dm.widthPixels;
-        params.setMargins((int) (ScreenWidth * 0.1), (int) (ScreenHeight * 0.77), (int) (ScreenWidth * 0.1), (int) (ScreenHeight * 0.18));
-        textView.setLayoutParams(params);
+        ScreenHeight = dm.heightPixels;
+        ScreenWidth = dm.widthPixels;
+
+        pref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        isSetTime = pref.getBoolean("is_set_time", false);
+        if (isSetTime) {
+            startHour = pref.getInt("startHour", 0);
+            startMinute = pref.getInt("startMinute", 0);
+            endHour = pref.getInt("endHour", 0);
+            endMinute = pref.getInt("endMinute", 0);
+        }
 
         Button button = (Button) view.findViewById(R.id.cancel_button);
-        RelativeLayout.LayoutParams button_params = (RelativeLayout.LayoutParams) button.getLayoutParams();
-        button_params.setMargins((int) (ScreenWidth * 0.75), (int) (ScreenHeight * 0.90), (int) (ScreenWidth * 0.06), (int) (ScreenHeight * 0.02));
-        button.setLayoutParams(button_params);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Activity activity = getActivity();
                 if (activity != null) {
+                    LitePal.deleteAll(com.android.fra.db.Face.class, "uid = ?", currentUid);
                     activity.finish();
                 }
-                Toast.makeText(getActivity(), "You clicked Cancel", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -659,7 +765,6 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                         @Override
                         public void onConfigureFailed(
                                 @NonNull CameraCaptureSession cameraCaptureSession) {
-                            showToast("Failed");
                         }
                     }, null
             );
@@ -691,22 +796,6 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
             matrix.postRotate(180, centerX, centerY);
         }
         mTextureView.setTransform(matrix);
-    }
-
-    private void takePicture() {
-        lockFocus();
-    }
-
-    private void lockFocus() {
-        try {
-            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
-                    CameraMetadata.CONTROL_AF_TRIGGER_START);
-            mState = STATE_WAITING_LOCK;
-            mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback,
-                    mBackgroundHandler);
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
     }
 
     private void runPrecaptureSequence() {
@@ -745,7 +834,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                 public void onCaptureCompleted(@NonNull CameraCaptureSession session,
                                                @NonNull CaptureRequest request,
                                                @NonNull TotalCaptureResult result) {
-                    showToast("Saved: " + mFile);
+
                     unlockFocus();
                 }
             };
@@ -908,4 +997,5 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
     public void onClick(View v) {
 
     }
+
 }
