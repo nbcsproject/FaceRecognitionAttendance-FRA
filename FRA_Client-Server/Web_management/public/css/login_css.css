@@ -2,10 +2,9 @@
 .large-header {
     position: relative;
     width: 100%;
-    background: #333;
     overflow: hidden;
     background-size: cover;
-    background-position: center center;
+    background: #333 center center;
     z-index: 1;
 }
 
@@ -30,7 +29,6 @@
     height: 30px;
     font: 30px "microsoft yahei", Helvetica, Tahoma, Arial, "Microsoft jhengHei", sans-serif;
     color: #FFFFFF;
-    height: 30px;
     line-height: 30px;
     padding: 0 0 35px 0;
 }
@@ -59,10 +57,9 @@
 .u_user {
     width: 25px;
     height: 25px;
-    /*background: url(../img/email.png);*/
-    /*background-position: -125px 0;*/
-    /*position: absolute;*/
-    /*margin: 10px 13px;*/
+    background: url(../img/login_ico.png) -125px 0;
+    position: absolute;
+    margin: 10px 13px;
 }
 
 .us_uer {
@@ -110,7 +107,8 @@
     padding: 15px;
     margin-top: 20px;
     display: block;
-    color: #FFFFFF
+    color: #FFFFFF;
+    ;
 }
 
 .act-but {

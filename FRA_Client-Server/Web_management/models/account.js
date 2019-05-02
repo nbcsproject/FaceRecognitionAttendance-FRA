@@ -7,12 +7,12 @@ mongoose.connection.on("error", function (error) {
 	console.log("数据库连接失败：" + error);
 });
 mongoose.connection.on("open", function () {
-	console.log("------数据库连接成功！------");
+	console.log("------数据库连接成功(account)！------");
 });
 
 var Schema = mongoose.Schema
 
-var userSchema = new Schema({
+var accountSchema = new Schema({
 	email: {
 		type: String,
 		required: true
@@ -58,4 +58,4 @@ var userSchema = new Schema({
 
 })
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('Account', accountSchema)

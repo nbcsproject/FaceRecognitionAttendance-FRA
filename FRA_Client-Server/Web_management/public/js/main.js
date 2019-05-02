@@ -32,6 +32,9 @@ function getDate01() {
     if (myMonth < 10) {
         myMonth = "0" + myMonth;
     }
+    if (myDay < 10) {
+        myDay = "0" + myDay;
+    }
     document.getElementById("day_day").innerHTML = myYear + " . " + myMonth + " . " + myDay + "&nbsp;&nbsp;&nbsp;" + weekDay[time.getDay()];
 }
 

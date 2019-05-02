@@ -1,7 +1,29 @@
 $(document).ready(function () {
+
+    /*  全选框操作  */
+    $(function () {
+        var all_checked = false;
+        $(":checkbox").click(function () {
+            var table = $(this).parents("table");
+            if ($(this).attr("id") === "all") {
+                table.find(":checkbox").prop("checked", !all_checked);
+                all_checked = !all_checked;
+            } else {
+                table.find(":checkbox[id!=all]").each(function (i) {
+                    if (!$(this).is(":checked")) {
+                        table.find("#all").prop("checked", false);
+                        all_checked = false;
+                        return false;
+                    }
+                    $("#all").prop("checked", true);
+                    all_checked = true;
+                });
+            }
+        });
+    });
     /** 新增   **/
     $("#addBtn").fancybox({
-        'href': '/user_edit',
+        'href': '/user_new',
         'width': 733,
         'height': 530,
         'type': 'iframe',
@@ -11,7 +33,17 @@ $(document).ready(function () {
             window.location.href = '/user_list';
         }
     });
-
+    /*    $(".editBtn").fancybox({
+            'href': '/user_edit',
+            'width': 733,
+            'height': 530,
+            'type': 'iframe',
+            'hideOnOverlayClick': false,
+            'showCloseButton': false,
+            'onClosed': function () {
+                window.location.href = '/user_list';
+            }
+        });*/
     /** 导入  **/
     $("#importBtn").fancybox({
         'href': '/xngzf/archives/importFangyuan.action',
@@ -25,7 +57,7 @@ $(document).ready(function () {
         }
     });
 
-    /**编辑   **/
+    /*  编辑   */
     $("a.edit").fancybox({
         'width': 733,
         'height': 530,
@@ -36,6 +68,76 @@ $(document).ready(function () {
             window.location.href = '/user_list';
         }
     });
+    /*    分页操作    */
+    /*  跳转首页  */
+    $("#firstPage").click(function () {
+        let currentPage = parseInt($("#pages_currentPage").text())
+        if (currentPage === 1) {
+            myAlert("当前已是首页！！")
+        } else {
+            // 如果不是首页跳转到首页
+            window.location.href = '/user_list?page=1';
+        }
+    });
+    /* 上一页  */
+    $("#prePage").click(function () {
+        let currentPage = parseInt($("#pages_currentPage").text())
+        if (currentPage === 1) {
+            myAlert("当前已是首页！！")
+        } else {
+            // 如果不是首页跳转到首页
+            window.location.href = '/user_list?page=' + (currentPage - 1);
+        }
+    });
+    /*  下一页  */
+    $("#nextPage").click(function () {
+        let currentPage = parseInt($("#pages_currentPage").text())
+        let totalPage = parseInt($("#pages_totalPage").text())
+        if (currentPage === totalPage) {
+            myAlert("当前已是尾页！！")
+        } else {
+            // 如果不是尾页跳转到尾页
+            window.location.href = '/user_list?page=' + (currentPage + 1);
+        }
+    })
+    /*  跳转尾页  */
+    $("#lastPage").click(function () {
+        let currentPage = parseInt($("#pages_currentPage").text())
+        let totalPage = parseInt($("#pages_totalPage").text())
+        if (currentPage === totalPage) {
+            myAlert("当前已是尾页！！")
+        } else {
+            // 如果不是尾页跳转到尾页
+            window.location.href = '/user_list?page=' + totalPage;
+        }
+    });
+    /*  跳转指定页面  */
+    $("#jumpInputPage").click(function () {
+        let totalPage = parseInt($("#pages_totalPage").text())
+        let currentPage = parseInt(($("#pages_currentPage").text()))
+        let inputPage = parseInt($("#jumpNumTxt").val())
+        if (!isNaN(inputPage)) {
+            if (inputPage < 1 || inputPage > totalPage) {
+                myAlert("请输入合适的页数！！")
+                $("#jumpNumTxt").attr("value", '')
+            } else if (inputPage === currentPage) {
+                if (inputPage === 1) {
+                    myAlert("当前已是首页！！")
+                } else if (inputPage === totalPage) {
+                    myAlert("当前已是尾页！！")
+                } else {
+                    myAlert("已是当前页！！")
+                }
+            } else {
+                // 如果不是首、尾页跳转到指定页
+                window.location.href = '/user_list?page=' + inputPage;
+            }
+        } else (
+            myAlert("请输入合适的页数！！")
+        )
+
+    });
+
 });
 /** 用户角色   **/
 var userRole = '';
@@ -45,10 +147,6 @@ function search() {
     $("#submitForm").attr("action", "house_list.html?page=" + 1).submit();
 }
 
-/** 新增   **/
-function add() {
-    $("#submitForm").attr("action", "/xngzf/archives/luruFangyuan.action").submit();
-}
 
 /** Excel导出  **/
 function exportExcel() {
@@ -116,41 +214,16 @@ function batchDel() {
     }
 }
 
-/** 普通跳转 **/
-function jumpNormalPage(page) {
-    $("#submitForm").attr("action", "house_list.html?page=" + page).submit();
-}
-
-/** 输入页跳转 **/
-function jumpInputPage(totalPage) {
-    // 如果“跳转页数”不为空
-    if ($("#jumpNumTxt").val() != '') {
-        var pageNum = parseInt($("#jumpNumTxt").val());
-        // 如果跳转页数在不合理范围内，则置为1
-        if (pageNum < 1 | pageNum > totalPage) {
-            var d = dialog({
-                title: '温馨提示',
-                content: '请输入合适的页数，\n自动为您跳到首页',
-                resize: false,
-                cancel: false,
-                ok: function () {
-                }
-            });
-            d.show();
-            pageNum = 1;
+/*  自定义提示框样式  */
+function myAlert(message) {
+    let d = dialog({
+        title: '提示',
+        content: message,
+        width: 150,
+        cancel: false,
+        okValue: "确定",
+        ok: function () {
         }
-        $("#submitForm").attr("action", "house_list.html?page=" + pageNum).submit();
-    } else {
-        // “跳转页数”为空
-        var d = dialog({
-            title: '温馨提示',
-            content: '请输入合适的页数，\n自动为您跳到首页',
-            resize: false,
-            cancel: false,
-            ok: function () {
-            }
-        });
-        d.show();
-        $("#submitForm").attr("action", "house_list.html?page=" + 1).submit();
-    }
+    });
+    return d.showModal();
 }
