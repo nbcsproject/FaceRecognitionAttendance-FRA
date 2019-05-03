@@ -41,6 +41,7 @@ public class SettingsActivity extends BaseActivity {
     private DrawerLayout mDrawerLayout;
     private int hour, minute;
     private int startHour, startMinute, endHour, endMinute;
+    private static boolean fingerprintReturn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,10 @@ public class SettingsActivity extends BaseActivity {
             startActivity(intent);
             finishAll();
         } else {
+            if (pref.getBoolean("is_set_fingerprint", false) && pref.getBoolean("is_set_settings_fingerprint", false) && !fingerprintReturn) {
+                Intent intent = new Intent(SettingsActivity.this, FingerprintActivity.class);
+                startActivityForResult(intent, 0);
+            }
             setContentView(R.layout.activity_settings);
             Toolbar toolbar = (Toolbar) findViewById(R.id.settings_activity_toolBar);
             setSupportActionBar(toolbar);
@@ -74,11 +79,14 @@ public class SettingsActivity extends BaseActivity {
             }
 
             MenuItem menuItem = navView.getMenu().findItem(R.id.nav_management);
+            RelativeLayout fingerprintManagementRelativeLayout = (RelativeLayout)findViewById(R.id.fingerprint_management_relativeLayout);
             boolean isEggOn = pref.getBoolean("is_egg_on", false);
             if (isEggOn == true) {
                 menuItem.setVisible(true);
+                fingerprintManagementRelativeLayout.setVisibility(View.VISIBLE);
             } else {
                 menuItem.setVisible(false);
+                fingerprintManagementRelativeLayout.setVisibility(View.GONE);
             }
             navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -150,9 +158,25 @@ public class SettingsActivity extends BaseActivity {
                     TimePickerDialog timePickerDialog = new TimePickerDialog(SettingsActivity.this, new TimePickerDialog.OnTimeSetListener() {
                         @Override
                         public void onTimeSet(TimePicker view, int hour, int minute) {
-                            showTime(hour, minute, beginTimeButton);
-                            startHour = hour;
-                            startMinute = minute;
+                            if (hour < endHour || (hour == endHour && minute < endMinute)) {
+                                showTime(hour, minute, beginTimeButton);
+                                startHour = hour;
+                                startMinute = minute;
+                            } else {
+                                final OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(SettingsActivity.this);
+                                mMaterialDialog.setTitle("设置错误").setTitleTextColor(R.color.colorAccent).setTitleTextSize((float) 22.5)
+                                        .setMessage("请设置一个小于结束时间的开始时间").setMessageTextSize((float) 16.5)
+                                        .setPositiveButton("确定", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                showTime(startHour, startMinute, beginTimeButton);
+                                                mMaterialDialog.dismiss();
+
+                                            }
+                                        })
+                                        .setPositiveButtonTextColor(R.color.colorAccent)
+                                        .show();
+                            }
                         }
                     }, hour, minute, true);
                     timePickerDialog.show();
@@ -237,6 +261,85 @@ public class SettingsActivity extends BaseActivity {
             });
         }
 
+        final LinearLayout fingerprintChoose = (LinearLayout) findViewById(R.id.fingerprint_choose);
+        final SwitchCompat fingerprintSwitch = (SwitchCompat) findViewById(R.id.fingerprint_switch);
+        final SwitchCompat fingerprintRegisterSwitch = (SwitchCompat) findViewById(R.id.fingerprint_register_switch);
+        final SwitchCompat fingerprintManagementSwitch = (SwitchCompat) findViewById(R.id.fingerprint_management_switch);
+        final SwitchCompat fingerprintSettingsSwitch = (SwitchCompat) findViewById(R.id.fingerprint_settings_switch);
+        boolean isSetFingerprint = pref.getBoolean("is_set_fingerprint", false);
+        boolean isSetRegisterFingerprint = pref.getBoolean("is_set_register_fingerprint", false);
+        boolean isSetManagementFingerprint = pref.getBoolean("is_set_management_fingerprint", false);
+        boolean isSetSettingsFingerprint = pref.getBoolean("is_set_settings_fingerprint", false);
+        if (isSetFingerprint) {
+            fingerprintSwitch.setChecked(true);
+            fingerprintChoose.setVisibility(View.VISIBLE);
+        } else {
+            fingerprintSwitch.setChecked(false);
+            fingerprintChoose.setVisibility(View.GONE);
+        }
+        fingerprintSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    fingerprintChoose.measure(0, 0);
+                    final int height = fingerprintChoose.getMeasuredHeight();
+                    show(fingerprintChoose, height);
+                } else {
+                    fingerprintChoose.measure(0, 0);
+                    final int height = fingerprintChoose.getMeasuredHeight();
+                    dismiss(fingerprintChoose, height);
+                }
+            }
+        });
+        if (isSetRegisterFingerprint) {
+            fingerprintRegisterSwitch.setChecked(true);
+        } else {
+            fingerprintRegisterSwitch.setChecked(false);
+        }
+        fingerprintRegisterSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked && !fingerprintManagementSwitch.isChecked() && !fingerprintSettingsSwitch.isChecked()) {
+                    fingerprintSwitch.setChecked(false);
+                    fingerprintChoose.measure(0, 0);
+                    final int height = fingerprintChoose.getMeasuredHeight();
+                    dismiss(fingerprintChoose, height);
+                }
+            }
+        });
+        if (isSetManagementFingerprint) {
+            fingerprintManagementSwitch.setChecked(true);
+        } else {
+            fingerprintManagementSwitch.setChecked(false);
+        }
+        fingerprintManagementSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked && !fingerprintRegisterSwitch.isChecked() && !fingerprintSettingsSwitch.isChecked()) {
+                    fingerprintSwitch.setChecked(false);
+                    fingerprintChoose.measure(0, 0);
+                    final int height = fingerprintChoose.getMeasuredHeight();
+                    dismiss(fingerprintChoose, height);
+                }
+            }
+        });
+        if (isSetSettingsFingerprint) {
+            fingerprintSettingsSwitch.setChecked(true);
+        } else {
+            fingerprintSettingsSwitch.setChecked(false);
+        }
+        fingerprintSettingsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked && !fingerprintRegisterSwitch.isChecked() && !fingerprintManagementSwitch.isChecked()) {
+                    fingerprintSwitch.setChecked(false);
+                    fingerprintChoose.measure(0, 0);
+                    final int height = fingerprintChoose.getMeasuredHeight();
+                    dismiss(fingerprintChoose, height);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -300,20 +403,62 @@ public class SettingsActivity extends BaseActivity {
     private void saveSettings() {
         editor = pref.edit();
         final SwitchCompat timeSwitch = (SwitchCompat) findViewById(R.id.time_switch);
-        if (timeSwitch.isChecked() == true) {
+        SwitchCompat fingerprintSwitch = (SwitchCompat) findViewById(R.id.fingerprint_switch);
+        SwitchCompat fingerprintRegisterSwitch = (SwitchCompat) findViewById(R.id.fingerprint_register_switch);
+        SwitchCompat fingerprintManagementSwitch = (SwitchCompat) findViewById(R.id.fingerprint_management_switch);
+        SwitchCompat fingerprintSettingsSwitch = (SwitchCompat) findViewById(R.id.fingerprint_settings_switch);
+        if (timeSwitch.isChecked() && startHour == endHour && startMinute == endMinute) {
+            final OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(SettingsActivity.this);
+            mMaterialDialog.setTitle("设置错误").setTitleTextColor(R.color.colorAccent).setTitleTextSize((float) 22.5)
+                    .setMessage("请设置开始和结束时间").setMessageTextSize((float) 16.5)
+                    .setPositiveButton("确定", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mMaterialDialog.dismiss();
+
+                        }
+                    })
+                    .setPositiveButtonTextColor(R.color.colorAccent)
+                    .show();
+            return;
+        }
+        if (timeSwitch.isChecked()) {
             editor.putBoolean("is_set_time", true);
         } else {
             editor.putBoolean("is_set_time", false);
+        }
+        if (fingerprintSwitch.isChecked() && (fingerprintRegisterSwitch.isChecked() || fingerprintManagementSwitch.isChecked() || fingerprintSettingsSwitch.isChecked())) {
+            editor.putBoolean("is_set_fingerprint", true);
+        } else {
+            fingerprintSwitch.setChecked(false);
+            editor.putBoolean("is_set_fingerprint", false);
         }
         editor.putInt("startHour", startHour);
         editor.putInt("startMinute", startMinute);
         editor.putInt("endHour", endHour);
         editor.putInt("endMinute", endMinute);
+        editor.putBoolean("is_set_register_fingerprint", fingerprintRegisterSwitch.isChecked());
+        editor.putBoolean("is_set_management_fingerprint", fingerprintManagementSwitch.isChecked());
+        editor.putBoolean("is_set_settings_fingerprint", fingerprintSettingsSwitch.isChecked());
         editor.apply();
         Toast.makeText(getContext(), "设置成功", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(SettingsActivity.this, CameraActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 0:
+                if (resultCode == RESULT_OK) {
+                    fingerprintReturn = data.getBooleanExtra("fingerprint_return", false);
+                }else{
+                    finish();
+                }
+                break;
+            default:
+        }
     }
 
 }

@@ -3,6 +3,7 @@
     package="com.android.fra">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
 
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -54,6 +55,8 @@
         <activity android:name=".SettingsActivity"></activity>
 
         <activity android:name=".AboutActivity"></activity>
+
+        <activity android:name=".FingerprintActivity"></activity>
 
     </application>
 

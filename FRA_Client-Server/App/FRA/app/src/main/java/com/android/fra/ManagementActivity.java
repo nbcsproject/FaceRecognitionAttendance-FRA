@@ -46,6 +46,7 @@ public class ManagementActivity extends BaseActivity implements ManagementAdapte
     private Map<Integer, Boolean> restoreMap;
     public SwipeRefreshLayout swipeRefresh;
     private DrawerLayout mDrawerLayout;
+    private static boolean fingerprintReturn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,10 @@ public class ManagementActivity extends BaseActivity implements ManagementAdapte
             startActivity(intent);
             finishAll();
         } else {
+            if (pref.getBoolean("is_set_fingerprint", false) && pref.getBoolean("is_set_management_fingerprint", false) && !fingerprintReturn) {
+                Intent intent = new Intent(ManagementActivity.this, FingerprintActivity.class);
+                startActivityForResult(intent, 0);
+            }
             setContentView(R.layout.activity_management);
             Toolbar toolbar = (Toolbar) findViewById(R.id.management_activity_toolBar);
             setSupportActionBar(toolbar);
@@ -257,6 +262,13 @@ public class ManagementActivity extends BaseActivity implements ManagementAdapte
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
+            case 0:
+                if (resultCode == RESULT_OK) {
+                    fingerprintReturn = data.getBooleanExtra("fingerprint_return", false);
+                }else{
+                    finish();
+                }
+                break;
             case 1:
                 if (resultCode == RESULT_OK) {
                     refreshRecyclerView();

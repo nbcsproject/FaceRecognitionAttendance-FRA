@@ -187,7 +187,6 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
 
         @Override
         public void onImageAvailable(ImageReader reader) {
-            mBackgroundHandler.post(new ImageSaver(reader.acquireNextImage(), mFile));
         }
 
     };
@@ -239,9 +238,33 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                                 } else {
                                     if (!captureUid.equals("NoFaceOwner")) {
                                         List<com.android.fra.db.Face> faces = LitePal.where("uid = ?", captureUid).find(com.android.fra.db.Face.class);
+                                        String showMonth;
+                                        if(month < 10){
+                                            showMonth = "0" + String.valueOf(month);
+                                        }else{
+                                            showMonth = String.valueOf(month);
+                                        }
+                                        String showDay;
+                                        if(day < 10){
+                                            showDay = "0" + String.valueOf(day);
+                                        }else{
+                                            showDay = String.valueOf(day);
+                                        }
+                                        String showHour;
+                                        if(hour < 10){
+                                            showHour = "0" + String.valueOf(hour);
+                                        }else{
+                                            showHour = String.valueOf(hour);
+                                        }
+                                        String showMinute;
+                                        if(minute < 10){
+                                            showMinute = "0" + String.valueOf(minute);
+                                        }else{
+                                            showMinute = String.valueOf(minute);
+                                        }
                                         mMaterialDialog.setTitle("签到成功").setTitleTextColor(R.color.colorPrimary).setTitleTextSize((float) 22.5)
                                                 .setMessage("工号: " + captureUid + "\n" + "姓名: " + faces.get(0).getName() + "\n" + "所属部门: " + faces.get(0).getDepartment()
-                                                        + "\n" + "签到时间: " + year + "-" + month + "-" + day + " " + hour + ":" + minute).setMessageTextSize((float) 16.5)
+                                                        + "\n" + "签到时间: " + year + "-" + showMonth + "-" + showDay + " " + showHour + ":" + showMinute).setMessageTextSize((float) 16.5)
                                                 .setPositiveButton("确定", new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
@@ -286,7 +309,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                                 updateFace.updateAll("uid = ?", currentUid);
                                 hasCaptured = true;
                                 final OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(getActivity());
-                                mMaterialDialog.setTitle("操作成功").setMessage("已成功添加面孔").setMessageTextSize((float) 16.5)
+                                mMaterialDialog.setTitle("操作成功").setTitleTextColor(R.color.colorPrimary).setMessage("已成功添加面孔").setMessageTextSize((float) 16.5)
                                         .setPositiveButton("确定", new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
@@ -514,7 +537,6 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mFile = new File(getActivity().getExternalFilesDir(null), "pic.jpg");
     }
 
     @Override
@@ -871,40 +893,6 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
             requestBuilder.set(CaptureRequest.CONTROL_AE_MODE,
                     CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
         }
-    }
-
-    private static class ImageSaver implements Runnable {
-        private final Image mImage;
-        private final File mFile;
-
-        ImageSaver(Image image, File file) {
-            mImage = image;
-            mFile = file;
-        }
-
-        @Override
-        public void run() {
-            ByteBuffer buffer = mImage.getPlanes()[0].getBuffer();
-            byte[] bytes = new byte[buffer.remaining()];
-            buffer.get(bytes);
-            FileOutputStream output = null;
-            try {
-                output = new FileOutputStream(mFile);
-                output.write(bytes);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                mImage.close();
-                if (null != output) {
-                    try {
-                        output.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-
     }
 
     static class CompareSizesByArea implements Comparator<Size> {

@@ -51,6 +51,7 @@ public class RegisterActivity extends BaseActivity {
     private AutoCompleteTextView mPostView;
     private ProgressDialog progressDialog;
     private String currentUid;
+    private static boolean fingerprintReturn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,10 @@ public class RegisterActivity extends BaseActivity {
             startActivity(intent);
             finishAll();
         } else {
+            if (pref.getBoolean("is_set_fingerprint", false) && pref.getBoolean("is_set_register_fingerprint", false) && !fingerprintReturn) {
+                Intent intent = new Intent(RegisterActivity.this, FingerprintActivity.class);
+                startActivityForResult(intent, 0);
+            }
             setContentView(R.layout.activity_register);
             Toolbar toolbar = (Toolbar) findViewById(R.id.register_activity_toolBar);
             ImageView imageView = (ImageView) findViewById(R.id.image_view);
@@ -240,6 +245,20 @@ public class RegisterActivity extends BaseActivity {
         return phone.length() == 11 && phone.matches("[0-9]+");
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 0:
+                if (resultCode == RESULT_OK) {
+                    fingerprintReturn = data.getBooleanExtra("fingerprint_return", false);
+                }else{
+                    finish();
+                }
+                break;
+            default:
+        }
+    }
+
     public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mName;
@@ -287,7 +306,7 @@ public class RegisterActivity extends BaseActivity {
             if (success) {
                 hideProgress();
                 final OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(RegisterActivity.this);
-                mMaterialDialog.setTitle("上传成功").setMessage("信息已上传")
+                mMaterialDialog.setTitle("上传成功").setTitleTextColor(R.color.colorPrimary).setMessage("信息已上传")
                         .setPositiveButton("下一步", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
