@@ -57,7 +57,7 @@ function getNextDay(dd, dadd) {
 }
 
 /** table鼠标悬停换色* */
-$(function () {
+$(document).ready(function () {
     // 如果鼠标移到行上时，执行函数
 
 

@@ -11,6 +11,7 @@
     <script type="text/javascript" src="../public/js/fancybox/jquery.fancybox-1.3.4.js"></script>
     <script type="text/javascript" src="../public/js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
     <script type="text/javascript" src="../public/js/dialog.js"></script>
+    <script type="text/javascript" src="../public/js/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="../public/js/user_list_js.js"></script>
     <title>用户管理系统</title>
     <style>
@@ -72,6 +73,7 @@
                                              class="ui_input_txt02"/>
                     </div>
                     <div id="box_bottom">
+                        <a href="/changePassword">修改管理员密码</a>
                         <input type="button" value="查询" class="ui_input_btn01" onclick="search();"/>
                         <input type="button" value="新增" class="ui_input_btn01" id="addBtn"/>
                         <input type="button" value="删除" class="ui_input_btn01" onclick="batchDel();"/>
@@ -107,10 +109,10 @@
                         <td>{{$value.uid }}</td>
                         <td>{{$value.name }}</td>
 
-                        {{if $value.gender ==0}}
-                        <td>女</td>
+                        {{if $value.gender ==='female'}}
+                        <td><span style="color: deeppink; font-weight: bolder">女</span></td>
                         {{else}}
-                        <td>男</td>
+                        <td><span style="color: dodgerblue; font-weight: bolder">男</span></td>
                         {{/if}}
 
                         <td>{{$value.department }}</td>
@@ -121,7 +123,7 @@
                         <td><span style="color: red; font-size: 30px; font-weight: bold ">×</span></td>
                         {{/if}}
 
-                        <td>{{$value.date }}</td>
+                        <td>{{$value.check_tiem }}</td>
                         <input type="hidden" name="_uid" value="_uid" id="fyID"/>
 
                         <!--<td公租房</td>-->

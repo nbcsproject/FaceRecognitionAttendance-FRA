@@ -11,8 +11,6 @@
     <!--必要样式-->
     <link rel="stylesheet" type="text/css" href="../public/css/login_css.css">
 
-    <script type="text/javascript" src="../public/js/jquery/jquery-1.7.1.js"></script>
-    <script type="text/javascript" src="../public/js/dialog.js"></script>
 </head>
 <body>
 <div class="demo-1">
@@ -24,24 +22,15 @@
                 <form id="register_form" action="/register" name="f" method="post">
                     <div class="form-group input_outer">
                         <span class="u_user"></span>
-                        <input name="email"
+                        <input name="account" id="account"
                                class="text"
                                style="color: #FFFFFF !important"
                                type="text"
-                               placeholder="请输入邮箱">
+                               placeholder="请输入账号">
                     </div>
                     <div class="form-group input_outer">
                         <span class="us_uer"></span>
-                        <input name="nickname"
-                               class="text"
-                               style="color: #FFFFFF !important; position:absolute; z-index:100;"
-                               value=""
-                               type="text"
-                               placeholder="请输入昵称">
-                    </div>
-                    <div class="form-group input_outer">
-                        <span class="us_uer"></span>
-                        <input name="password"
+                        <input name="password" id="password"
                                class="text"
                                style="color: #FFFFFF !important; position:absolute; z-index:100;"
                                value=""
@@ -49,10 +38,11 @@
                                placeholder="请输入密码">
                     </div>
                     <div class=" mb2">
-                        <button type="submit" class="act-but submit">注册</button>
-                        <!--<a class = "act-but submit" href = "javascript:;">-->
-                        <!--注册-->
-                        <!--</a>-->
+                        <button type="submit" class="act-but submit" style="width: 100%;">注册</button>
+                        <a class="" href="/login"
+                           style="color: #fff;display:inline-block; width:100%; text-align:right ">
+                            已有账号，直接登录 >
+                        </a>
                     </div>
                 </form>
             </div>
@@ -60,59 +50,13 @@
     </div>
 </div><!-- /container -->
 
-<script type="text/javascript">
-    $('#register_form').on('submit', function (e) {
-        e.preventDefault()
-        var formData = $(this).serialize()
-        $.ajax({
-            url: '/register',
-            type: 'post',
-            data: formData,
-            dataType: 'json',
-            success: function (data) {
-                //	console.log(data)
-                var err_code = data.err_code
-                if (err_code === 0) {
-                    // 服务端重定向针对异步请求无效
-                    var d = dialog({
-                        title: '提示',
-                        content: '注册成功！！',
-                        width: 150,
-                        cancel: false,
-                        ok: function () {
-                            window.location.href = '/login'
-                        }
-                    });
-                    d.showModal();
-                } else if (err_code === 1) {
-                    var d = dialog({
-                        title: '提示',
-                        content: '邮箱或者昵称已存在！',
-                        width: 150,
-                        cancel: false,
-                        ok: function () {
-                        }
-                    });
-                    d.showModal();
-                } else if (err_code === 500) {
-                    var d = dialog({
-                        title: '提示',
-                        content: '服务器忙，请稍后重试！',
-                        width: 150,
-                        cancel: false,
-                        ok: function () {
-                        }
-                    });
-                    d.showModal();
-                    // window.alert('服务器忙，请稍后重试！')
-                }
-            }
-        })
-    })
-</script>
-<script src="../public/js/TweenLite.min.js"></script>
-<script src="../public/js/EasePack.min.js"></script>
-<script src="../public/js/rAF.js"></script>
-<script src="../public/js/demo-1.js"></script>
+<script type="text/javascript" src="../public/js/jquery/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="../public/js/dialog.js"></script>
+<script type="text/javascript" src="../public/js/register.js"></script>
+
+<script type="text/javascript" src="../public/js/TweenLite.min.js"></script>
+<script type="text/javascript" src="../public/js/EasePack.min.js"></script>
+<script type="text/javascript" src="../public/js/rAF.js"></script>
+<script type="text/javascript" src="../public/js/demo-1.js"></script>
 </body>
 </html>

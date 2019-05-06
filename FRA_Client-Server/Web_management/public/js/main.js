@@ -1,3 +1,28 @@
+function socket() {
+
+    var socket = io('http://10.10.19.134:3001')
+    socket.on('connect', function () {
+        console.log('client connect server...')
+    })
+    socket.on('event', function (data) {
+        if (data.msg === 'ok') {
+            var iframe_url = parent.document.getElementById("rightMain").contentWindow.location.href
+            iframe_url = iframe_url.split('?')
+            if (iframe_url.length > 1) {
+                if (iframe_url[0] === 'http://10.10.19.134:3000/user_list') {
+                    parent.document.getElementById("rightMain").contentWindow.location.href = '/user_list' + '?' + iframe_url[1]
+                }
+            }
+        }
+    })
+
+    socket.on('disconnect', function () {
+        console.log('client disconnect')
+    })
+
+}
+
+
 /**退出系统**/
 function logout() {
     var d = dialog({
@@ -217,7 +242,9 @@ $(document).ready(function () {
         // 默认展开所有节点
         zTree.expandAll(true);
     }
+
 });
+
 
 /********************************
  下面是要异步加载模块树的内容。url是定义的服务器请求。data是服务器需要响应的一个json格式的数据。

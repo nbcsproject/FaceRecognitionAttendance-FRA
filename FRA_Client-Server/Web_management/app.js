@@ -7,7 +7,7 @@ var session = require('express-session')
 var account = require('./routes/account')
 // var main = require('./routes/main')
 var user = require('./routes/user')
-
+var app_client = require('./routes/app_remote')
 var app = express()
 
 app.use('/public/', express.static(path.join(__dirname, './public/')))
@@ -30,6 +30,8 @@ app.use(session({
 app.use(account)
 // app.use(main)
 app.use(user)
+app.use(app_client)
+
 
 app.listen(3000, function () {
     console.log('Running...');

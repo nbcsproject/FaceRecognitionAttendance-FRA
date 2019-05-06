@@ -1,4 +1,22 @@
 $(document).ready(function () {
+/*
+
+    var socket = io('http://10.10.19.134:3001')
+    socket.on('connect', function () {
+        console.log('client connect server...')
+    })
+    socket.on('event', function (data) {
+        if (data.msg === 'ok') {
+
+            window.location.href = '/user_list'
+        }
+    })
+
+    socket.on('disconnect', function () {
+        console.log('client disconnect')
+    })
+
+*/
 
     /*  全选框操作  */
     $(function () {
@@ -132,9 +150,10 @@ $(document).ready(function () {
                 // 如果不是首、尾页跳转到指定页
                 window.location.href = '/user_list?page=' + inputPage;
             }
-        } else (
+        } else {
             myAlert("请输入合适的页数！！")
-        )
+            $("#jumpNumTxt").attr("value", '')
+        }
 
     });
 
@@ -144,7 +163,7 @@ var userRole = '';
 
 /** 模糊查询来电用户  **/
 function search() {
-    $("#submitForm").attr("action", "house_list.html?page=" + 1).submit();
+    // $("#submitForm").attr("action", "house_list.html?page=" + 1).submit();
 }
 
 

@@ -10,6 +10,7 @@
     <script type="text/javascript" src="../public/js/zTree/jquery.ztree.core-3.2.js"></script>
     <script type="text/javascript" src="../public/js/authority/commonAll.js"></script>
     <script type="text/javascript" src="../public/js/dialog.js"></script>
+    <script type="text/javascript" src="../public/js/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="../public/js/main.js"></script>
 
 </head>
@@ -24,7 +25,7 @@
             <ul>
                 <li>
                     <img alt="当前用户" src="../public/img/common/user.png">
-                    <span> {{ account.nickname  }}</span>
+                    <span> {{ account.account  }}</span>
                 </li>
                 <li>
                     <img alt="今天是" src="../public/img/common/date.png">
@@ -90,7 +91,9 @@
                 scrolling="auto"
                 width="100%"
                 height="100%"
-                allowtransparency="true"/>
+                allowtransparency="true"
+                onload="socket()"
+        />
     </div>
 </div>
 </body>

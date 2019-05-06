@@ -95,28 +95,31 @@
 
 /*///*/
 .mb2 {
-    margin-bottom: 20px
+    /*margin-bottom: 20px*/
 }
 
-.mb2 a {
-    text-decoration: none;
-    outline: none;
-}
 
 .submit {
     padding: 15px;
-    margin-top: 20px;
-    display: block;
-    color: #FFFFFF;
-    ;
+    color: #FFF;
+    background: #0096e6;
+
+}
+
+.register {
+    padding: 15px;
+    color: #555;
 }
 
 .act-but {
-    width: 100%;
+    width: 49%;
     height: 100%;
     line-height: 20px;
     text-align: center;
     font-size: 25px;
     border-radius: 50px;
-    background: #0096e6;
+    display: inline-block;
+    margin: 20px auto;
+    outline: none;
+    text-decoration: none;
 }
