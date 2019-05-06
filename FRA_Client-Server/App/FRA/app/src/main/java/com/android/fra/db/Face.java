@@ -12,6 +12,7 @@ public class Face extends LitePalSupport {
     private String post;
     private String feature;
     private Boolean valid;
+    private String modTime;
 
     public String getUid() {
         return uid;
@@ -84,4 +85,13 @@ public class Face extends LitePalSupport {
     public void setValid(Boolean valid) {
         this.valid = valid;
     }
+
+    public String getModTime() {
+        return modTime;
+    }
+
+    public void setModTime(String modTime) {
+        this.modTime = modTime;
+    }
+
 }

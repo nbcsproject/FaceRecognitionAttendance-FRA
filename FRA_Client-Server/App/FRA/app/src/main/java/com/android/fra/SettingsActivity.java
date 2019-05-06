@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.hardware.fingerprint.FingerprintManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -79,9 +81,9 @@ public class SettingsActivity extends BaseActivity {
             }
 
             MenuItem menuItem = navView.getMenu().findItem(R.id.nav_management);
-            RelativeLayout fingerprintManagementRelativeLayout = (RelativeLayout)findViewById(R.id.fingerprint_management_relativeLayout);
+            RelativeLayout fingerprintManagementRelativeLayout = (RelativeLayout) findViewById(R.id.fingerprint_management_relativeLayout);
             boolean isEggOn = pref.getBoolean("is_egg_on", false);
-            if (isEggOn == true) {
+            if (isEggOn) {
                 menuItem.setVisible(true);
                 fingerprintManagementRelativeLayout.setVisibility(View.VISIBLE);
             } else {
@@ -223,12 +225,29 @@ public class SettingsActivity extends BaseActivity {
             changeLoginState.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    editor = pref.edit();
-                    editor.putBoolean("isLogin", false);
-                    editor.apply();
+                    final OptionMaterialDialog confirmDialog = new OptionMaterialDialog(SettingsActivity.this);
+                    confirmDialog.setTitle("退出").setTitleTextColor(R.color.blackText).setMessage("确定退出当前账号？").setMessageTextSize((float) 16.5)
+                            .setPositiveButton("确定", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    confirmDialog.dismiss();
+                                    Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                    editor = pref.edit();
+                                    editor.putBoolean("isLogin", false);
+                                    editor.apply();
+                                }
+                            })
+                            .setPositiveButtonTextColor(R.color.noFaceOwner)
+                            .setNegativeButton("取消", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    confirmDialog.dismiss();
+                                }
+                            })
+                            .setNegativeButtonTextColor(R.color.noFaceOwner)
+                            .show();
                 }
             });
 
@@ -261,84 +280,93 @@ public class SettingsActivity extends BaseActivity {
             });
         }
 
-        final LinearLayout fingerprintChoose = (LinearLayout) findViewById(R.id.fingerprint_choose);
-        final SwitchCompat fingerprintSwitch = (SwitchCompat) findViewById(R.id.fingerprint_switch);
-        final SwitchCompat fingerprintRegisterSwitch = (SwitchCompat) findViewById(R.id.fingerprint_register_switch);
-        final SwitchCompat fingerprintManagementSwitch = (SwitchCompat) findViewById(R.id.fingerprint_management_switch);
-        final SwitchCompat fingerprintSettingsSwitch = (SwitchCompat) findViewById(R.id.fingerprint_settings_switch);
-        boolean isSetFingerprint = pref.getBoolean("is_set_fingerprint", false);
-        boolean isSetRegisterFingerprint = pref.getBoolean("is_set_register_fingerprint", false);
-        boolean isSetManagementFingerprint = pref.getBoolean("is_set_management_fingerprint", false);
-        boolean isSetSettingsFingerprint = pref.getBoolean("is_set_settings_fingerprint", false);
-        if (isSetFingerprint) {
-            fingerprintSwitch.setChecked(true);
-            fingerprintChoose.setVisibility(View.VISIBLE);
-        } else {
-            fingerprintSwitch.setChecked(false);
-            fingerprintChoose.setVisibility(View.GONE);
-        }
-        fingerprintSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    fingerprintChoose.measure(0, 0);
-                    final int height = fingerprintChoose.getMeasuredHeight();
-                    show(fingerprintChoose, height);
-                } else {
-                    fingerprintChoose.measure(0, 0);
-                    final int height = fingerprintChoose.getMeasuredHeight();
-                    dismiss(fingerprintChoose, height);
-                }
+        if (Build.VERSION.SDK_INT >= 23) {
+            FingerprintManager fingerprintManager = getSystemService(FingerprintManager.class);
+            if (fingerprintManager.isHardwareDetected()) {
+                RelativeLayout fingerprintRelativeLayout = (RelativeLayout) findViewById(R.id.fingerprint_relativeLayout);
+                fingerprintRelativeLayout.setVisibility(View.VISIBLE);
+                View blankView = (View) findViewById(R.id.blank_view);
+                blankView.setVisibility(View.VISIBLE);
             }
-        });
-        if (isSetRegisterFingerprint) {
-            fingerprintRegisterSwitch.setChecked(true);
-        } else {
-            fingerprintRegisterSwitch.setChecked(false);
-        }
-        fingerprintRegisterSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!isChecked && !fingerprintManagementSwitch.isChecked() && !fingerprintSettingsSwitch.isChecked()) {
-                    fingerprintSwitch.setChecked(false);
-                    fingerprintChoose.measure(0, 0);
-                    final int height = fingerprintChoose.getMeasuredHeight();
-                    dismiss(fingerprintChoose, height);
-                }
+            final LinearLayout fingerprintChoose = (LinearLayout) findViewById(R.id.fingerprint_choose);
+            final SwitchCompat fingerprintSwitch = (SwitchCompat) findViewById(R.id.fingerprint_switch);
+            final SwitchCompat fingerprintRegisterSwitch = (SwitchCompat) findViewById(R.id.fingerprint_register_switch);
+            final SwitchCompat fingerprintManagementSwitch = (SwitchCompat) findViewById(R.id.fingerprint_management_switch);
+            final SwitchCompat fingerprintSettingsSwitch = (SwitchCompat) findViewById(R.id.fingerprint_settings_switch);
+            boolean isSetFingerprint = pref.getBoolean("is_set_fingerprint", false);
+            boolean isSetRegisterFingerprint = pref.getBoolean("is_set_register_fingerprint", false);
+            boolean isSetManagementFingerprint = pref.getBoolean("is_set_management_fingerprint", false);
+            boolean isSetSettingsFingerprint = pref.getBoolean("is_set_settings_fingerprint", false);
+            if (isSetFingerprint) {
+                fingerprintSwitch.setChecked(true);
+                fingerprintChoose.setVisibility(View.VISIBLE);
+            } else {
+                fingerprintSwitch.setChecked(false);
+                fingerprintChoose.setVisibility(View.GONE);
             }
-        });
-        if (isSetManagementFingerprint) {
-            fingerprintManagementSwitch.setChecked(true);
-        } else {
-            fingerprintManagementSwitch.setChecked(false);
-        }
-        fingerprintManagementSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!isChecked && !fingerprintRegisterSwitch.isChecked() && !fingerprintSettingsSwitch.isChecked()) {
-                    fingerprintSwitch.setChecked(false);
-                    fingerprintChoose.measure(0, 0);
-                    final int height = fingerprintChoose.getMeasuredHeight();
-                    dismiss(fingerprintChoose, height);
+            fingerprintSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        fingerprintChoose.measure(0, 0);
+                        final int height = fingerprintChoose.getMeasuredHeight();
+                        show(fingerprintChoose, height);
+                    } else {
+                        fingerprintChoose.measure(0, 0);
+                        final int height = fingerprintChoose.getMeasuredHeight();
+                        dismiss(fingerprintChoose, height);
+                    }
                 }
+            });
+            if (isSetRegisterFingerprint) {
+                fingerprintRegisterSwitch.setChecked(true);
+            } else {
+                fingerprintRegisterSwitch.setChecked(false);
             }
-        });
-        if (isSetSettingsFingerprint) {
-            fingerprintSettingsSwitch.setChecked(true);
-        } else {
-            fingerprintSettingsSwitch.setChecked(false);
-        }
-        fingerprintSettingsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!isChecked && !fingerprintRegisterSwitch.isChecked() && !fingerprintManagementSwitch.isChecked()) {
-                    fingerprintSwitch.setChecked(false);
-                    fingerprintChoose.measure(0, 0);
-                    final int height = fingerprintChoose.getMeasuredHeight();
-                    dismiss(fingerprintChoose, height);
+            fingerprintRegisterSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (!isChecked && !fingerprintManagementSwitch.isChecked() && !fingerprintSettingsSwitch.isChecked()) {
+                        fingerprintSwitch.setChecked(false);
+                        fingerprintChoose.measure(0, 0);
+                        final int height = fingerprintChoose.getMeasuredHeight();
+                        dismiss(fingerprintChoose, height);
+                    }
                 }
+            });
+            if (isSetManagementFingerprint) {
+                fingerprintManagementSwitch.setChecked(true);
+            } else {
+                fingerprintManagementSwitch.setChecked(false);
             }
-        });
+            fingerprintManagementSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (!isChecked && !fingerprintRegisterSwitch.isChecked() && !fingerprintSettingsSwitch.isChecked()) {
+                        fingerprintSwitch.setChecked(false);
+                        fingerprintChoose.measure(0, 0);
+                        final int height = fingerprintChoose.getMeasuredHeight();
+                        dismiss(fingerprintChoose, height);
+                    }
+                }
+            });
+            if (isSetSettingsFingerprint) {
+                fingerprintSettingsSwitch.setChecked(true);
+            } else {
+                fingerprintSettingsSwitch.setChecked(false);
+            }
+            fingerprintSettingsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (!isChecked && !fingerprintRegisterSwitch.isChecked() && !fingerprintManagementSwitch.isChecked()) {
+                        fingerprintSwitch.setChecked(false);
+                        fingerprintChoose.measure(0, 0);
+                        final int height = fingerprintChoose.getMeasuredHeight();
+                        dismiss(fingerprintChoose, height);
+                    }
+                }
+            });
+        }
 
     }
 
@@ -453,7 +481,7 @@ public class SettingsActivity extends BaseActivity {
             case 0:
                 if (resultCode == RESULT_OK) {
                     fingerprintReturn = data.getBooleanExtra("fingerprint_return", false);
-                }else{
+                } else {
                     finish();
                 }
                 break;

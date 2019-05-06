@@ -32,6 +32,7 @@ public class ManagementAdapter extends RecyclerView.Adapter<ManagementAdapter.Vi
     private Map<Integer, Boolean> map = new LinkedHashMap<>();
     private onItemClickListener listener;
     private boolean inDeletionMode = false;
+    private boolean inUpdateMode = true;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         View managementView;
@@ -233,6 +234,14 @@ public class ManagementAdapter extends RecyclerView.Adapter<ManagementAdapter.Vi
     public void setInDeletionMode(boolean inDeletionMode) {
         this.inDeletionMode = inDeletionMode;
         notifyDataSetChanged();
+    }
+
+    public List<Face> getFaceList() {
+        return this.mFaceList;
+    }
+
+    public void setFaceList(List<Face> FaceList) {
+        this.mFaceList = FaceList;
     }
 
     public Map<Integer, Boolean> getMap() {

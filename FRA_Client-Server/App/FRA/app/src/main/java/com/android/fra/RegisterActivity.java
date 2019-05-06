@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.IdRes;
@@ -38,8 +37,6 @@ import static com.android.fra.ActivityCollector.finishAll;
 import static org.litepal.LitePalApplication.getContext;
 
 public class RegisterActivity extends BaseActivity {
-
-    private RegisterActivity.UserRegisterTask mAuthTask = null;
 
     private SharedPreferences pref;
     private DrawerLayout mDrawerLayout;
@@ -90,7 +87,7 @@ public class RegisterActivity extends BaseActivity {
 
             MenuItem menuItem = navView.getMenu().findItem(R.id.nav_management);
             boolean isEggOn = pref.getBoolean("is_egg_on", false);
-            if (isEggOn == true) {
+            if (isEggOn) {
                 menuItem.setVisible(true);
             } else {
                 menuItem.setVisible(false);
@@ -166,24 +163,7 @@ public class RegisterActivity extends BaseActivity {
         return true;
     }
 
-    private void showProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("信息上传中");
-        progressDialog.setCancelable(false);
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
-    }
-
-    private void hideProgress() {
-        progressDialog.dismiss();
-    }
-
     private void attemptSubmit() {
-        if (mAuthTask != null) {
-            return;
-        }
-
         mNameView.setError(null);
         mPhoneView.setError(null);
         mEmailView.setError(null);
@@ -230,9 +210,31 @@ public class RegisterActivity extends BaseActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            showProgress();
-            mAuthTask = new RegisterActivity.UserRegisterTask(name, phone, email, department, post);
-            mAuthTask.execute((Void) null);
+            currentUid = CalculateUid();
+            Face face = new Face();
+            face.setName(name);
+            face.setGender(mGenderChoose);
+            face.setPhone(phone);
+            face.setDepartment(department);
+            face.setPost(post);
+            face.setEmail(email);
+            face.setUid(currentUid);
+            face.setValid(true);
+            face.save();
+            final OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(RegisterActivity.this);
+            mMaterialDialog.setTitle("操作成功").setTitleTextColor(R.color.colorPrimary).setMessage("信息已保存")
+                    .setPositiveButton("下一步", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(RegisterActivity.this, FaceRecordInfo.class);
+                            intent.putExtra("current_uid", currentUid);
+                            startActivity(intent);
+                            mMaterialDialog.dismiss();
+                        }
+                    })
+                    .setPositiveButtonTextColor(R.color.colorPrimary)
+                    .setCanceledOnTouchOutside(false)
+                    .show();
         }
 
     }
@@ -245,108 +247,30 @@ public class RegisterActivity extends BaseActivity {
         return phone.length() == 11 && phone.matches("[0-9]+");
     }
 
+    private String CalculateUid() {
+        List<Face> uidList = LitePal.select("uid").find(Face.class);
+        int uidTemp = 100000;
+        for (Face uid : uidList) {
+            int uidInteger = Integer.parseInt(uid.getUid());
+            if (uidInteger > uidTemp) {
+                uidTemp = uidInteger;
+            }
+        }
+        return Integer.toString(++uidTemp);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case 0:
                 if (resultCode == RESULT_OK) {
                     fingerprintReturn = data.getBooleanExtra("fingerprint_return", false);
-                }else{
+                } else {
                     finish();
                 }
                 break;
             default:
         }
-    }
-
-    public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mName;
-        private final String mPhone;
-        private final String mEmail;
-        private final String mDepartment;
-        private final String mPost;
-
-        UserRegisterTask(String name, String phone, String email, String department, String post) {
-            mName = name;
-            mPhone = phone;
-            mEmail = email;
-            mDepartment = department;
-            mPost = post;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-
-            try {
-                currentUid = CalculateUid();
-                Face face = new Face();
-                face.setName(mAuthTask.mName);
-                face.setGender(mGenderChoose);
-                face.setPhone(mAuthTask.mPhone);
-                face.setEmail(mAuthTask.mEmail);
-                face.setDepartment(mAuthTask.mDepartment);
-                face.setPost(mAuthTask.mPost);
-                face.setUid(currentUid);
-                face.setValid(true);
-                face.save();
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-
-            if (success) {
-                hideProgress();
-                final OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(RegisterActivity.this);
-                mMaterialDialog.setTitle("上传成功").setTitleTextColor(R.color.colorPrimary).setMessage("信息已上传")
-                        .setPositiveButton("下一步", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(RegisterActivity.this, FaceRecordInfo.class);
-                                intent.putExtra("current_uid", currentUid);
-                                startActivity(intent);
-                                mMaterialDialog.dismiss();
-                            }
-                        })
-                        .setPositiveButtonTextColor(R.color.colorPrimary)
-                        .setCanceledOnTouchOutside(false)
-                        .setOnDismissListener(
-                                new DialogInterface.OnDismissListener() {
-                                    @Override
-                                    public void onDismiss(DialogInterface dialog) {
-                                    }
-                                })
-                        .show();
-            } else {
-                /*注册失败后的方法写在这里*/
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-        }
-
-        private String CalculateUid() {
-            List<Face> uidList = LitePal.select("uid").find(Face.class);
-            int uidTemp = 100000;
-            for (Face uid : uidList) {
-                int uidInteger = Integer.parseInt(uid.getUid());
-                if (uidInteger > uidTemp) {
-                    uidTemp = uidInteger;
-                }
-            }
-            return Integer.toString(++uidTemp);
-        }
-
     }
 
 }
