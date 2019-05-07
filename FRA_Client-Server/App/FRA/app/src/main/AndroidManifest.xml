@@ -49,15 +49,27 @@
 
         <activity android:name=".FaceRecordInfo"></activity>
 
-        <activity android:name=".EditActivity"></activity>
+        <activity
+            android:name=".EditActivity"
+            android:theme="@style/SlidrActivityTheme"></activity>
 
         <activity android:name=".ManagementActivity"></activity>
 
         <activity android:name=".SettingsActivity"></activity>
 
-        <activity android:name=".AboutActivity"></activity>
+        <activity
+            android:name=".AboutActivity"
+            android:theme="@style/SlidrActivityTheme"></activity>
 
         <activity android:name=".FingerprintActivity"></activity>
+
+        <activity
+            android:name=".OSAboutActivity"
+            android:theme="@style/SlidrActivityTheme"></activity>
+
+        <activity
+            android:name=".WebActivity"
+            android:theme="@style/SlidrActivityTheme"></activity>
 
     </application>
 

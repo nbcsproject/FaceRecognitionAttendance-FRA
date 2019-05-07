@@ -51,6 +51,7 @@ public class FaceRecordInfo extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+            LitePal.deleteAll(Face.class, "uid = ?", currentUid);
             Intent intent = new Intent(FaceRecordInfo.this, CameraActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);

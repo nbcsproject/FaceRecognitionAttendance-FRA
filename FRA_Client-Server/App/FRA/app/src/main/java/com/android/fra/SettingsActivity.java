@@ -226,7 +226,7 @@ public class SettingsActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     final OptionMaterialDialog confirmDialog = new OptionMaterialDialog(SettingsActivity.this);
-                    confirmDialog.setTitle("退出").setTitleTextColor(R.color.blackText).setMessage("确定退出当前账号？").setMessageTextSize((float) 16.5)
+                    confirmDialog.setMessage("确定退出当前账号？").setMessageTextSize((float) 16.5)
                             .setPositiveButton("确定", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {

@@ -19,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.r0adkll.slidr.Slidr;
+import com.r0adkll.slidr.model.SlidrConfig;
 
 import static com.android.fra.ActivityCollector.finishAll;
 import static org.litepal.LitePalApplication.getContext;
@@ -33,6 +35,9 @@ public class AboutActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+        SlidrConfig.Builder mBuilder = new SlidrConfig.Builder().edge(true);
+        SlidrConfig mSlidrConfig = mBuilder.build();
+        Slidr.attach(this, mSlidrConfig);
         ImageView imageView = (ImageView) findViewById(R.id.about_image_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
@@ -80,6 +85,15 @@ public class AboutActivity extends BaseActivity {
             e.printStackTrace();
         }
         aboutVersion.setText(code);
+
+        TextView osAboutTextView = (TextView) findViewById(R.id.os_about_textView);
+        osAboutTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AboutActivity.this, OSAboutActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

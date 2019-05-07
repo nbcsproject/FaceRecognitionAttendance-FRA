@@ -278,6 +278,7 @@
                         android:id="@+id/change_login_state"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
                         android:orientation="horizontal">
 
                         <LinearLayout
@@ -320,6 +321,7 @@
                         android:id="@+id/about_app"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
                         android:orientation="horizontal">
 
                         <LinearLayout

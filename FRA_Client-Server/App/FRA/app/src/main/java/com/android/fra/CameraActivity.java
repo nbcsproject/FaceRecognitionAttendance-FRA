@@ -7,8 +7,6 @@ import android.content.pm.ShortcutManager;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -17,34 +15,22 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.fra.db.Face;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import org.litepal.LitePal;
 import org.opencv.android.OpenCVLoader;
 
-import java.io.IOException;
-import java.net.ConnectException;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
 import static com.android.fra.ActivityCollector.finishAll;
-import static org.litepal.LitePalApplication.getContext;
 
 public class CameraActivity extends BaseActivity {
 
@@ -200,77 +186,14 @@ public class CameraActivity extends BaseActivity {
         return openDrawerLayout;
     }
 
-    Handler updateHandler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            switch (msg.what) {
-                case 1:
-                    Toast.makeText(getContext(), "未连接至服务器", Toast.LENGTH_SHORT).show();
-                    break;
-                default:
-                    break;
-            }
-            return false;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && captureMode == 1) {
+            Intent intent = new Intent(CameraActivity.this, RegisterActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
-    });
-
-    private void updateInBackground() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<Face> faceList = faceList = LitePal.where("valid = ?", "1").find(Face.class);
-                if (!faceList.isEmpty()) {
-                    OkHttpClient client = new OkHttpClient();
-                    Request request = new Request.Builder()
-                            .url("http://10.10.19.134:3000/app/query")
-                            .build();
-                    try {
-                        Response response = client.newCall(request).execute();
-                        String responseData = response.body().string();
-                        Message msg = new Message();
-                        if (!responseData.equals("error")) {
-                            Gson gson = new Gson();
-                            List<Face> updateFaceList = gson.fromJson(responseData, new TypeToken<List<Face>>() {
-                            }.getType());
-                            for (Face localFace : faceList) {
-                                int existence = 0;
-                                for (Face serverFace : updateFaceList) {
-                                    if (localFace.getUid().equals(serverFace.getUid())) {
-                                        if (!localFace.getModTime().equals(serverFace.getModTime())) {
-                                            serverFace.updateAll("uid = ?", serverFace.getUid());
-                                        }
-                                        existence = 1;
-                                    }
-                                }
-                                if (existence == 0) {
-                                    LitePal.deleteAll(Face.class, "uid = ?", localFace.getUid());
-                                }
-                            }
-                            msg.what = 0;
-                        } else {
-                            msg.what = 1;
-                        }
-                        updateHandler.sendMessage(msg);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        if (e instanceof SocketTimeoutException) {
-                            Message msg = new Message();
-                            msg.what = 1;
-                            updateHandler.sendMessage(msg);
-                        }
-                        if (e instanceof ConnectException) {
-                            Message msg = new Message();
-                            msg.what = 1;
-                            updateHandler.sendMessage(msg);
-                        }
-                    }
-                } else {
-                    Message msg = new Message();
-                    msg.what = 0;
-                    updateHandler.sendMessage(msg);
-                }
-            }
-        }).start();
+        return super.onKeyDown(keyCode, event);
     }
 
 }

@@ -180,7 +180,7 @@ public class ManagementActivity extends BaseActivity implements ManagementAdapte
     }
 
     private void initFace() {
-        faceList = LitePal.where("valid = ?", "1").find(Face.class);
+        faceList = LitePal.findAll(Face.class);
     }
 
     private void selectAllOrNot() {

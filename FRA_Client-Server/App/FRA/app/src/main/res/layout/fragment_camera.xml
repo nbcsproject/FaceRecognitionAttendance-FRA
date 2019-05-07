@@ -37,19 +37,26 @@
         android:text="请确保您的头顶和下巴底部均位于圆圈范围内"
         android:textColor="#202020"
         android:textScaleX="0.96"
-        android:textSize="14.7sp" />/>
+        android:textSize="14.7sp" />
 
-    <Button
-        android:id="@+id/cancel_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:layout_width="110dp"
+        android:layout_height="100dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@color/colorTransparent"
-        android:text="取消"
-        android:textColor="@color/colorPrimary"
-        android:textSize="14.7sp" />
+        android:background="@color/colorTransparent">
+
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:text="取消"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14.7sp" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

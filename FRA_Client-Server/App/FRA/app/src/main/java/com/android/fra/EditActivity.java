@@ -23,6 +23,8 @@ import com.android.fra.db.Face;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.r0adkll.slidr.Slidr;
+import com.r0adkll.slidr.model.SlidrConfig;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -59,6 +61,9 @@ public class EditActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
+        SlidrConfig.Builder mBuilder = new SlidrConfig.Builder().edge(true);
+        SlidrConfig mSlidrConfig = mBuilder.build();
+        Slidr.attach(this, mSlidrConfig);
         Toolbar toolbar = (Toolbar) findViewById(R.id.edit_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("编辑信息");

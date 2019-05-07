@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -221,7 +220,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                                 String captureUid = new LBP().getFaceOwner(feature, 120);
                                 hasCaptured = true;
                                 int year = calendar.get(Calendar.YEAR);
-                                int month = calendar.get(Calendar.MONTH);
+                                int month = calendar.get(Calendar.MONTH) + 1;
                                 int day = calendar.get(Calendar.DAY_OF_MONTH);
                                 int hour = calendar.get(Calendar.HOUR_OF_DAY);
                                 int minute = calendar.get(Calendar.MINUTE);
@@ -304,6 +303,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                                     }
                                 }
                             } else if (captureMode == 1) {
+                                hasCaptured = true;
                                 com.android.fra.db.Face updateFace = new com.android.fra.db.Face();
                                 updateFace.setFeature(feature);
                                 updateFace.updateAll("uid = ?", currentUid);
@@ -978,7 +978,9 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                                     Activity activity = getActivity();
                                     if (activity != null) {
                                         LitePal.deleteAll(com.android.fra.db.Face.class, "uid = ?", currentUid);
-                                        activity.finish();
+                                        Intent intent = new Intent(activity, RegisterActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
                                     }
                                 }
                             })
