@@ -42,6 +42,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -54,7 +55,7 @@ import static org.litepal.LitePalApplication.getContext;
 public class ManagementActivity extends BaseActivity implements ManagementAdapter.onItemClickListener {
 
     private SharedPreferences pref;
-    private SharedPreferences.Editor editor;
+    private String currentPid;
     private List<Face> faceList = new ArrayList<>();
     private List<Face> deleteFace = new ArrayList<>();
     private ManagementAdapter adapter;
@@ -136,6 +137,7 @@ public class ManagementActivity extends BaseActivity implements ManagementAdapte
                     return true;
                 }
             });
+            currentPid = pref.getString("currentPid", "");
             updateInBackground();
             final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.management_recyclerView);
             FloatingActionButton delete_button = (FloatingActionButton) findViewById(R.id.management_delete);
@@ -180,7 +182,7 @@ public class ManagementActivity extends BaseActivity implements ManagementAdapte
     }
 
     private void initFace() {
-        faceList = LitePal.findAll(Face.class);
+        faceList = LitePal.where("pid = ?", currentPid).find(Face.class);
     }
 
     private void selectAllOrNot() {
@@ -205,10 +207,10 @@ public class ManagementActivity extends BaseActivity implements ManagementAdapte
         for (Map.Entry<Integer, Boolean> m : map.entrySet()) {
             ContentValues values = new ContentValues();
             values.put("valid", false);
-            LitePal.updateAll(Face.class, values, "uid = ?", faceList.get(m.getKey()).getUid());
+            LitePal.updateAll(Face.class, values, "uid = ? and pid = ?", faceList.get(m.getKey()).getUid(), currentPid);
         }
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.management_recyclerView);
-        List<Face> currentFaceList = LitePal.where("valid = ?", "1").find(Face.class);
+        List<Face> currentFaceList = LitePal.where("valid = ? and pid = ?", "1", currentPid).find(Face.class);
         adapter = new ManagementAdapter(currentFaceList);
         recyclerView.setAdapter(adapter);
         hideText();
@@ -220,9 +222,9 @@ public class ManagementActivity extends BaseActivity implements ManagementAdapte
         for (Map.Entry<Integer, Boolean> m : map.entrySet()) {
             ContentValues values = new ContentValues();
             values.put("valid", true);
-            LitePal.updateAll(Face.class, values, "uid = ?", faceList.get(m.getKey()).getUid());
+            LitePal.updateAll(Face.class, values, "uid = ? and pid = ?", faceList.get(m.getKey()).getUid(), currentPid);
         }
-        faceList = LitePal.where("valid = ?", "1").find(Face.class);
+        faceList = LitePal.where("valid = ? and pid = ?", "1", currentPid).find(Face.class);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.management_recyclerView);
         adapter = new ManagementAdapter(faceList);
         recyclerView.setAdapter(adapter);
@@ -259,6 +261,11 @@ public class ManagementActivity extends BaseActivity implements ManagementAdapte
         }
     }
 
+    @Override
+    public String getCurrentPid() {
+        return currentPid;
+    }
+
     public void hideText() {
         toolBarHeadText.setVisibility(View.GONE);
     }
@@ -278,7 +285,7 @@ public class ManagementActivity extends BaseActivity implements ManagementAdapte
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    LitePal.deleteAll(Face.class, "valid = ?", "0");
+                    LitePal.deleteAll(Face.class, "valid = ? and pid = ?", "0", currentPid);
                     deleteFace.clear();
                     initFace();
                     adapter.setFaceList(faceList);
@@ -296,6 +303,7 @@ public class ManagementActivity extends BaseActivity implements ManagementAdapte
     Handler updateHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
+            deleteFace = LitePal.where("valid = ? and pid = ?", "0", currentPid).find(Face.class);
             switch (msg.what) {
                 case 0:
                     if (deleteFace.isEmpty()) {
@@ -323,11 +331,11 @@ public class ManagementActivity extends BaseActivity implements ManagementAdapte
         new Thread(new Runnable() {
             @Override
             public void run() {
-                deleteFace = LitePal.where("valid = ?", "0").find(Face.class);
                 if (!deleteFace.isEmpty()) {
                     List<Face> jsonFaceList = new ArrayList<>();
                     for (Face face : deleteFace) {
                         Face faceTemp = new Face();
+                        faceTemp.setPid(currentPid);
                         faceTemp.setUid(face.getUid());
                         jsonFaceList.add(faceTemp);
                     }
@@ -372,8 +380,12 @@ public class ManagementActivity extends BaseActivity implements ManagementAdapte
             @Override
             public void run() {
                 OkHttpClient client = new OkHttpClient();
+                RequestBody requestBody = new FormBody.Builder()
+                        .add("pid", currentPid)
+                        .build();
                 Request request = new Request.Builder()
                         .url("http://10.10.19.134:3000/app/query")
+                        .post(requestBody)
                         .build();
                 try {
                     Response response = client.newCall(request).execute();
@@ -388,13 +400,13 @@ public class ManagementActivity extends BaseActivity implements ManagementAdapte
                             for (Face serverFace : updateFaceList) {
                                 if (localFace.getUid().equals(serverFace.getUid())) {
                                     if (!localFace.getModTime().equals(serverFace.getModTime())) {
-                                        serverFace.updateAll("uid = ?", serverFace.getUid());
+                                        serverFace.updateAll("uid = ? and pid = ?", serverFace.getUid(), currentPid);
                                     }
                                     existence = 1;
                                 }
                             }
                             if (existence == 0) {
-                                LitePal.deleteAll(Face.class, "uid = ?", localFace.getUid());
+                                LitePal.deleteAll(Face.class, "uid = ? and pid = ?", localFace.getUid(), currentPid);
                             }
                         }
                         msg.what = 0;

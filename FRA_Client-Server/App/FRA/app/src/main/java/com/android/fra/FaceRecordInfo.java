@@ -14,6 +14,7 @@ import org.litepal.LitePal;
 
 public class FaceRecordInfo extends BaseActivity {
     private String currentUid;
+    private String currentPid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +22,7 @@ public class FaceRecordInfo extends BaseActivity {
         setContentView(R.layout.activity_face_record_info);
         Intent intent = getIntent();
         currentUid = intent.getStringExtra("current_uid");
+        currentPid = intent.getStringExtra("current_pid");
         ImageView imageView = (ImageView) findViewById(R.id.recordInfo_image_view);
         int resource = R.drawable.record_info_image;
         Glide.with(this).load(resource).into(imageView);
@@ -39,7 +41,7 @@ public class FaceRecordInfo extends BaseActivity {
         button_cancelRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LitePal.deleteAll(Face.class, "uid = ?", currentUid);
+                LitePal.deleteAll(Face.class, "uid = ? and pid = ?", currentUid, currentPid);
                 Intent intent = new Intent(FaceRecordInfo.this, CameraActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -51,7 +53,7 @@ public class FaceRecordInfo extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            LitePal.deleteAll(Face.class, "uid = ?", currentUid);
+            LitePal.deleteAll(Face.class, "uid = ? and pid = ?", currentUid, currentPid);
             Intent intent = new Intent(FaceRecordInfo.this, CameraActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);

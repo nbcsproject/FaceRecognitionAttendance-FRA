@@ -56,6 +56,7 @@ public class EditActivity extends BaseActivity {
     private String department;
     private String post;
     private String email;
+    private String currentPid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,7 @@ public class EditActivity extends BaseActivity {
         final EditText email_edit = (EditText) findViewById(R.id.email_edit);
         Intent intent = getIntent();
 
+        currentPid = intent.getStringExtra("pid");
         uid = intent.getStringExtra("uid");
         uid_textView.setText(uid);
         spinner = (Spinner) findViewById(R.id.spinner);
@@ -203,6 +205,7 @@ public class EditActivity extends BaseActivity {
                     || !department.equals(department_edit.getText().toString()) || !post.equals(post_edit.getText().toString()) || !email.equals(email_edit.getText().toString())) {
                 showProgress();
                 editFace = new Face();
+                editFace.setPid(currentPid);
                 editFace.setUid(uid_textView.getText().toString());
                 editFace.setName(name_edit.getText().toString());
                 editFace.setGender(currentGender);
@@ -212,7 +215,7 @@ public class EditActivity extends BaseActivity {
                 editFace.setEmail(email_edit.getText().toString());
                 Calendar calendar = Calendar.getInstance();
                 int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
+                int month = calendar.get(Calendar.MONTH) + 1;
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
                 int hour = calendar.get(Calendar.HOUR_OF_DAY);
                 int minute = calendar.get(Calendar.MINUTE);
@@ -277,7 +280,7 @@ public class EditActivity extends BaseActivity {
             switch (msg.what) {
                 case 0:
                     TextView uid_textView = (TextView) findViewById(R.id.uid_textView);
-                    editFace.updateAll("uid = ?", uid_textView.getText().toString());
+                    editFace.updateAll("uid = ? and pid = ?", uid_textView.getText().toString(), currentPid);
                     hideProgress();
                     Intent intent = new Intent();
                     setResult(RESULT_OK, intent);

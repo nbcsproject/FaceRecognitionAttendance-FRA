@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <litepal>
     <dbname value="FaceStore"></dbname>
-    <version value="5"></version>
+    <version value="8"></version>
     <list>
         <mapping class="com.android.fra.db.Face"></mapping>
     </list>

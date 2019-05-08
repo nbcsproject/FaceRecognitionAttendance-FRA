@@ -81,6 +81,7 @@ public class ManagementAdapter extends RecyclerView.Adapter<ManagementAdapter.Vi
             public void onClick(View v) {
                 Face face = mFaceList.get(holder.getAdapterPosition());
                 Intent intent = new Intent(mContext, EditActivity.class);
+                intent.putExtra("pid", listener.getCurrentPid());
                 intent.putExtra("uid", face.getUid());
                 intent.putExtra("name", face.getName());
                 intent.putExtra("gender", face.getGender());
@@ -260,6 +261,8 @@ public class ManagementAdapter extends RecyclerView.Adapter<ManagementAdapter.Vi
         void showText();
 
         void setText(String text);
+
+        String getCurrentPid();
     }
 
 }

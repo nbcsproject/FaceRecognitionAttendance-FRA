@@ -96,13 +96,13 @@ public class FingerprintDialogFragment extends DialogFragment {
             public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
                 ImageView imageView = (ImageView) getView().findViewById(R.id.fingerprint_imageView);
                 imageView.setImageResource(R.drawable.ic_fingerprint_done);
-                Toast.makeText(mActivity, "指纹认证成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mActivity, "指纹验证成功", Toast.LENGTH_SHORT).show();
                 mActivity.onAuthenticated();
             }
 
             @Override
             public void onAuthenticationFailed() {
-                errorMsg.setText("指纹认证失败，请再试一次");
+                errorMsg.setText("指纹验证失败，请再试一次");
             }
         }, null);
 

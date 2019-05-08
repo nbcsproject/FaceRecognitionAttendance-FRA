@@ -99,7 +99,6 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
     }
 
-    private static final String TAG = "CameraFragment";
     private static final int STATE_PREVIEW = 0;
     private static final int STATE_WAITING_LOCK = 1;
     private static final int STATE_WAITING_PRECAPTURE = 2;
@@ -138,6 +137,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
     private int startMinute;
     private int endHour;
     private int endMinute;
+    private String currentPid;
 
     private final TextureView.SurfaceTextureListener mSurfaceTextureListener
             = new TextureView.SurfaceTextureListener() {
@@ -217,7 +217,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                             String feature = new LBP().getFeature(bitmap_get, 8, 8);
                             if (captureMode == 0) {
                                 Calendar calendar = Calendar.getInstance();
-                                String captureUid = new LBP().getFaceOwner(feature, 120);
+                                String captureUid = new LBP().getFaceOwner(feature, currentPid, 120);
                                 hasCaptured = true;
                                 int year = calendar.get(Calendar.YEAR);
                                 int month = calendar.get(Calendar.MONTH) + 1;
@@ -248,7 +248,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                                     }, 3000);
                                 } else {
                                     if (!captureUid.equals("NoFaceOwner")) {
-                                        faces = LitePal.where("uid = ?", captureUid).find(com.android.fra.db.Face.class);
+                                        faces = LitePal.where("uid = ? and pid = ?", captureUid, currentPid).find(com.android.fra.db.Face.class);
                                         String showMonth;
                                         if (month < 10) {
                                             showMonth = "0" + String.valueOf(month);
@@ -306,7 +306,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                                 hasCaptured = true;
                                 com.android.fra.db.Face updateFace = new com.android.fra.db.Face();
                                 updateFace.setFeature(feature);
-                                updateFace.updateAll("uid = ?", currentUid);
+                                updateFace.updateAll("uid = ? and pid = ?", currentUid, currentPid);
                                 registerInBackground();
                             }
                         }
@@ -507,6 +507,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
             endHour = pref.getInt("endHour", 0);
             endMinute = pref.getInt("endMinute", 0);
         }
+        currentPid = pref.getString("currentPid", "");
 
         Button button = (Button) view.findViewById(R.id.cancel_button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -514,8 +515,14 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
             public void onClick(View v) {
                 Activity activity = getActivity();
                 if (activity != null) {
-                    LitePal.deleteAll(com.android.fra.db.Face.class, "uid = ?", currentUid);
-                    activity.finish();
+                    LitePal.deleteAll(com.android.fra.db.Face.class, "uid = ? and pid = ?", currentUid, currentPid);
+                    if (captureMode == 0) {
+                        activity.finish();
+                    } else {
+                        Intent intent = new Intent(activity, RegisterActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
                 }
             }
         });
@@ -977,7 +984,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                                 public void onClick(View v) {
                                     Activity activity = getActivity();
                                     if (activity != null) {
-                                        LitePal.deleteAll(com.android.fra.db.Face.class, "uid = ?", currentUid);
+                                        LitePal.deleteAll(com.android.fra.db.Face.class, "uid = ? and pid = ?", currentUid, currentPid);
                                         Intent intent = new Intent(activity, RegisterActivity.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         startActivity(intent);
@@ -1022,6 +1029,28 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                         }
                     }, 3000);
                     break;
+                case 2:
+                    faces = LitePal.where("uid = ? and pid = ?", faces.get(0).getUid(), currentPid).find(com.android.fra.db.Face.class);
+                    mMaterialDialog.setTitle("您已签到").setTitleTextColor(R.color.noFaceOwner).setTitleTextSize((float) 22.5)
+                            .setMessage("工号: " + faces.get(0).getUid() + "\n" + "姓名: " + faces.get(0).getName() + "\n" + "所属部门: " + faces.get(0).getDepartment()
+                                    + "\n" + "上次签到: " + faces.get(0).getCurrentCheckTime()).setMessageTextSize((float) 16.5)
+                            .setPositiveButton("确定", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mMaterialDialog.dismiss();
+                                    hasCaptured = false;
+                                }
+                            })
+                            .setPositiveButtonTextColor(R.color.noFaceOwner)
+                            .show();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mMaterialDialog.dismiss();
+                            hasCaptured = false;
+                        }
+                    }, 3000);
+                    break;
                 default:
                     break;
             }
@@ -1035,7 +1064,6 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
             final OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(getActivity());
             switch (msg.what) {
                 case 0:
-                    faces = LitePal.where("uid = ?", faces.get(0).getUid()).find(com.android.fra.db.Face.class);
                     mMaterialDialog.setTitle("签到成功").setTitleTextColor(R.color.colorPrimary).setTitleTextSize((float) 22.5)
                             .setMessage("工号: " + faces.get(0).getUid() + "\n" + "姓名: " + faces.get(0).getName() + "\n" + "所属部门: " + faces.get(0).getDepartment()
                                     + "\n" + "签到时间: " + attendanceTime).setMessageTextSize((float) 16.5)
@@ -1088,7 +1116,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<com.android.fra.db.Face> face = LitePal.where("uid = ?", currentUid).find(com.android.fra.db.Face.class);
+                List<com.android.fra.db.Face> face = LitePal.where("uid = ? and pid = ?", currentUid, currentPid).find(com.android.fra.db.Face.class);
                 OkHttpClient client = new OkHttpClient.Builder()
                         .connectTimeout(8, TimeUnit.SECONDS)
                         .readTimeout(8, TimeUnit.SECONDS)
@@ -1103,8 +1131,9 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                 String modTime = String.valueOf(year) + "." + String.valueOf(month) + "." + String.valueOf(day) + " " + String.valueOf(hour) + ":" + String.valueOf(minute) + ":" + String.valueOf(second);
                 com.android.fra.db.Face updateFace = new com.android.fra.db.Face();
                 updateFace.setModTime(modTime);
-                updateFace.updateAll("uid = ?", currentUid);
+                updateFace.updateAll("uid = ? and pid = ?", currentUid, currentPid);
                 RequestBody requestBody = new FormBody.Builder()
+                        .add("pid", currentPid)
                         .add("uid", currentUid)
                         .add("name", face.get(0).getName())
                         .add("gender", face.get(0).getGender())
@@ -1150,8 +1179,12 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
             @Override
             public void run() {
                 OkHttpClient client = new OkHttpClient();
+                RequestBody requestBody = new FormBody.Builder()
+                        .add("pid", currentPid)
+                        .build();
                 Request request = new Request.Builder()
                         .url("http://10.10.19.134:3000/app/query")
+                        .post(requestBody)
                         .build();
                 try {
                     Response response = client.newCall(request).execute();
@@ -1165,18 +1198,24 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                         for (com.android.fra.db.Face serverFace : serverFaceList) {
                             if (faces.get(0).getUid().equals(serverFace.getUid())) {
                                 if (!faces.get(0).getModTime().equals(serverFace.getModTime())) {
-                                    serverFace.updateAll("uid = ?", serverFace.getUid());
+                                    serverFace.updateAll("uid = ? and pid = ?", serverFace.getUid(), currentPid);
+                                }
+                                if (serverFace.getCheckStatus().equals("1")) {
+                                    serverFace.updateAll("uid = ? and pid = ?", serverFace.getUid(), currentPid);
+                                    existence = 1;
+                                    msg.what = 2;
+                                    break;
                                 }
                                 existence = 1;
                             }
                             msg.what = 0;
                         }
                         if (existence == 0) {
-                            LitePal.deleteAll(com.android.fra.db.Face.class, "uid = ?", faces.get(0).getUid());
+                            LitePal.deleteAll(com.android.fra.db.Face.class, "uid = ? and pid = ?", faces.get(0).getUid(), currentPid);
                             msg.what = 1;
                         }
                     } else {
-                        msg.what = 2;
+                        msg.what = 3;
                     }
                     detectHandler.sendMessage(msg);
                 } catch (IOException e) {
@@ -1205,6 +1244,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                         .readTimeout(8, TimeUnit.SECONDS)
                         .build();
                 RequestBody requestBody = new FormBody.Builder()
+                        .add("pid", currentPid)
                         .add("uid", faces.get(0).getUid())
                         .add("check_time", attendanceTime)
                         .build();

@@ -94,14 +94,14 @@ public class LBP {
         return result.toString();
     }
 
-    public String getFaceOwner(String srcFeature, double threshold) {
+    public String getFaceOwner(String srcFeature, String pid, double threshold) {
         String[] srcStringSplit = srcFeature.split(" ");
         Mat query = Mat.zeros(1, srcStringSplit.length, CvType.CV_32FC1);
         for (int i = 0; i < srcStringSplit.length; i++) {
             query.put(0, i, Float.parseFloat(srcStringSplit[i]));
         }
 
-        List<Face> faces = LitePal.findAll(Face.class);
+        List<Face> faces = LitePal.where("pid = ?", pid).find(Face.class);
         double minDist = java.lang.Double.MAX_VALUE;
         String faceOwner = " ";
         for (Face face : faces) {

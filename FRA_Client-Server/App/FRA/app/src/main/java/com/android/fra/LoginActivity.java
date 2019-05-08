@@ -206,11 +206,14 @@ public class LoginActivity extends BaseActivity {
                     Response response = client.newCall(request).execute();
                     String responseData = response.body().string();
                     Message msg = new Message();
-                    if (responseData.equals("ok")) {
+                    if (!responseData.equals("no") && !responseData.equals("error")) {
+                        editor = pref.edit();
+                        editor.putString("currentPid", responseData);
+                        editor.apply();
                         msg.what = 0;
                     } else if (responseData.equals("no")) {
                         msg.what = 1;
-                    } else {
+                    } else if (responseData.equals("error")) {
                         msg.what = 2;
                     }
                     mHandler.sendMessage(msg);

@@ -1,6 +1,5 @@
 package com.android.fra;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,7 +44,7 @@ public class RegisterActivity extends BaseActivity {
     private AutoCompleteTextView mEmailView;
     private AutoCompleteTextView mDepartmentView;
     private AutoCompleteTextView mPostView;
-    private ProgressDialog progressDialog;
+    private String currentPid;
     private String currentUid;
     private static boolean fingerprintReturn;
 
@@ -63,6 +62,7 @@ public class RegisterActivity extends BaseActivity {
                 startActivityForResult(intent, 0);
             }
             setContentView(R.layout.activity_register);
+            currentPid = pref.getString("currentPid", "");
             Toolbar toolbar = (Toolbar) findViewById(R.id.register_activity_toolBar);
             ImageView imageView = (ImageView) findViewById(R.id.image_view);
             setSupportActionBar(toolbar);
@@ -211,13 +211,14 @@ public class RegisterActivity extends BaseActivity {
         } else {
             currentUid = CalculateUid();
             Face face = new Face();
+            face.setPid(currentPid);
+            face.setUid(currentUid);
             face.setName(name);
             face.setGender(mGenderChoose);
             face.setPhone(phone);
             face.setDepartment(department);
             face.setPost(post);
             face.setEmail(email);
-            face.setUid(currentUid);
             face.setValid(true);
             face.save();
             final OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(RegisterActivity.this);
@@ -227,6 +228,7 @@ public class RegisterActivity extends BaseActivity {
                         public void onClick(View v) {
                             Intent intent = new Intent(RegisterActivity.this, FaceRecordInfo.class);
                             intent.putExtra("current_uid", currentUid);
+                            intent.putExtra("current_pid", currentPid);
                             startActivity(intent);
                             mMaterialDialog.dismiss();
                         }
@@ -247,7 +249,7 @@ public class RegisterActivity extends BaseActivity {
     }
 
     private String CalculateUid() {
-        List<Face> uidList = LitePal.select("uid").find(Face.class);
+        List<Face> uidList = LitePal.select("uid").where("pid = ?", currentPid).find(Face.class);
         int uidTemp = 100000;
         for (Face uid : uidList) {
             int uidInteger = Integer.parseInt(uid.getUid());
