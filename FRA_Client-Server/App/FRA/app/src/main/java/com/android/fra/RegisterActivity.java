@@ -119,7 +119,9 @@ public class RegisterActivity extends BaseActivity {
                 }
             });
             int resource = R.drawable.register_image;
-            Glide.with(this).load(resource).into(imageView);
+            if (imageView != null) {
+                Glide.with(this).load(resource).into(imageView);
+            }
 
             final RadioGroup mRadioGroup = (RadioGroup) findViewById(R.id.selectGender);
             mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

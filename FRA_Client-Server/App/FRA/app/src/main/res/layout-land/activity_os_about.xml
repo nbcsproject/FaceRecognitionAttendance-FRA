@@ -12,7 +12,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/os_about_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="81dp"
+            android:layout_height="73dp"
             android:background="@color/colorPrimary"
             android:fitsSystemWindows="true"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -23,6 +23,6 @@
         android:id="@+id/os_about_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="81dp" />
+        android:layout_marginTop="73dp" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -55,6 +55,8 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -72,6 +74,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
@@ -105,7 +108,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
     private static final int STATE_WAITING_NON_PRECAPTURE = 3;
     private static final int STATE_PICTURE_TAKEN = 4;
     private static final int MAX_PREVIEW_WIDTH = 1080;
-    private static final int MAX_PREVIEW_HEIGHT = 1440;
+    private static final int MAX_PREVIEW_HEIGHT = 1920;
     private String mCameraId;
     private AutoFitTextureView mTextureView;
     private CameraCaptureSession mCaptureSession;
@@ -124,6 +127,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
     private SurfaceView surfaceview;
     private SurfaceHolder surfaceHolder;
     private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
 
     private static Integer mFaceDetectMode;
     private static Rect cRect;
@@ -371,7 +375,6 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
 
         boolean catchFlag = false;
         Rect bounds = face.getBounds();
-        DisplayMetrics dm = getResources().getDisplayMetrics();
         Paint mPaint = new Paint();
         mPaint.setColor(getResources().getColor(R.color.faceDetector));
         mPaint.setStrokeWidth(6f);
@@ -526,6 +529,14 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                 }
             }
         });
+        TextView textView = (TextView) view.findViewById(R.id.hint);
+        int spec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        textView.measure(spec, spec);
+        int measuredWidthTicketNum = textView.getMeasuredWidth();
+
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins((int) ((ScreenWidth - measuredWidthTicketNum) / 2), (int) (ScreenHeight * 0.811), ScreenWidth, (int) (ScreenHeight * 0.85));
+        textView.setLayoutParams(layoutParams);
     }
 
     @Override

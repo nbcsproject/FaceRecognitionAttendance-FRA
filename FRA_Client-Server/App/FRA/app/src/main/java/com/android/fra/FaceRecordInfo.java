@@ -2,6 +2,7 @@ package com.android.fra;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -23,9 +24,16 @@ public class FaceRecordInfo extends BaseActivity {
         Intent intent = getIntent();
         currentUid = intent.getStringExtra("current_uid");
         currentPid = intent.getStringExtra("current_pid");
+        Toolbar toolbar = (Toolbar) findViewById(R.id.face_record_info_toolBar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setTitle("添加面孔");
+        }
         ImageView imageView = (ImageView) findViewById(R.id.recordInfo_image_view);
         int resource = R.drawable.record_info_image;
-        Glide.with(this).load(resource).into(imageView);
+        if (imageView != null) {
+            Glide.with(this).load(resource).into(imageView);
+        }
         Button button_registerFace = (Button) findViewById(R.id.record_continue_button);
         button_registerFace.setOnClickListener(new View.OnClickListener() {
             @Override

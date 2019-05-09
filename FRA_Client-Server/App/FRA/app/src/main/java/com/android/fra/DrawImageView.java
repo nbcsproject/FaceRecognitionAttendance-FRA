@@ -43,15 +43,19 @@ public class DrawImageView extends android.support.v7.widget.AppCompatImageView 
         paintLine.setStyle(Paint.Style.STROKE);
         paintLine.setStrokeWidth(10f);
         paintLine.setAntiAlias(true);
+        Paint rect = new Paint();
+        rect.setColor(getResources().getColor(R.color.grayPrimary));
+        rect.setStyle(Paint.Style.FILL);
 
         canvas.drawARGB(110, 255, 255, 255);
-        canvas.drawCircle(this.ScreenWidth / 2, (int) (this.ScreenHeight * 0.06 + this.diameter / 2), this.diameter / 2, paint);
-        canvas.drawCircle(this.ScreenWidth / 2, (int) (this.ScreenHeight * 0.06 + this.diameter / 2), this.diameter / 2, paintLine);
+        canvas.drawCircle(ScreenWidth / 2, (int) (ScreenHeight * 0.06 + diameter / 2), diameter / 2, paint);
+        canvas.drawCircle(ScreenWidth / 2, (int) (ScreenHeight * 0.06 + diameter / 2), diameter / 2, paintLine);
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.DST_OVER);
+        canvas.drawRect(0, (int) (ScreenHeight * 0.15 + diameter), ScreenWidth, ScreenHeight, rect);
     }
 
     private int getDiameter() {
-        double diameter = this.ScreenHeight * 0.5;
+        double diameter = ScreenHeight * 0.5;
         int Diameter;
         if ((int) diameter / 2 != 0) {
             Diameter = (int) diameter - 1;

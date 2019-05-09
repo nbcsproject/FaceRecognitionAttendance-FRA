@@ -16,25 +16,17 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/register_activity_toolBar"
                 android:layout_width="match_parent"
-                android:layout_height="81dp"
+                android:layout_height="73dp"
                 android:background="@color/colorPrimary"
                 android:fitsSystemWindows="true"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-            <ImageView
-                android:id="@+id/image_view"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_marginTop="81dp"
-                android:scaleType="centerCrop"
-                app:layout_collapseMode="parallax" />
-
             <android.support.v4.widget.NestedScrollView
                 android:id="@+id/register_form"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="330dp">
+                android:layout_marginTop="73dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -45,7 +37,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
                         android:layout_marginLeft="15dp"
-                        android:layout_marginTop="35dp"
+                        android:layout_marginTop="25dp"
                         android:layout_marginRight="15dp"
                         android:layout_marginBottom="15dp"
                         app:cardCornerRadius="4dp">
@@ -310,11 +302,11 @@
             android:id="@+id/button_commit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:src="@drawable/ic_commit"
             app:backgroundTint="@color/colorPrimary"
-            app:layout_anchor="@id/image_view"
-            app:layout_anchorGravity="bottom|end" />
+            app:elevation="8dp" />
 
     </android.support.design.widget.CoordinatorLayout>
 

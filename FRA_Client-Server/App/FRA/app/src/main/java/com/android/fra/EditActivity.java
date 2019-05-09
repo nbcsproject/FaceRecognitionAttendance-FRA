@@ -74,7 +74,9 @@ public class EditActivity extends BaseActivity {
         }
         ImageView imageView = (ImageView) findViewById(R.id.edit_image_view);
         int resource = R.drawable.edit_image;
-        Glide.with(this).load(resource).into(imageView);
+        if (imageView != null) {
+            Glide.with(this).load(resource).into(imageView);
+        }
 
         final TextView uid_textView = (TextView) findViewById(R.id.uid_textView);
         final EditText name_edit = (EditText) findViewById(R.id.name_edit);
