@@ -158,7 +158,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="25dp"
             android:background="@color/colorTransparent"
-            android:text="登录"
+            android:text="@string/login_buttonText"
             android:textColor="#212224"
             android:textSize="16sp" />
 

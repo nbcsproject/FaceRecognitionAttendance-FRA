@@ -2,6 +2,7 @@ package com.android.fra;
 
 import android.animation.ValueAnimator;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -15,6 +16,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +46,7 @@ public class SettingsActivity extends BaseActivity {
     private int hour, minute;
     private int startHour, startMinute, endHour, endMinute;
     private static boolean fingerprintReturn;
+    private AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +64,7 @@ public class SettingsActivity extends BaseActivity {
             setContentView(R.layout.activity_settings);
             Toolbar toolbar = (Toolbar) findViewById(R.id.settings_activity_toolBar);
             setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("设置");
+            getSupportActionBar().setTitle(this.getString(R.string.function_settings));
 
             NavigationView navView = (NavigationView) findViewById(R.id.settings_activity_nav_view);
             mDrawerLayout = (DrawerLayout) findViewById(R.id.settings_activity_drawer_layout);
@@ -123,15 +126,26 @@ public class SettingsActivity extends BaseActivity {
             final TextView isTimeOpen = (TextView) findViewById(R.id.is_time_open);
 
             boolean isSetTime = pref.getBoolean("is_set_time", false);
-            if (isSetTime == true) {
+            if (isSetTime) {
                 timeSwitch.setChecked(true);
                 timeChoose.setVisibility(View.VISIBLE);
-                isTimeOpen.setText("已开启");
+                isTimeOpen.setText(this.getString(R.string.settings_time_isOpen));
             } else {
                 timeSwitch.setChecked(false);
                 timeChoose.setVisibility(View.GONE);
-                isTimeOpen.setText("未开启");
+                isTimeOpen.setText(this.getString(R.string.settings_time_isClose));
             }
+            final RelativeLayout switchTimeSetting = (RelativeLayout) findViewById(R.id.switch_time_setting);
+            switchTimeSetting.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (timeSwitch.isChecked()) {
+                        timeSwitch.setChecked(false);
+                    } else {
+                        timeSwitch.setChecked(true);
+                    }
+                }
+            });
             timeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -139,12 +153,12 @@ public class SettingsActivity extends BaseActivity {
                         timeChoose.measure(0, 0);
                         final int height = timeChoose.getMeasuredHeight();
                         show(timeChoose, height);
-                        isTimeOpen.setText("已开启");
+                        isTimeOpen.setText(SettingsActivity.this.getString(R.string.settings_time_isOpen));
                     } else {
                         timeChoose.measure(0, 0);
                         final int height = timeChoose.getMeasuredHeight();
                         dismiss(timeChoose, height);
-                        isTimeOpen.setText("未开启");
+                        isTimeOpen.setText(SettingsActivity.this.getString(R.string.settings_time_isClose));
                     }
                 }
             });
@@ -166,9 +180,9 @@ public class SettingsActivity extends BaseActivity {
                                 startMinute = minute;
                             } else {
                                 final OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(SettingsActivity.this);
-                                mMaterialDialog.setTitle("设置错误").setTitleTextColor(R.color.colorAccent).setTitleTextSize((float) 22.5)
-                                        .setMessage("请设置一个小于结束时间的开始时间").setMessageTextSize((float) 16.5)
-                                        .setPositiveButton("确定", new View.OnClickListener() {
+                                mMaterialDialog.setTitle(SettingsActivity.this.getString(R.string.settings_error)).setTitleTextColor(R.color.colorAccent).setTitleTextSize((float) 22.5)
+                                        .setMessage(SettingsActivity.this.getString(R.string.settings_timeError1)).setMessageTextSize((float) 16.5)
+                                        .setPositiveButton(SettingsActivity.this.getString(R.string.operation_ok), new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
                                                 showTime(startHour, startMinute, beginTimeButton);
@@ -202,9 +216,9 @@ public class SettingsActivity extends BaseActivity {
                                 endMinute = minute;
                             } else {
                                 final OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(SettingsActivity.this);
-                                mMaterialDialog.setTitle("设置错误").setTitleTextColor(R.color.colorAccent).setTitleTextSize((float) 22.5)
-                                        .setMessage("请设置一个大于开始时间的结束时间").setMessageTextSize((float) 16.5)
-                                        .setPositiveButton("确定", new View.OnClickListener() {
+                                mMaterialDialog.setTitle(SettingsActivity.this.getString(R.string.settings_error)).setTitleTextColor(R.color.colorAccent).setTitleTextSize((float) 22.5)
+                                        .setMessage(SettingsActivity.this.getString(R.string.settings_timeError2)).setMessageTextSize((float) 16.5)
+                                        .setPositiveButton(SettingsActivity.this.getString(R.string.operation_ok), new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
                                                 showTime(endHour, endMinute, endTimeButton);
@@ -226,8 +240,8 @@ public class SettingsActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     final OptionMaterialDialog confirmDialog = new OptionMaterialDialog(SettingsActivity.this);
-                    confirmDialog.setMessage("确定退出当前账号？").setMessageTextSize((float) 16.5)
-                            .setPositiveButton("确定", new View.OnClickListener() {
+                    confirmDialog.setMessage(SettingsActivity.this.getString(R.string.settings_exit_account)).setMessageTextSize((float) 16.5)
+                            .setPositiveButton(SettingsActivity.this.getString(R.string.operation_ok), new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     confirmDialog.dismiss();
@@ -240,7 +254,7 @@ public class SettingsActivity extends BaseActivity {
                                 }
                             })
                             .setPositiveButtonTextColor(R.color.noFaceOwner)
-                            .setNegativeButton("取消", new View.OnClickListener() {
+                            .setNegativeButton(SettingsActivity.this.getString(R.string.operation_cancel), new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     confirmDialog.dismiss();
@@ -282,14 +296,24 @@ public class SettingsActivity extends BaseActivity {
 
         if (Build.VERSION.SDK_INT >= 23) {
             FingerprintManager fingerprintManager = getSystemService(FingerprintManager.class);
+            RelativeLayout fingerprintRelativeLayout = (RelativeLayout) findViewById(R.id.fingerprint_relativeLayout);
+            final SwitchCompat fingerprintSwitch = (SwitchCompat) findViewById(R.id.fingerprint_switch);
             if (fingerprintManager.isHardwareDetected()) {
-                RelativeLayout fingerprintRelativeLayout = (RelativeLayout) findViewById(R.id.fingerprint_relativeLayout);
                 fingerprintRelativeLayout.setVisibility(View.VISIBLE);
                 View blankView = (View) findViewById(R.id.blank_view);
                 blankView.setVisibility(View.VISIBLE);
             }
+            fingerprintRelativeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (fingerprintSwitch.isChecked()) {
+                        fingerprintSwitch.setChecked(false);
+                    } else {
+                        fingerprintSwitch.setChecked(true);
+                    }
+                }
+            });
             final LinearLayout fingerprintChoose = (LinearLayout) findViewById(R.id.fingerprint_choose);
-            final SwitchCompat fingerprintSwitch = (SwitchCompat) findViewById(R.id.fingerprint_switch);
             final SwitchCompat fingerprintRegisterSwitch = (SwitchCompat) findViewById(R.id.fingerprint_register_switch);
             final SwitchCompat fingerprintManagementSwitch = (SwitchCompat) findViewById(R.id.fingerprint_management_switch);
             final SwitchCompat fingerprintSettingsSwitch = (SwitchCompat) findViewById(R.id.fingerprint_settings_switch);
@@ -323,6 +347,17 @@ public class SettingsActivity extends BaseActivity {
             } else {
                 fingerprintRegisterSwitch.setChecked(false);
             }
+            RelativeLayout fingerprintRegisterRelativeLayout = (RelativeLayout) findViewById(R.id.fingerprint_register_relativeLayout);
+            fingerprintRegisterRelativeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (fingerprintRegisterSwitch.isChecked()) {
+                        fingerprintRegisterSwitch.setChecked(false);
+                    } else {
+                        fingerprintRegisterSwitch.setChecked(true);
+                    }
+                }
+            });
             fingerprintRegisterSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -339,6 +374,17 @@ public class SettingsActivity extends BaseActivity {
             } else {
                 fingerprintManagementSwitch.setChecked(false);
             }
+            RelativeLayout fingerprintManagementRelativeLayout = (RelativeLayout) findViewById(R.id.fingerprint_management_relativeLayout);
+            fingerprintManagementRelativeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (fingerprintManagementSwitch.isChecked()) {
+                        fingerprintManagementSwitch.setChecked(false);
+                    } else {
+                        fingerprintManagementSwitch.setChecked(true);
+                    }
+                }
+            });
             fingerprintManagementSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -355,6 +401,17 @@ public class SettingsActivity extends BaseActivity {
             } else {
                 fingerprintSettingsSwitch.setChecked(false);
             }
+            RelativeLayout fingerprintSettingsRelativeLayout = (RelativeLayout) findViewById(R.id.fingerprint_settings_relativeLayout);
+            fingerprintSettingsRelativeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (fingerprintSettingsSwitch.isChecked()) {
+                        fingerprintSettingsSwitch.setChecked(false);
+                    } else {
+                        fingerprintSettingsSwitch.setChecked(true);
+                    }
+                }
+            });
             fingerprintSettingsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -367,6 +424,34 @@ public class SettingsActivity extends BaseActivity {
                 }
             });
         }
+
+        if (pref.getInt("language", 0) == 0) {
+            TextView textView = (TextView) findViewById(R.id.current_language);
+            textView.setText(this.getString(R.string.settings_followSystemLanguage));
+        }
+        RelativeLayout switchLanguage = (RelativeLayout) findViewById(R.id.switch_language);
+        switchLanguage.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
+                builder.setSingleChoiceItems(new String[]{SettingsActivity.this.getString(R.string.settings_followSystemLanguage), "简体中文", "繁體中文", "English"},
+                        pref.getInt("language", 0),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                if (pref.getInt("language", 0) != i) {
+                                    editor = pref.edit();
+                                    editor.putInt("language", i);
+                                    editor.apply();
+                                    dialog.dismiss();
+                                    Intent intent = new Intent(SettingsActivity.this, CameraActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                }
+                            }
+                        });
+                dialog = builder.create();
+                dialog.show();
+            }
+        });
 
     }
 
@@ -437,9 +522,9 @@ public class SettingsActivity extends BaseActivity {
         SwitchCompat fingerprintSettingsSwitch = (SwitchCompat) findViewById(R.id.fingerprint_settings_switch);
         if (timeSwitch.isChecked() && startHour == endHour && startMinute == endMinute) {
             final OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(SettingsActivity.this);
-            mMaterialDialog.setTitle("设置错误").setTitleTextColor(R.color.colorAccent).setTitleTextSize((float) 22.5)
-                    .setMessage("请设置开始和结束时间").setMessageTextSize((float) 16.5)
-                    .setPositiveButton("确定", new View.OnClickListener() {
+            mMaterialDialog.setTitle(SettingsActivity.this.getString(R.string.settings_error)).setTitleTextColor(R.color.colorAccent).setTitleTextSize((float) 22.5)
+                    .setMessage(SettingsActivity.this.getString(R.string.settings_timeError0)).setMessageTextSize((float) 16.5)
+                    .setPositiveButton(SettingsActivity.this.getString(R.string.operation_ok), new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             mMaterialDialog.dismiss();
@@ -469,7 +554,7 @@ public class SettingsActivity extends BaseActivity {
         editor.putBoolean("is_set_management_fingerprint", fingerprintManagementSwitch.isChecked());
         editor.putBoolean("is_set_settings_fingerprint", fingerprintSettingsSwitch.isChecked());
         editor.apply();
-        Toast.makeText(getContext(), "设置成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(SettingsActivity.this, R.string.settings_succeed, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(SettingsActivity.this, CameraActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);

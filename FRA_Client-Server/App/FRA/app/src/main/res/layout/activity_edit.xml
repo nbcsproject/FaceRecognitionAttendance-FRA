@@ -82,7 +82,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="20dp"
-                    android:hint="姓名"
+                    android:hint="@string/edit_name"
                     android:inputType="text"
                     android:maxLines="1"
                     android:theme="@style/EditTextTheme" />
@@ -132,7 +132,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="20dp"
-                    android:hint="手机号"
+                    android:hint="@string/edit_phone"
                     android:inputType="phone"
                     android:maxLines="1"
                     android:theme="@style/EditTextTheme" />
@@ -159,7 +159,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="20dp"
-                    android:hint="所属部门"
+                    android:hint="@string/edit_department"
                     android:inputType="text"
                     android:maxLines="1"
                     android:theme="@style/EditTextTheme" />

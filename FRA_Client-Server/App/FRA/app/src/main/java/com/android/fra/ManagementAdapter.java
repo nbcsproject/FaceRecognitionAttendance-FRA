@@ -106,12 +106,12 @@ public class ManagementAdapter extends RecyclerView.Adapter<ManagementAdapter.Vi
         if (face.getPost() != null && !face.getPost().equals("") && !face.getPost().equals("null")) {
             holder.postTextView.setText(face.getPost());
         } else {
-            holder.postTextView.setText("暂无");
+            holder.postTextView.setText(R.string.management_info_null);
         }
         if (face.getEmail() != null && !face.getEmail().equals("") && !face.getEmail().equals("null")) {
             holder.emailTextView.setText(face.getEmail());
         } else {
-            holder.emailTextView.setText("暂无");
+            holder.emailTextView.setText(R.string.management_info_null);
         }
 
         if (face.getGender().equals("male")) {
@@ -174,11 +174,11 @@ public class ManagementAdapter extends RecyclerView.Adapter<ManagementAdapter.Vi
                 if (isChecked) {
                     map.put(position, true);
                     if (map.size() == mFaceList.size()) {
-                        listener.setText("取消全选");
+                        listener.setText(((Activity) mContext).getString(R.string.management_selectAll_cancel));
                     }
                 } else {
                     map.remove(position);
-                    listener.setText("全选");
+                    listener.setText(((Activity) mContext).getString(R.string.management_selectAll));
                 }
             }
         });

@@ -50,7 +50,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import static com.android.fra.ActivityCollector.finishAll;
-import static org.litepal.LitePalApplication.getContext;
 
 public class ManagementActivity extends BaseActivity implements ManagementAdapter.onItemClickListener {
 
@@ -81,7 +80,7 @@ public class ManagementActivity extends BaseActivity implements ManagementAdapte
             setContentView(R.layout.activity_management);
             Toolbar toolbar = (Toolbar) findViewById(R.id.management_activity_toolBar);
             setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("管理");
+            getSupportActionBar().setTitle(this.getString(R.string.function_management));
             NavigationView navView = (NavigationView) findViewById(R.id.management_activity_nav_view);
             mDrawerLayout = (DrawerLayout) findViewById(R.id.management_activity_drawer_layout);
             View headerLayout = navView.inflateHeaderView(R.layout.nav_header);
@@ -146,11 +145,11 @@ public class ManagementActivity extends BaseActivity implements ManagementAdapte
                 public void onClick(View view) {
                     if (adapter.getMap().size() != 0) {
                         deleteItems();
-                        Snackbar.make(view, "已删除", Snackbar.LENGTH_SHORT).setAction("撤销", new View.OnClickListener() {
+                        Snackbar.make(view, R.string.management_hasDeleted, Snackbar.LENGTH_SHORT).setAction(R.string.management_withdraw, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 restoreItems();
-                                Toast.makeText(ManagementActivity.this, "已恢复删除的信息", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ManagementActivity.this, R.string.management_withdraw_hint, Toast.LENGTH_SHORT).show();
                             }
                         }).setActionTextColor(getResources().getColor(R.color.colorAccent)).show();
                     }
@@ -193,11 +192,11 @@ public class ManagementActivity extends BaseActivity implements ManagementAdapte
             }
             adapter.setMap(map);
             adapter.notifyDataSetChanged();
-            setText("取消全选");
+            setText(ManagementActivity.this.getString(R.string.management_selectAll_cancel));
         } else {
             adapter.setMap(new LinkedHashMap<Integer, Boolean>());
             adapter.notifyDataSetChanged();
-            setText("全选");
+            setText(ManagementActivity.this.getString(R.string.management_selectAll));
         }
     }
 
@@ -255,9 +254,9 @@ public class ManagementActivity extends BaseActivity implements ManagementAdapte
     public void showText() {
         toolBarHeadText.setVisibility(View.VISIBLE);
         if (adapter.getMap().size() < faceList.size()) {
-            setText("全选");
+            setText(ManagementActivity.this.getString(R.string.management_selectAll));
         } else {
-            setText("取消全选");
+            setText(ManagementActivity.this.getString(R.string.management_selectAll_cancel));
         }
     }
 
@@ -291,7 +290,7 @@ public class ManagementActivity extends BaseActivity implements ManagementAdapte
                     adapter.setFaceList(faceList);
                     adapter.notifyDataSetChanged();
                     swipeRefresh.setRefreshing(false);
-                    Toast.makeText(getContext(), "信息更新成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ManagementActivity.this, R.string.management_update_succeed, Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     break;
@@ -311,13 +310,13 @@ public class ManagementActivity extends BaseActivity implements ManagementAdapte
                         adapter.setFaceList(faceList);
                         adapter.notifyDataSetChanged();
                         swipeRefresh.setRefreshing(false);
-                        Toast.makeText(getContext(), "信息更新成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ManagementActivity.this, R.string.management_update_succeed, Toast.LENGTH_SHORT).show();
                     } else {
                         deleteInBackground();
                     }
                     break;
                 case 1:
-                    Toast.makeText(getContext(), "未连接至服务器", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ManagementActivity.this, R.string.operation_error_connectServer, Toast.LENGTH_SHORT).show();
                     swipeRefresh.setRefreshing(false);
                     break;
                 default:

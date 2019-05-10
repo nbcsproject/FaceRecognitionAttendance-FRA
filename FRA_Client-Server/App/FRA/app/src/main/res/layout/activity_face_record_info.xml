@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:layout_marginTop="185dp"
-                android:text="@string/record_info_name"
+                android:text="@string/function_add_face"
                 android:textColor="@color/whiteText"
                 android:textSize="30sp" />
 
@@ -55,12 +55,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="25dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="25dp"
                         android:text="@string/record_info_content_label"
                         android:textColor="@color/blackText"
                         android:textSize="18sp" />
@@ -79,12 +80,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="25dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="25dp"
                         android:text="@string/record_info_content_label"
                         android:textColor="@color/blackText"
                         android:textSize="18sp" />
@@ -114,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/record_continue_button"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:text="取消"
+                    android:text="@string/operation_cancel"
                     android:textColor="@color/colorPrimary"
                     android:textSize="14sp" />
 
@@ -125,7 +127,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="10dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:text="设置"
+                    android:text="@string/operation_setting"
                     android:textColor="@color/colorPrimary"
                     android:textSize="14sp" />
 

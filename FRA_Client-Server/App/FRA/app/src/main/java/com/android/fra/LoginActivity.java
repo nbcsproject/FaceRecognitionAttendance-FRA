@@ -37,7 +37,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import static com.android.fra.ActivityCollector.finishAll;
-import static org.litepal.LitePalApplication.getContext;
 
 public class LoginActivity extends BaseActivity {
 
@@ -67,6 +66,8 @@ public class LoginActivity extends BaseActivity {
 
         mAccountView = (AutoCompleteTextView) findViewById(R.id.textView_login_account);
         mPasswordView = (EditText) findViewById(R.id.textView_login_password);
+        mPasswordView.setLongClickable(false);
+        mPasswordView.setTextIsSelectable(false);
 
         Button loginButton = (Button) findViewById(R.id.login_button);
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +110,7 @@ public class LoginActivity extends BaseActivity {
 
     private void showProgress() {
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("登录中");
+        progressDialog.setMessage(this.getString(R.string.login_loggingIn));
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -172,11 +173,11 @@ public class LoginActivity extends BaseActivity {
                     startActivity(intent);
                     break;
                 case 1:
-                    Toast.makeText(getContext(), "账号或密码错误", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, R.string.login_error_ap, Toast.LENGTH_SHORT).show();
                     hideProgress();
                     break;
                 case 2:
-                    Toast.makeText(getContext(), "登录失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, R.string.login_failed, Toast.LENGTH_SHORT).show();
                     hideProgress();
                     break;
                 default:

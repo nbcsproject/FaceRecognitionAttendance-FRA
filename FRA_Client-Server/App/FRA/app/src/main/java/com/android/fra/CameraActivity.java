@@ -72,7 +72,7 @@ public class CameraActivity extends BaseActivity {
             currentUid = intent.getStringExtra("current_uid");
             captureMode = intent.getIntExtra("capture_mode", 0);
             if (captureMode == 0) {
-                getSupportActionBar().setTitle("签到");
+                getSupportActionBar().setTitle(this.getString(R.string.function_attendance));
                 NavigationView navView = (NavigationView) findViewById(R.id.camera_activity_nav_view);
                 mDrawerLayout = (DrawerLayout) findViewById(R.id.camera_activity_drawer_layout);
                 View headerLayout = navView.inflateHeaderView(R.layout.nav_header);
@@ -138,7 +138,7 @@ public class CameraActivity extends BaseActivity {
                     }
                 });
             } else if (captureMode == 1) {
-                getSupportActionBar().setTitle("添加面孔");
+                getSupportActionBar().setTitle(this.getString(R.string.function_add_face));
             }
         }
 
@@ -164,8 +164,8 @@ public class CameraActivity extends BaseActivity {
         Intent intent = new Intent(this, ManagementActivity.class);
         intent.setAction(Intent.ACTION_VIEW);
         ShortcutInfo info = new ShortcutInfo.Builder(this, "dynamicShortcut0")
-                .setShortLabel("管理")
-                .setLongLabel("管理")
+                .setShortLabel(this.getString(R.string.management_shortcut_short_name))
+                .setLongLabel(this.getString(R.string.management_shortcut_long_name))
                 .setIcon(Icon.createWithResource(this, R.mipmap.ic_management_shortcut))
                 .setIntent(intent)
                 .setRank(0)

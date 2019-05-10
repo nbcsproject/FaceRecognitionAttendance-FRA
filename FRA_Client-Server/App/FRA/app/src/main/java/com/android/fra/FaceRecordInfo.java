@@ -27,7 +27,7 @@ public class FaceRecordInfo extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.face_record_info_toolBar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("添加面孔");
+            getSupportActionBar().setTitle(this.getString(R.string.function_add_face));
         }
         ImageView imageView = (ImageView) findViewById(R.id.recordInfo_image_view);
         int resource = R.drawable.record_info_image;

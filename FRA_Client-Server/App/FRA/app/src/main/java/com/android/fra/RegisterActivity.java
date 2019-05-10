@@ -66,7 +66,7 @@ public class RegisterActivity extends BaseActivity {
             Toolbar toolbar = (Toolbar) findViewById(R.id.register_activity_toolBar);
             ImageView imageView = (ImageView) findViewById(R.id.image_view);
             setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("注册");
+            getSupportActionBar().setTitle(this.getString(R.string.function_register));
             NavigationView navView = (NavigationView) findViewById(R.id.register_activity_nav_view);
             mDrawerLayout = (DrawerLayout) findViewById(R.id.register_activity_drawer_layout);
             View headerLayout = navView.inflateHeaderView(R.layout.nav_header);
@@ -224,8 +224,8 @@ public class RegisterActivity extends BaseActivity {
             face.setValid(true);
             face.save();
             final OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(RegisterActivity.this);
-            mMaterialDialog.setTitle("操作成功").setTitleTextColor(R.color.colorPrimary).setMessage("信息已保存")
-                    .setPositiveButton("下一步", new View.OnClickListener() {
+            mMaterialDialog.setTitle(this.getString(R.string.operation_succeed)).setTitleTextColor(R.color.colorPrimary).setMessage(this.getString(R.string.register_info_hasSaved))
+                    .setPositiveButton(this.getString(R.string.operation_next), new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(RegisterActivity.this, FaceRecordInfo.class);

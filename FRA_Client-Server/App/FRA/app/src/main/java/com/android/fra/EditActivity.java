@@ -39,8 +39,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static org.litepal.LitePalApplication.getContext;
-
 public class EditActivity extends BaseActivity {
 
     private Spinner spinner;
@@ -67,7 +65,7 @@ public class EditActivity extends BaseActivity {
         Slidr.attach(this, mSlidrConfig);
         Toolbar toolbar = (Toolbar) findViewById(R.id.edit_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("编辑信息");
+        getSupportActionBar().setTitle(this.getString(R.string.function_edit));
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -91,8 +89,8 @@ public class EditActivity extends BaseActivity {
         uid_textView.setText(uid);
         spinner = (Spinner) findViewById(R.id.spinner);
         genderList = new ArrayList<String>();
-        genderList.add("男");
-        genderList.add("女");
+        genderList.add(this.getString(R.string.select_gender_male));
+        genderList.add(this.getString(R.string.select_gender_female));
         adapter = new ArrayAdapter<String>(this, R.layout.gender_spinner, genderList);
         spinner.setAdapter(adapter);
         gender = intent.getStringExtra("gender");
@@ -106,7 +104,7 @@ public class EditActivity extends BaseActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (genderList.get(position).equals("男")) {
+                if (genderList.get(position).equals(EditActivity.this.getString(R.string.select_gender_male))) {
                     currentGender = "male";
                 } else {
                     currentGender = "female";
@@ -133,12 +131,12 @@ public class EditActivity extends BaseActivity {
         if (intent.getStringExtra("post") != null && !intent.getStringExtra("post").equals("") && !intent.getStringExtra("post").equals("null")) {
             post_edit.setText(intent.getStringExtra("post"));
         } else {
-            post_edit.setHint("职务");
+            post_edit.setHint(this.getString(R.string.edit_post));
         }
         if (intent.getStringExtra("email") != null && !intent.getStringExtra("email").equals("") && !intent.getStringExtra("email").equals("null")) {
             email_edit.setText(intent.getStringExtra("email"));
         } else {
-            email_edit.setHint("邮箱");
+            email_edit.setHint(this.getString(R.string.edit_email));
         }
 
         ImageButton saveEdit = (ImageButton) findViewById(R.id.save_edit);
@@ -265,7 +263,7 @@ public class EditActivity extends BaseActivity {
 
     private void showProgress() {
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("保存修改的信息中");
+        progressDialog.setMessage(this.getString(R.string.edit_progressBar_hint));
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -286,12 +284,12 @@ public class EditActivity extends BaseActivity {
                     hideProgress();
                     Intent intent = new Intent();
                     setResult(RESULT_OK, intent);
-                    Toast.makeText(getContext(), "修改成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditActivity.this, R.string.edit_succeed, Toast.LENGTH_SHORT).show();
                     finish();
                     break;
                 case 1:
                     hideProgress();
-                    Toast.makeText(getContext(), "未连接至服务器", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditActivity.this, R.string.operation_error_connectServer, Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     break;

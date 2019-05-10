@@ -28,7 +28,7 @@ public class WebActivity extends BaseActivity {
         Slidr.attach(this, mSlidrConfig);
         Toolbar toolbar = (Toolbar) findViewById(R.id.web_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("详情");
+        getSupportActionBar().setTitle(this.getString(R.string.function_detail));
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);

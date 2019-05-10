@@ -34,7 +34,7 @@
                 android:layout_marginLeft="50dp"
                 android:buttonTint="@color/colorPrimary"
                 android:checked="false"
-                android:text="男" />
+                android:text="@string/show_gender_male" />
 
             <RadioButton
                 android:id="@+id/female"
@@ -43,7 +43,7 @@
                 android:layout_marginLeft="50dp"
                 android:buttonTint="@color/colorPrimary"
                 android:checked="true"
-                android:text="女" />
+                android:text="@string/show_gender_female" />
 
         </RadioGroup>
 

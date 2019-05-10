@@ -35,19 +35,19 @@ public class FingerprintActivity extends BaseActivity {
 
     public boolean supportFingerprint() {
         if (Build.VERSION.SDK_INT < 23) {
-            Toast.makeText(this, "您的系统版本暂不支持指纹功能", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, this.getString(R.string.fingerprint_version_error), Toast.LENGTH_SHORT).show();
             return false;
         } else {
             KeyguardManager keyguardManager = getSystemService(KeyguardManager.class);
             FingerprintManager fingerprintManager = getSystemService(FingerprintManager.class);
             if (!fingerprintManager.isHardwareDetected()) {
-                Toast.makeText(this, "您的设备不支持指纹功能", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, this.getString(R.string.fingerprint_device_error), Toast.LENGTH_SHORT).show();
                 return false;
             } else if (!keyguardManager.isKeyguardSecure()) {
-                Toast.makeText(this, "您还未设置锁屏，请先设置锁屏并添加一个指纹", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, this.getString(R.string.fingerprint_lockScreen_error), Toast.LENGTH_SHORT).show();
                 return false;
             } else if (!fingerprintManager.hasEnrolledFingerprints()) {
-                Toast.makeText(this, "您至少需要在系统设置中添加一个指纹", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, this.getString(R.string.fingerprint_add_error), Toast.LENGTH_SHORT).show();
                 return false;
             }
         }

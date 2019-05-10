@@ -1,0 +1,153 @@
+<resources>
+    <string name="app_name">人臉簽到</string>
+
+    <!-- Strings related to basic operation -->
+    <string name="operation_ok">確定</string>
+    <string name="operation_cancel">取消</string>
+    <string name="operation_retry">重試</string>
+    <string name="operation_known">知道了</string>
+    <string name="operation_next">下壹步</string>
+    <string name="operation_setting">設置</string>
+    <string name="operation_succeed">操作成功</string>
+    <string name="operation_error">操作失敗</string>
+    <string name="operation_error_connectServer">未連接至服務器</string>
+
+    <!-- Strings related to function -->
+    <string name="function_attendance">簽到</string>
+    <string name="function_register">註冊</string>
+    <string name="function_management">管理</string>
+    <string name="function_settings">設置</string>
+    <string name="function_detail">詳情</string>
+    <string name="function_add_face">添加面孔</string>
+    <string name="function_edit">編輯信息</string>
+
+    <!-- Strings related to attendance -->
+    <string name="attendance_uid">工號:</string>
+    <string name="attendance_name">姓名:</string>
+    <string name="attendance_department">所屬部門:</string>
+    <string name="attendance_time">簽到時間:</string>
+    <string name="attendance_last_time">上次簽到:</string>
+    <string name="attendance_ok">簽到成功</string>
+    <string name="attendance_error">簽到失敗</string>
+    <string name="attendance_outTime">當前時間不在簽到時間區間內</string>
+    <string name="attendance_not_register">您尚未註冊</string>
+    <string name="attendance_hasAttendance">您已簽到</string>
+
+    <!-- Strings related to detect -->
+    <string name="request_permission">檢測面部需要相機權限</string>
+    <string name="denied_permission">應用被禁止訪問您的相機，將不能正常使用相機相關功能，如檢測面部。\n\n如果需要使用，
+        請在“系統設置”或授權對話框中允許“相機”權限。</string>
+    <string name="camera_error">該設備不支持Camera2 API</string>
+
+    <!-- Strings related to register -->
+    <string name="register_name">姓名</string>
+    <string name="register_gender">性別</string>
+    <string name="register_phone">手機號</string>
+    <string name="register_department">所屬部門</string>
+    <string name="register_post">職務</string>
+    <string name="register_email">郵箱</string>
+    <string name="register_must_field">*</string>
+    <string name="error_invalid_email">郵箱地址格式錯誤</string>
+    <string name="error_invalid_phone">手機號碼格式錯誤</string>
+    <string name="error_field_required">該項為必填項目</string>
+    <string name="register_addFace_succeed">已成功添加面孔</string>
+    <string name="register_info_hasSaved">信息已保存</string>
+
+    <!-- Strings related to about -->
+    <string name="about_app_os">開源相關</string>
+
+    <!-- Strings related to edit -->
+    <string name="edit_name">姓名</string>
+    <string name="edit_gender_male">男</string>
+    <string name="edit_gender_female">女</string>
+    <string name="edit_phone">手機號</string>
+    <string name="edit_department">所屬部門</string>
+    <string name="edit_post">職務</string>
+    <string name="edit_email">郵箱</string>
+    <string name="edit_progressBar_hint">正在保存修改的信息</string>
+    <string name="edit_succeed">修改成功</string>
+
+    <!-- Strings related to face record info -->
+    <string name="record_info_title">為了達到最佳效果，請註意以下事項:</string>
+    <string name="record_info_content_0">找壹個光線亮度適中的室內場所</string>
+    <string name="record_info_content_1">將設備放在與視線平齊的高度</string>
+    <string name="record_info_content_label">·</string>
+
+    <!-- Strings related to login -->
+    <string name="login_account">賬號</string>
+    <string name="login_password">密碼</string>
+    <string name="login_error_field_required">該項為必填項目</string>
+    <string name="login_remember">記住賬號和密碼</string>
+    <string name="login_buttonText">登錄</string>
+    <string name="login_loggingIn">登錄中</string>
+    <string name="login_error_ap">賬號或密碼錯誤</string>
+    <string name="login_failed">登錄失敗</string>
+
+    <!-- Strings related to management -->
+    <string name="management_hasDeleted">已刪除</string>
+    <string name="management_withdraw">撤銷</string>
+    <string name="management_withdraw_hint">已恢復刪除的信息</string>
+    <string name="management_selectAll">全選</string>
+    <string name="management_selectAll_cancel">取消全選</string>
+    <string name="management_update_succeed">信息更新成功</string>
+    <string name="management_info_null">暫無</string>
+
+    <!-- Strings related to settings -->
+    <string name="settings_routine">常規</string>
+    <string name="settings_time">簽到時間設置</string>
+    <string name="settings_time_isOpen">已開啟</string>
+    <string name="settings_time_isClose">未開啟</string>
+    <string name="settings_time_start">開始:</string>
+    <string name="settings_time_end">結束:</string>
+    <string name="settings_user_control">用戶控制功能</string>
+    <string name="settings_fingerprint">指紋身份驗證</string>
+    <string name="settings_fingerprint_hint">在此設備上操作時</string>
+    <string name="settings_account_control">賬號控制</string>
+    <string name="settings_account_control_hint">退出當前賬號</string>
+    <string name="settings_info">應用信息</string>
+    <string name="settings_info_version">應用版本</string>
+    <string name="settings_succeed">設置成功</string>
+    <string name="settings_error">設置錯誤</string>
+    <string name="settings_timeError0">請設置開始和結束時間</string>
+    <string name="settings_timeError1">請設置壹個小於結束時間的開始時間</string>
+    <string name="settings_timeError2">請設置壹個大於開始時間的結束時間</string>
+    <string name="settings_exit_account">確定退出當前賬號？</string>
+    <string name="settings_switch_language">切換語言</string>
+    <string name="settings_current_language">繁體中文</string>
+    <string name="settings_followSystemLanguage">跟隨系統</string>
+
+    <!-- Strings related to Fingerprint -->
+    <string name="fingerprint_dialog_hint">請驗證指紋</string>
+    <string name="fingerprint_succeed">指紋驗證成功</string>
+    <string name="fingerprint_failed">指紋驗證失敗，請再試壹次</string>
+    <string name="fingerprint_version_error">您的系統版本暫不支持指紋功能</string>
+    <string name="fingerprint_device_error">您的設備不支持指紋功能</string>
+    <string name="fingerprint_lockScreen_error">您還未設置鎖屏，請先設置鎖屏並添加壹個指紋</string>
+    <string name="fingerprint_add_error">您至少需要在系統設置中添加壹個指紋</string>
+
+    <!-- Strings related to FragmentCamera -->
+    <string name="fragment_camera_hint">請確保您的頭頂和下巴底部均位於圓圈範圍內</string>
+
+    <!-- Strings related to InformationDetail -->
+    <string name="information_detail_phone">手機號:\t\t\t\t\t\t\t\t\t</string>
+    <string name="information_detail_department">所屬部門:\t\t\t\t\t\t\t\t</string>
+    <string name="information_detail_post">職務:\t\t\t\t\t\t\t\t\t\t\t</string>
+    <string name="information_detail_email">郵箱:\t\t\t\t\t\t\t\t\t\t\t</string>
+
+    <!-- Strings related to SelectGender -->
+    <string name="select_gender_hint">性別</string>
+    <string name="select_gender_male">男</string>
+    <string name="select_gender_female">女</string>
+    <string name="show_gender_male">男</string>
+    <string name="show_gender_female">女</string>
+
+    <!-- Strings related to shortcuts -->
+    <string name="register_shortcut_long_name">註冊</string>
+    <string name="register_shortcut_short_name">註冊</string>
+    <string name="management_shortcut_long_name">管理</string>
+    <string name="management_shortcut_short_name">管理</string>
+    <string name="settings_shortcut_long_name">設置</string>
+    <string name="settings_shortcut_short_name">設置</string>
+    <string name="shortcut_disabled">錯誤</string>
+
+</resources>

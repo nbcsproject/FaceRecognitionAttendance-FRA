@@ -27,7 +27,7 @@ public class OSAboutActivity extends BaseActivity implements OSAboutAdapter.onIt
         Slidr.attach(this, mSlidrConfig);
         Toolbar toolbar = (Toolbar) findViewById(R.id.os_about_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("开源相关");
+        getSupportActionBar().setTitle(this.getString(R.string.about_app_os));
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -48,7 +48,7 @@ public class OSAboutActivity extends BaseActivity implements OSAboutAdapter.onIt
                 new About("OptionFrame", "q805699513", "一款Android弹出框、对话框、Dialog、PopupWindow."),
                 new About("CircleImageView", "hdodenhof", "A fast circular ImageView perfect for profile images."),
                 new About("Okhttp", "square", "An HTTP & HTTP/2 client for Android and Java applications."),
-                new About("Gson", "Google", "Gson is a Java library that can be used to convert Java Objects into their JSON representation. It can also be used to convert a JSON string to an equivalent Java object. Gson can work with arbitrary Java objects including pre-existing objects that you do not have source-code of."),
+                new About("Gson", "Google", "Gson is a Java library that can be used to convert Java Objects into their JSON representation."),
                 new About("Slidr", "r0adkll", "Easily add slide-to-dismiss functionality to your Activity.")};
         urlList.add("https://github.com/wasabeef/glide-transformations");
         urlList.add("https://github.com/LitePalFramework/LitePal");

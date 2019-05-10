@@ -74,7 +74,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Scanner;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
@@ -231,9 +230,9 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                                 int second = calendar.get(Calendar.SECOND);
                                 final OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(getActivity());
                                 if (isSetTime && (hour < startHour || hour > endHour || (hour == startHour && minute < startMinute) || (hour == endHour && minute > endMinute))) {
-                                    mMaterialDialog.setTitle("签到失败").setTitleTextColor(R.color.noFaceOwner).setTitleTextSize((float) 22.5)
-                                            .setMessage("当前时间不在签到时间区间内").setMessageTextSize((float) 16.5)
-                                            .setPositiveButton("确定", new View.OnClickListener() {
+                                    mMaterialDialog.setTitle(getActivity().getString(R.string.attendance_error)).setTitleTextColor(R.color.noFaceOwner).setTitleTextSize((float) 22.5)
+                                            .setMessage(getActivity().getString(R.string.attendance_outTime)).setMessageTextSize((float) 16.5)
+                                            .setPositiveButton(getActivity().getString(R.string.operation_ok), new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
                                                     mMaterialDialog.dismiss();
@@ -286,9 +285,9 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                                         attendanceTime = year + "." + showMonth + "." + showDay + " " + showHour + ":" + showMinute + ":" + showSecond;
                                         detectInBackground();
                                     } else {
-                                        mMaterialDialog.setTitle("签到失败").setTitleTextColor(R.color.noFaceOwner).setTitleTextSize((float) 22.5)
-                                                .setMessage("您尚未注册").setMessageTextSize((float) 16.5)
-                                                .setPositiveButton("确定", new View.OnClickListener() {
+                                        mMaterialDialog.setTitle(R.string.attendance_error).setTitleTextColor(R.color.noFaceOwner).setTitleTextSize((float) 22.5)
+                                                .setMessage(R.string.attendance_not_register).setMessageTextSize((float) 16.5)
+                                                .setPositiveButton(R.string.operation_ok, new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
                                                         mMaterialDialog.dismiss();
@@ -947,8 +946,8 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             final Fragment parent = getParentFragment();
             return new AlertDialog.Builder(getActivity())
-                    .setMessage(R.string.denied_permission)
-                    .setPositiveButton("知道了", new DialogInterface.OnClickListener() {
+                    .setMessage(getActivity().getString(R.string.denied_permission))
+                    .setPositiveButton(getActivity().getString(R.string.operation_known), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
@@ -965,8 +964,9 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                 case 0:
                     hasCaptured = true;
                     final OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(getActivity());
-                    mMaterialDialog.setTitle("操作成功").setTitleTextColor(R.color.colorPrimary).setMessage("已成功添加面孔").setMessageTextSize((float) 16.5)
-                            .setPositiveButton("确定", new View.OnClickListener() {
+                    mMaterialDialog.setTitle(getActivity().getString(R.string.operation_succeed)).setTitleTextColor(R.color.colorPrimary)
+                            .setMessage(getActivity().getString(R.string.register_addFace_succeed)).setMessageTextSize((float) 16.5)
+                            .setPositiveButton(getActivity().getString(R.string.operation_ok), new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     mMaterialDialog.dismiss();
@@ -981,8 +981,9 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                 case 1:
                     hasCaptured = true;
                     final OptionMaterialDialog errorDialog = new OptionMaterialDialog(getActivity());
-                    errorDialog.setTitle("操作失败").setTitleTextColor(R.color.noFaceOwner).setMessage("无法连接至服务器").setMessageTextSize((float) 16.5)
-                            .setPositiveButton("重试", new View.OnClickListener() {
+                    errorDialog.setTitle(getActivity().getString(R.string.operation_error)).setTitleTextColor(R.color.noFaceOwner)
+                            .setMessage(getActivity().getString(R.string.operation_error_connectServer)).setMessageTextSize((float) 16.5)
+                            .setPositiveButton(getActivity().getString(R.string.operation_retry), new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     errorDialog.dismiss();
@@ -990,7 +991,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                                 }
                             })
                             .setPositiveButtonTextColor(R.color.noFaceOwner)
-                            .setNegativeButton("取消", new View.OnClickListener() {
+                            .setNegativeButton(getActivity().getString(R.string.operation_cancel), new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     Activity activity = getActivity();
@@ -1021,9 +1022,9 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                     postInBackground();
                     break;
                 case 1:
-                    mMaterialDialog.setTitle("签到失败").setTitleTextColor(R.color.noFaceOwner).setTitleTextSize((float) 22.5)
-                            .setMessage("您尚未注册").setMessageTextSize((float) 16.5)
-                            .setPositiveButton("确定", new View.OnClickListener() {
+                    mMaterialDialog.setTitle(getActivity().getString(R.string.attendance_error)).setTitleTextColor(R.color.noFaceOwner).setTitleTextSize((float) 22.5)
+                            .setMessage(getActivity().getString(R.string.attendance_not_register)).setMessageTextSize((float) 16.5)
+                            .setPositiveButton(getActivity().getString(R.string.operation_ok), new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     mMaterialDialog.dismiss();
@@ -1042,10 +1043,31 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                     break;
                 case 2:
                     faces = LitePal.where("uid = ? and pid = ?", faces.get(0).getUid(), currentPid).find(com.android.fra.db.Face.class);
-                    mMaterialDialog.setTitle("您已签到").setTitleTextColor(R.color.noFaceOwner).setTitleTextSize((float) 22.5)
-                            .setMessage("工号: " + faces.get(0).getUid() + "\n" + "姓名: " + faces.get(0).getName() + "\n" + "所属部门: " + faces.get(0).getDepartment()
-                                    + "\n" + "上次签到: " + faces.get(0).getCurrentCheckTime()).setMessageTextSize((float) 16.5)
-                            .setPositiveButton("确定", new View.OnClickListener() {
+                    mMaterialDialog.setTitle(getActivity().getString(R.string.attendance_hasAttendance)).setTitleTextColor(R.color.noFaceOwner).setTitleTextSize((float) 22.5)
+                            .setMessage(getActivity().getString(R.string.attendance_uid) + " " + faces.get(0).getUid() + "\n" + getActivity().getString(R.string.attendance_name) + " "
+                                    + faces.get(0).getName() + "\n" + getActivity().getString(R.string.attendance_department) + " " + faces.get(0).getDepartment()
+                                    + "\n" + getActivity().getString(R.string.attendance_last_time) + " " + faces.get(0).getCurrentCheckTime()).setMessageTextSize((float) 16.5)
+                            .setPositiveButton(getActivity().getString(R.string.operation_ok), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mMaterialDialog.dismiss();
+                                    hasCaptured = false;
+                                }
+                            })
+                            .setPositiveButtonTextColor(R.color.noFaceOwner)
+                            .show();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mMaterialDialog.dismiss();
+                            hasCaptured = false;
+                        }
+                    }, 3000);
+                    break;
+                case 3:
+                    mMaterialDialog.setTitle(getActivity().getString(R.string.attendance_error)).setTitleTextColor(R.color.noFaceOwner).setTitleTextSize((float) 22.5)
+                            .setMessage(getActivity().getString(R.string.operation_error_connectServer)).setMessageTextSize((float) 16.5)
+                            .setPositiveButton(getActivity().getString(R.string.operation_ok), new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     mMaterialDialog.dismiss();
@@ -1075,10 +1097,11 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
             final OptionMaterialDialog mMaterialDialog = new OptionMaterialDialog(getActivity());
             switch (msg.what) {
                 case 0:
-                    mMaterialDialog.setTitle("签到成功").setTitleTextColor(R.color.colorPrimary).setTitleTextSize((float) 22.5)
-                            .setMessage("工号: " + faces.get(0).getUid() + "\n" + "姓名: " + faces.get(0).getName() + "\n" + "所属部门: " + faces.get(0).getDepartment()
-                                    + "\n" + "签到时间: " + attendanceTime).setMessageTextSize((float) 16.5)
-                            .setPositiveButton("确定", new View.OnClickListener() {
+                    mMaterialDialog.setTitle(getActivity().getString(R.string.attendance_ok)).setTitleTextColor(R.color.colorPrimary).setTitleTextSize((float) 22.5)
+                            .setMessage(getActivity().getString(R.string.attendance_uid) + " " + faces.get(0).getUid() + "\n" + getActivity().getString(R.string.attendance_name) + " "
+                                    + faces.get(0).getName() + "\n" + getActivity().getString(R.string.attendance_department) + " " + faces.get(0).getDepartment()
+                                    + "\n" + getActivity().getString(R.string.attendance_time) + " " + attendanceTime).setMessageTextSize((float) 16.5)
+                            .setPositiveButton(getActivity().getString(R.string.operation_ok), new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     mMaterialDialog.dismiss();
@@ -1097,9 +1120,9 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                     }, 3000);
                     break;
                 case 1:
-                    mMaterialDialog.setTitle("签到失败").setTitleTextColor(R.color.noFaceOwner).setTitleTextSize((float) 22.5)
-                            .setMessage("未连接至服务器").setMessageTextSize((float) 16.5)
-                            .setPositiveButton("确定", new View.OnClickListener() {
+                    mMaterialDialog.setTitle(getActivity().getString(R.string.attendance_error)).setTitleTextColor(R.color.noFaceOwner).setTitleTextSize((float) 22.5)
+                            .setMessage(getActivity().getString(R.string.operation_error_connectServer)).setMessageTextSize((float) 16.5)
+                            .setPositiveButton(getActivity().getString(R.string.operation_ok), new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     mMaterialDialog.dismiss();
@@ -1233,12 +1256,12 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Ac
                     e.printStackTrace();
                     if (e instanceof SocketTimeoutException) {
                         Message msg = new Message();
-                        msg.what = 2;
+                        msg.what = 3;
                         detectHandler.sendMessage(msg);
                     }
                     if (e instanceof ConnectException) {
                         Message msg = new Message();
-                        msg.what = 2;
+                        msg.what = 3;
                         detectHandler.sendMessage(msg);
                     }
                 }

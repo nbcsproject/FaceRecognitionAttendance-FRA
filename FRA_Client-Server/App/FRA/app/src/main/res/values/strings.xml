@@ -1,17 +1,43 @@
 <resources>
     <string name="app_name">人脸签到</string>
 
+    <!-- Strings related to basic operation -->
+    <string name="operation_ok">确定</string>
+    <string name="operation_cancel">取消</string>
+    <string name="operation_retry">重试</string>
+    <string name="operation_known">知道了</string>
+    <string name="operation_next">下一步</string>
+    <string name="operation_setting">设置</string>
+    <string name="operation_succeed">操作成功</string>
+    <string name="operation_error">操作失败</string>
+    <string name="operation_error_connectServer">未连接至服务器</string>
+
+    <!-- Strings related to function -->
+    <string name="function_attendance">签到</string>
+    <string name="function_register">注册</string>
+    <string name="function_management">管理</string>
+    <string name="function_settings">设置</string>
+    <string name="function_detail">详情</string>
+    <string name="function_add_face">添加面孔</string>
+    <string name="function_edit">编辑信息</string>
+
+    <!-- Strings related to attendance -->
+    <string name="attendance_uid">工号:</string>
+    <string name="attendance_name">姓名:</string>
+    <string name="attendance_department">所属部门:</string>
+    <string name="attendance_time">签到时间:</string>
+    <string name="attendance_last_time">上次签到:</string>
+    <string name="attendance_ok">签到成功</string>
+    <string name="attendance_error">签到失败</string>
+    <string name="attendance_outTime">当前时间不在签到时间区间内</string>
+    <string name="attendance_not_register">您尚未注册</string>
+    <string name="attendance_hasAttendance">您已签到</string>
+
     <!-- Strings related to detect -->
     <string name="request_permission">检测面部需要相机权限</string>
     <string name="denied_permission">应用被禁止访问您的相机，将不能正常使用相机相关功能，如检测面部。\n\n如果需要使用，
         请在“系统设置”或授权对话框中允许“相机”权限。</string>
     <string name="camera_error">该设备不支持Camera2 API</string>
-
-    <!-- Strings related to login -->
-    <string name="login_account">账号</string>
-    <string name="login_password">密码</string>
-    <string name="login_error_field_required">该项为必填项目</string>
-    <string name="login_remember">记住账号和密码</string>
 
     <!-- Strings related to register -->
     <string name="register_name">姓名</string>
@@ -24,17 +50,102 @@
     <string name="error_invalid_email">邮箱地址格式错误</string>
     <string name="error_invalid_phone">手机号码格式错误</string>
     <string name="error_field_required">该项为必填项目</string>
+    <string name="register_addFace_succeed">已成功添加面孔</string>
+    <string name="register_info_hasSaved">信息已保存</string>
+
+    <!-- Strings related to about -->
+    <string name="about_app_os">开源相关</string>
+
+    <!-- Strings related to edit -->
+    <string name="edit_name">姓名</string>
+    <string name="edit_gender_male">男</string>
+    <string name="edit_gender_female">女</string>
+    <string name="edit_phone">手机号</string>
+    <string name="edit_department">所属部门</string>
+    <string name="edit_post">职务</string>
+    <string name="edit_email">邮箱</string>
+    <string name="edit_progressBar_hint">正在保存修改的信息</string>
+    <string name="edit_succeed">修改成功</string>
 
     <!-- Strings related to face record info -->
-    <string name="record_info_name">添加面孔</string>
     <string name="record_info_title">为了达到最佳效果，请注意以下事项:</string>
     <string name="record_info_content_0">找一个光线亮度适中的室内场所</string>
     <string name="record_info_content_1">将设备放在与视线平齐的高度</string>
     <string name="record_info_content_label">·</string>
 
+    <!-- Strings related to login -->
+    <string name="login_account">账号</string>
+    <string name="login_password">密码</string>
+    <string name="login_error_field_required">该项为必填项目</string>
+    <string name="login_remember">记住账号和密码</string>
+    <string name="login_buttonText">登录</string>
+    <string name="login_loggingIn">登录中</string>
+    <string name="login_error_ap">账号或密码错误</string>
+    <string name="login_failed">登录失败</string>
+
+    <!-- Strings related to management -->
+    <string name="management_hasDeleted">已删除</string>
+    <string name="management_withdraw">撤销</string>
+    <string name="management_withdraw_hint">已恢复删除的信息</string>
+    <string name="management_selectAll">全选</string>
+    <string name="management_selectAll_cancel">取消全选</string>
+    <string name="management_update_succeed">信息更新成功</string>
+    <string name="management_info_null">暂无</string>
+
+    <!-- Strings related to settings -->
+    <string name="settings_routine">常规</string>
+    <string name="settings_time">签到时间设置</string>
+    <string name="settings_time_isOpen">已开启</string>
+    <string name="settings_time_isClose">未开启</string>
+    <string name="settings_time_start">开始:</string>
+    <string name="settings_time_end">结束:</string>
+    <string name="settings_user_control">用户控制功能</string>
+    <string name="settings_fingerprint">指纹身份验证</string>
+    <string name="settings_fingerprint_hint">在此设备上操作时</string>
+    <string name="settings_account_control">账号控制</string>
+    <string name="settings_account_control_hint">退出当前账号</string>
+    <string name="settings_info">应用信息</string>
+    <string name="settings_info_version">应用版本</string>
+    <string name="settings_succeed">设置成功</string>
+    <string name="settings_error">设置错误</string>
+    <string name="settings_timeError0">请设置开始和结束时间</string>
+    <string name="settings_timeError1">请设置一个小于结束时间的开始时间</string>
+    <string name="settings_timeError2">请设置一个大于开始时间的结束时间</string>
+    <string name="settings_exit_account">确定退出当前账号？</string>
+    <string name="settings_switch_language">切换语言</string>
+    <string name="settings_current_language">简体中文</string>
+    <string name="settings_followSystemLanguage">跟随系统</string>
+
+    <!-- Strings related to Fingerprint -->
+    <string name="fingerprint_dialog_hint">请验证指纹</string>
+    <string name="fingerprint_succeed">指纹验证成功</string>
+    <string name="fingerprint_failed">指纹验证失败，请再试一次</string>
+    <string name="fingerprint_version_error">您的系统版本暂不支持指纹功能</string>
+    <string name="fingerprint_device_error">您的设备不支持指纹功能</string>
+    <string name="fingerprint_lockScreen_error">您还未设置锁屏，请先设置锁屏并添加一个指纹</string>
+    <string name="fingerprint_add_error">您至少需要在系统设置中添加一个指纹</string>
+
+    <!-- Strings related to FragmentCamera -->
+    <string name="fragment_camera_hint">请确保您的头顶和下巴底部均位于圆圈范围内</string>
+
+    <!-- Strings related to InformationDetail -->
+    <string name="information_detail_phone">手机号:\t\t\t\t\t\t\t\t\t</string>
+    <string name="information_detail_department">所属部门:\t\t\t\t\t\t\t\t</string>
+    <string name="information_detail_post">职务:\t\t\t\t\t\t\t\t\t\t\t</string>
+    <string name="information_detail_email">邮箱:\t\t\t\t\t\t\t\t\t\t\t</string>
+
+    <!-- Strings related to SelectGender -->
+    <string name="select_gender_hint">性别</string>
+    <string name="select_gender_male">男</string>
+    <string name="select_gender_female">女</string>
+    <string name="show_gender_male">男</string>
+    <string name="show_gender_female">女</string>
+
     <!-- Strings related to shortcuts -->
     <string name="register_shortcut_long_name">注册</string>
     <string name="register_shortcut_short_name">注册</string>
+    <string name="management_shortcut_long_name">管理</string>
+    <string name="management_shortcut_short_name">管理</string>
     <string name="settings_shortcut_long_name">设置</string>
     <string name="settings_shortcut_short_name">设置</string>
     <string name="shortcut_disabled">错误</string>

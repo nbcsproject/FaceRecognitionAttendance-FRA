@@ -53,11 +53,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
                         android:gravity="center"
-                        android:text="常规"
+                        android:text="@string/settings_routine"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <RelativeLayout
+                        android:id="@+id/switch_time_setting"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -71,7 +72,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="签到时间设置"
+                                android:text="@string/settings_time"
                                 android:textColor="@color/blackText"
                                 android:textSize="18sp" />
 
@@ -105,7 +106,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="开始:"
+                            android:text="@string/settings_time_start"
                             android:textSize="16sp" />
 
                         <Button
@@ -120,7 +121,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="15dp"
-                            android:text="结束:"
+                            android:text="@string/settings_time_end"
                             android:textSize="16sp" />
 
                         <Button
@@ -144,7 +145,7 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="10dp"
                         android:gravity="center"
-                        android:text="用户控制功能"
+                        android:text="@string/settings_user_control"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -164,14 +165,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="指纹身份验证"
+                                android:text="@string/settings_fingerprint"
                                 android:textColor="@color/blackText"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="在此设备上操作时"
+                                android:text="@string/settings_fingerprint_hint"
                                 android:textSize="16sp" />
 
                         </LinearLayout>
@@ -196,6 +197,7 @@
                         android:visibility="gone">
 
                         <RelativeLayout
+                            android:id="@+id/fingerprint_register_relativeLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
@@ -204,7 +206,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="注册"
+                                android:text="@string/function_register"
                                 android:textSize="16sp" />
 
                             <android.support.v7.widget.SwitchCompat
@@ -229,7 +231,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="管理"
+                                android:text="@string/function_management"
                                 android:textSize="16sp" />
 
                             <android.support.v7.widget.SwitchCompat
@@ -244,6 +246,7 @@
                         </RelativeLayout>
 
                         <RelativeLayout
+                            android:id="@+id/fingerprint_settings_relativeLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
@@ -252,7 +255,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="设置"
+                                android:text="@string/function_settings"
                                 android:textSize="16sp" />
 
                             <android.support.v7.widget.SwitchCompat
@@ -275,7 +278,7 @@
                         android:visibility="gone" />
 
                     <RelativeLayout
-                        android:id="@+id/change_login_state"
+                        android:id="@+id/switch_language"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?android:attr/selectableItemBackground"
@@ -289,15 +292,47 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="账号控制"
+                                android:text="@string/settings_switch_language"
+                                android:textColor="@color/blackText"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@+id/current_language"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/settings_current_language"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/change_login_state"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/settings_account_control"
                                 android:textColor="@color/blackText"
                                 android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="退出当前账号"
+                                android:text="@string/settings_account_control_hint"
                                 android:textSize="16sp" />
+
                         </LinearLayout>
 
                     </RelativeLayout>
@@ -313,7 +348,7 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="10dp"
                         android:gravity="center"
-                        android:text="应用信息"
+                        android:text="@string/settings_info"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -332,7 +367,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="应用版本"
+                                android:text="@string/settings_info_version"
                                 android:textColor="@color/blackText"
                                 android:textSize="18sp" />
 
