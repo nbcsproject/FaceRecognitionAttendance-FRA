@@ -2,7 +2,7 @@
 <p align="left">
 	<img src="https://github.com/nbcsproject/FaceRecognitionAttendance-FRA/blob/master/FRA_Client-Server/App/Screenshots/icon.png" alt="Sample"  width="100" height="100"></p>
 
-This client application can help you streamline your employee sign-in process by simply running it on an Android device that supports front-facing cameras.
+This client application can help you streamline your employee sign-in process by simply running it on an Android device that supports front camera.
 
 ## Interface
 
@@ -91,7 +91,7 @@ After opening this application, you will see the following interfaces:
 
 - Fix popup prompt when not connected to the server at attendance
 - Open multi-language switching
-- Set interface UI logic adjustment
+- Settings interface UI logic adjustment
 - Fix known issues
 
 ### 0.9.3
