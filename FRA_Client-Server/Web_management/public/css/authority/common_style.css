@@ -251,3 +251,25 @@ a:hover {
     margin-left: 5px;
     cursor: pointer;
 }
+
+.female {
+    color: deeppink;
+    font-weight: bolder
+}
+
+.male {
+    color: dodgerblue;
+    font-weight: bolder
+}
+
+.yes_status {
+    color: green;
+    font-size: 30px;
+    font-weight: bold
+}
+
+.no_status {
+    color: red;
+    font-size: 30px;
+    font-weight: bold
+}

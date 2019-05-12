@@ -5,9 +5,12 @@ var session = require('express-session')
 
 //  加载路由
 var account = require('./routes/account')
-// var main = require('./routes/main')
+var main = require('./routes/main')
 var user = require('./routes/user')
-var app_client = require('./routes/app_remote')
+var app_remote = require('./routes/app_remote')
+var check = require('./routes/check')
+
+
 var app = express()
 
 app.use('/public/', express.static(path.join(__dirname, './public/')))
@@ -28,10 +31,13 @@ app.use(session({
 
 // 把路由挂到app 中
 app.use(account)
-// app.use(main)
+app.use(main)
 app.use(user)
-app.use(app_client)
-
+app.use(app_remote)
+app.use(check)
+app.use((req, res, next) => {
+    res.render('404.html')
+})
 
 app.listen(3000, function () {
     console.log('Running...');

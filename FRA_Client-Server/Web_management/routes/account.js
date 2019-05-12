@@ -27,8 +27,6 @@ router.get('/', function (req, res) {
     })
 })
 
-router.post('/', function (req, res) {
-})
 
 router.get('/login', function (req, res) {
     return res.render('login.html')
@@ -37,8 +35,8 @@ router.get('/login', function (req, res) {
 router.post('/login', function (req, res) {
 
     var body = req.body
-    // 账号密码为空验证
 
+    // 账号密码为空验证
     if (body.account === '') {
         return res.status(500).json({
             err_code: 10,
@@ -46,7 +44,7 @@ router.post('/login', function (req, res) {
         })
     } else if (body.password === '') {
         return res.status(500).json({
-            err_code: 15,
+            err_code: 11,
             message: 'Password cannot be empty...'
         })
     }
@@ -54,19 +52,26 @@ router.post('/login', function (req, res) {
     body.password = md5(md5(body.password))
 
     pool.getConnection(function (err, connection) {
+        if (err) {
+            return res.status(500).json({
+                err_code: 3306,
+                message: 'GetConnection  failed...'
+            })
+        }
         connection.query(accountSQL.queryLogin, [body.account, body.password], function (err, result) {
             if (err) {
                 return res.status(500).json({
-                    success: false,
-                    message: 'Internal error...'
+                    err_code: 3300,
+                    message: 'SQL-query failed...'
                 })
             }
             if (JSON.stringify(result) == '[]' || JSON.stringify(result) == '{}') {
-                return res.status(200).json({
-                    err_code: 1,
+                return res.status(500).json({
+                    err_code: 12,
                     message: 'Account or password is invaild...'
                 })
             }
+            result = JSON.parse(JSON.stringify(result))
             req.session.account = result[0]
             return res.status(200).json({
                 err_code: 0,
@@ -76,7 +81,6 @@ router.post('/login', function (req, res) {
         connection.release()
     })
 })
-
 
 router.get('/register', function (req, res) {
     return res.render('register.html')
@@ -95,18 +99,23 @@ router.post('/register', function (req, res) {
         })
     } else if (body.password === '') {
         return res.status(500).json({
-            err_code: 15,
+            err_code: 11,
             message: 'Password cannot be empty...'
         })
     }
 
     pool.getConnection(function (err, connection) {
+        if (err) {
+            return res.status(500).json({
+                err_code: 3306,
+                message: 'GetConnection  failed...'
+            })
+        }
         connection.query(accountSQL.queryAccount, [body.account], function (err, result) {
-
             if (err) {
                 return res.status(500).json({
-                    success: false,
-                    message: 'Internal error...'
+                    err_code: 3300,
+                    message: 'SQL-query failed...'
                 })
             }
             /* 2. 操作数据
@@ -114,9 +123,9 @@ router.post('/register', function (req, res) {
                如果已存在，不允许注册
                如果不存在，注册新用户 */
             if (!(JSON.stringify(result) == '[]' || JSON.stringify(result) == '{}')) {
-                return res.status(200).json({
-                    err_code: 1,
-                    message: 'Email or nickname already exists..'
+                return res.status(500).json({
+                    err_code: 13,
+                    message: 'Account already exists..'
                 })
             }
             // 对密码加密存储
@@ -125,8 +134,8 @@ router.post('/register', function (req, res) {
             connection.query(accountSQL.insert, [body.account, body.password], function (err, result) {
                 if (err) {
                     return res.status(500).json({
-                        success: false,
-                        message: 'Internal error...'
+                        err_code: 3300,
+                        message: 'SQL-query failed...'
                     })
                 }
                 // 3. 发送响应
@@ -142,37 +151,50 @@ router.post('/register', function (req, res) {
 })
 
 router.get('/changePassword', function (req, res) {
+    if (!req.session.account) {
+        return res.render('404.html')
+    }
+
     return res.render('change_password.html', {
         account: req.session.account
     })
 })
 
 router.post('/changePassword', function (req, res) {
+    if (!req.session.account) {
+        return res.render('404.html')
+    }
 
     var body = req.body
-    // 账号密码为空验证
 
+    // 账号密码为空验证
     if ((body.old_password === '') || (body.new_password === '')) {
         return res.status(500).json({
-            err_code: 15,
+            err_code: 11,
             message: 'Password cannot be empty...'
         })
     }
 
     body.old_password = md5(md5(body.old_password))
-    // 验证原来密码是否正确
 
+    // 验证原来密码是否正确
     pool.getConnection(function (err, connection) {
+        if (err) {
+            return res.status(500).json({
+                err_code: 3306,
+                message: 'GetConnection  failed...'
+            })
+        }
         connection.query(accountSQL.queryLogin, [body.account, body.old_password], function (err, result) {
             if (err) {
                 return res.status(500).json({
-                    success: false,
-                    message: 'Internal error...'
+                    err_code: 3300,
+                    message: 'SQL-query failed...'
                 })
             }
             if (JSON.stringify(result) == '[]' || JSON.stringify(result) == '{}') {
-                return res.status(200).json({
-                    err_code: 1,
+                return res.status(500).json({
+                    err_code: 12,
                     message: 'Account or password is invaild...'
                 })
             }
@@ -181,16 +203,17 @@ router.post('/changePassword', function (req, res) {
             connection.query(accountSQL.updatePassword, [body.new_password, body.account], function (err, result) {
                 if (err) {
                     return res.status(500).json({
-                        success: false,
-                        message: 'Internal error...'
+                        err_code: 3300,
+                        message: 'SQL-query failed...'
                     })
                 }
-            })
-            // 重置登录session
-            req.session.account = null
-            return res.status(200).json({
-                err_code: 0,
-                message: 'Ok'
+
+                // 重置登录session
+                req.session.account = null
+                return res.status(200).json({
+                    err_code: 0,
+                    message: 'Ok'
+                })
             })
         })
         connection.release()
@@ -201,6 +224,5 @@ router.get('/logout', function (req, res) {
     req.session.account = null
     return res.redirect('/login')
 })
-
 
 module.exports = router

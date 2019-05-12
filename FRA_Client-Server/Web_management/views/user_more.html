@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>用户管理系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../public/css/authority/basic_layout.css" rel="stylesheet" type="text/css">
+    <link href="../public/css/authority/common_style.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src='../node_modules/jquery/dist/jquery.js'></script>
+    <script type="text/javascript" src='../node_modules/art-dialog/dist/dialog.js'></script>
+
+    <script type="text/javascript" src="../public/js/commonAll.js"></script>
+    <script type="text/javascript" src='../public/js/user/user_more_js.js'></script>
+
+</head>
+<body>
+<form id="user_edit" name="edit" action="/main/user_edit" method="post">
+    <div id="container">
+        <div id="nav_links">
+            当前位置&nbsp;:&nbsp;<span style="color: #1A5CC6;">查看更多</span>
+
+        </div>
+        <div class="ui_content">
+            <table cellspacing="0" cellpadding="0" width="100%" align="left" border="0">
+                <tr>
+                    <td class="ui_text_rt" width="80">工号&nbsp;:&nbsp;</td>
+                    <td class="ui_text_lt"> {{user.uid}}</td>
+                </tr>
+                <tr>
+                    <td class="ui_text_rt" width="80">姓名&nbsp;:&nbsp;</td>
+                    <td class="ui_text_lt"> {{user.name}}</td>
+                </tr>
+                <tr>
+                    <td class="ui_text_rt" width="80">性别&nbsp;:&nbsp;</td>
+                    <td class="ui_text_lt">
+                        {{if user.gender =='female' }}
+                        女
+                        {{else}}
+                        男
+                        {{/if}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ui_text_rt" width="80">所属部门&nbsp;:&nbsp;</td>
+                    <td class="ui_text_lt"> {{user.department}}</td>
+                </tr>
+                <tr>
+                    <td class="ui_text_rt" width="80">职务&nbsp;:&nbsp;</td>
+                    <td class="ui_text_lt"> {{user.department}}</td>
+                </tr>
+                <tr>
+                    <td class="ui_text_rt" width="80">手机号&nbsp;:&nbsp;</td>
+                    <td class="ui_text_lt"> {{user.phone}}</td>
+                </tr>
+                <tr>
+                    <td class="ui_text_rt" width="80">邮箱&nbsp;:&nbsp;</td>
+                    <td class="ui_text_lt"> {{user.email}}</td>
+                </tr>
+                <tr>
+                    <td class="ui_text_lt">
+                        <input id="cancelbutton" type="button" value="取消" class="ui_input_btn01"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>
+</body>
+</html>

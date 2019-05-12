@@ -13,7 +13,7 @@
     <script type="text/javascript" src="../node_modules/art-dialog/dist/dialog.js"></script>
 
     <script type="text/javascript" src="../public/js/commonAll.js"></script>
-    <script type="text/javascript" src="../public/js/user/user_list_js.js"></script>
+    <script type="text/javascript" src="../public/js/check_list_js.js"></script>
     <title>用户管理系统</title>
     <style>
         .alt td {
@@ -61,14 +61,12 @@
                         <th>姓名</th>
                         <th>性别</th>
                         <th>所属部门</th>
-                        <th>是否签到</th>
-                        <th>最近一次签到时间</th>
-
+                        <th>签到时间</th>
                         <th>操作</th>
                     </tr>
                     {{each users}}
                     <tr>
-                        <td><input type="checkbox" name="IDCheck" value="{{$value.uid}}"/></td>
+                        <td><input type="checkbox" name="IDCheck" value="{{$value.id}}"/></td>
                         <td>{{$value.uid }}</td>
                         <td>{{$value.name }}</td>
 
@@ -80,21 +78,13 @@
 
                         <td>{{$value.department }}</td>
 
-                        {{if $value.check_status==1 }}
-                        <td><span class="yes_status">√</span></td>
-                        {{else}}
-                        <td><span class="no_status">×</span></td>
-                        {{/if}}
-
-                        {{if $value.current_checktime==null }}
+                        {{if $value.check_time==null }}
                         <td><span>—</span></td>
                         {{else}}
-                        <td>{{$value.current_checktime }}</td>
+                        <td>{{$value.check_time }}</td>
                         {{/if}}
                         <td>
-                            <a href="/main/user_more?uid={{$value.uid}}" class="fancybox">详情</a>&nbsp;|
-                            <a href="/main/user_edit?uid={{$value.uid}}" class="fancybox">编辑</a>&nbsp;|
-                            <a href="javascript:" id="{{$value.uid}}" class="delete">删除</a>
+                            <a href="javascript:" id="{{$value.id}}" class="delete">删除</a>
                         </td>
                     </tr>
                     {{/each }}

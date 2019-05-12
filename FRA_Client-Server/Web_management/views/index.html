@@ -6,18 +6,19 @@
     <link rel="stylesheet" href="../public/css/authority/main_css.css">
     <link rel="stylesheet" href="../public/css/authority/zTreeStyle.css">
 
-    <script type="text/javascript" src="../public/js/jquery/jquery-1.7.1.js"></script>
-    <script type="text/javascript" src="../public/js/zTree/jquery.ztree.core-3.2.js"></script>
-    <script type="text/javascript" src="../public/js/authority/commonAll.js"></script>
-    <script type="text/javascript" src="../public/js/dialog.js"></script>
-    <script type="text/javascript" src="../public/js/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="../node_modules/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../node_modules/@ztree/ztree_v3/js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="../node_modules/socket.io-client/dist/socket.io.js"></script>
+    <script type="text/javascript" src="../node_modules/art-dialog/dist/dialog.js"></script>
+
+    <script type="text/javascript" src="../public/js/commonAll.js"></script>
     <script type="text/javascript" src="../public/js/main.js"></script>
 
 </head>
-<body onload="getDate01()">
+<body onload="getDate01();socket();">
 <div id="top">
     <div id="top_logo">
-        <span>FRA 管理系统</span>
+        <a href="/" style="text-decoration:none;out-line: none;color: #FFF;">FRA 管理系统</a>
         <!--<img alt = "logo" src = "img/common/logo.png">-->
     </div>
     <div id="top_links">
@@ -25,7 +26,7 @@
             <ul>
                 <li>
                     <img alt="当前用户" src="../public/img/common/user.png">
-                    <span> {{ account.account  }}</span>
+                    <span> {{ account.account }}</span>
                 </li>
                 <li>
                     <img alt="今天是" src="../public/img/common/date.png">
@@ -52,10 +53,14 @@
                 title="业务模块">
                 <img alt="业务模块" title="业务模块" src="../public/img/common/1_hover.png">
             </li>
-            <li id="left_tab2" onClick="javascript:switchTab('TabPage2','left_tab2');" title="系统管理">
+            <li id="left_tab2"
+                onClick="javascript:switchTab('TabPage2','left_tab2');"
+                title="系统管理">
                 <img alt="系统管理" title="系统管理" src="../public/img/common/2.png">
             </li>
-            <li id="left_tab3" onClick="javascript:switchTab('TabPage2','left_tab3');" title="其他">
+            <li id="left_tab3"
+                onClick="javascript:switchTab('TabPage2','left_tab3');"
+                title="其他">
                 <img alt="其他" title="其他" src="../public/img/common/3.png">
             </li>
         </ul>
@@ -81,18 +86,19 @@
 </div>
 <div class="content">
     <div id="top_nav">
-        <span id="here_area">当前位置：系统&nbsp;>&nbsp;系统介绍</span>
+        当前位置：
+        <span id="here_area_module" style="color: #000000">主页</span>&nbsp;&gt;
+        <span id="here_area_submodule" style="color:#1A5CC6"></span>
     </div>
     <div id="main">
         <iframe name="right"
                 id="rightMain"
-                src="/user_list?page=1"
+                src="/welcome"
                 frameborder="no"
                 scrolling="auto"
                 width="100%"
                 height="100%"
                 allowtransparency="true"
-                onload="socket()"
         />
     </div>
 </div>
