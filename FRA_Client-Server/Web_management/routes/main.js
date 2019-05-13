@@ -24,6 +24,10 @@ router.get('/404', function (req, res) {
     return res.render('404.html')
 })
 
+router.get('/main/coding', function (req, res) {
+    return res.render('coding.html')
+})
+
 router.get('/main/zTree', function (req, res) {
     if (!req.session.account) {
         return res.render('404.html')
