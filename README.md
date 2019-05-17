@@ -7,11 +7,10 @@ You'll see something like this:
 ```text
 FRA/
 ├── FRA_Algorithm/
-├── FRA_Client/
-│   ├── App/
-│   ├── Web_management/
-└── FRA_Server/
-    ├── /
+└── FRA_Client-Server/
+    ├── App/
+    └── Web_management/
+
 	
 ```
 
